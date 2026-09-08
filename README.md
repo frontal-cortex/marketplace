@@ -45,10 +45,13 @@ marketplace/
 │   ├── manifest.yaml
 │   ├── README.md          # optional long description
 │   ├── preview.png        # optional card image, ≤ 200 KB
-│   ├── templates/*.md     # → <vault>/templates/
+│   ├── templates/*.md     # → <vault>/templates/ — except templates/<collection>.md,
+│   │                      #   which is that collection's row template → collections/<collection>/_template-<collection>.md
 │   ├── schemas/*.yaml     # → <vault>/.cortex/schemas/<collection>.yaml    (collection packs)
 │   ├── index.md           # → <vault>/collections/<collection>/_index.md   (collection packs: the views)
+│   ├── index/<c>.md       # → <vault>/collections/<c>/_index.md           (packs with more than one collection)
 │   ├── seed/*.md          # → <vault>/collections/<collection>/            (collection packs: example rows)
+│   ├── seed/<c>/*.md      # → <vault>/collections/<c>/                     (rows for an extra collection)
 │   └── assets/*           # → <vault>/assets/<id>/
 ├── index.json             # GENERATED — what the app fetches
 ├── featured.yaml          # hand-curated order for the app's front page
@@ -76,6 +79,8 @@ license: CC0-1.0                 # SPDX id; CC0-1.0 or CC-BY-4.0 for content
 credits: "Where the design comes from — attribution lives here, not in the summary."
 min_cortex: 0.1.0                # lowest app version the pack's features need
 collection: tasks                # collection packs only: the folder under collections/
+# collections: [task-log]        # extra collections the pack owns (a habits list and its daily log):
+                                 # schemas/<c>.yaml, index/<c>.md, templates/<c>.md, seed/<c>/ address each
 files:                           # every file the pack installs, nothing else
   - templates/tasks.md
   - schemas/tasks.yaml
@@ -92,13 +97,16 @@ Bundles list `includes: [pack ids]` instead of `files`.
 - `files` lists every installed file and every listed file exists.
 - Frontmatter parses. **Placeholders are quoted** (`created: "{{date}}"`).
   Templates may use `{{date}}`, `{{time}}`, `{{title}}`, `{{uuid}}` (expanded
-  when a note is created from them); seeds and `index.md` may use `{{today}}`
-  (expanded once, at install).
+  when a note is created from them — row templates too); seeds, `index.md`
+  and `index/*.md` may use `{{today}}` (expanded once, at install).
 - Schema property types are ones the app knows (`text`, `number`, `date`,
   `checkbox`, `select`, `multi_select`, `status`, `person`, `url`,
-  `relation`); every `group:` / `date:` in `index.md` names a schema property;
-  a calendar view's `date:` is a date property; seed rows and the row template
-  use only schema properties.
+  `relation`); every `group:` / `date:` in an index names a schema property;
+  a calendar view's `date:` is a date property; a tracker view names its
+  `log: collections/<name>`, and when that log is in the pack its `date` is a
+  date property and its `done` a relation or multi-select; seed rows and each
+  row template use only their own collection's properties. A pack with several
+  collections ships a schema and an index for each.
 - No raw HTML beyond `<br>`, `<sub>`, `<sup>` and comments.
 - `name` and `summary` carry no third-party product names — put them in `credits`.
 

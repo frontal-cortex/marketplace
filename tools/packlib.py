@@ -17,7 +17,7 @@ import yaml
 
 FORMAT = 1
 ALLOWED_EXT = {"md", "yaml", "png", "jpg", "webp", "svg"}
-ALLOWED_DIRS = {"templates", "schemas", "seed", "assets"}
+ALLOWED_DIRS = {"templates", "schemas", "seed", "assets", "index"}
 ROOT_FILES = {"manifest.yaml", "README.md", "index.md", "preview.png"}
 # Shipped with the pack but not listed under `files` (they are not installed).
 UNLISTED = {"manifest.yaml", "README.md", "preview.png"}
@@ -100,18 +100,51 @@ def sha256_hex(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def collections(manifest: dict) -> list[str]:
+    """Every collection a pack owns, primary first, without duplicates."""
+    out: list[str] = []
+    primary = str(manifest.get("collection") or "").strip()
+    if primary:
+        out.append(primary)
+    for c in manifest.get("collections") or []:
+        c = str(c)
+        if c and c not in out:
+            out.append(c)
+    return out
+
+
+def is_index(path: str) -> bool:
+    """`index.md` (the primary collection's views) or `index/<c>.md` (another's)."""
+    return path == "index.md" or (path.startswith("index/") and path.endswith(".md"))
+
+
 def destination(manifest: dict, path: str) -> str | None:
     """Where a pack file lands in the vault; None for files that are not installed."""
-    coll = manifest.get("collection")
+    colls = collections(manifest)
+    primary = colls[0] if colls else None
     pid = manifest.get("id", "")
     if path.startswith("templates/"):
-        return "templates/" + path[len("templates/"):]
+        f = path[len("templates/"):]
+        # A template named after one of the pack's collections is that
+        # collection's row template — what the table's New row menu offers.
+        if f.endswith(".md") and f[:-3] in colls:
+            c = f[:-3]
+            return f"collections/{c}/_template-{c}.md"
+        return "templates/" + f
     if path.startswith("schemas/"):
         return ".cortex/schemas/" + path[len("schemas/"):]
     if path == "index.md":
-        return f"collections/{coll}/_index.md" if coll else None
+        return f"collections/{primary}/_index.md" if primary else None
+    if path.startswith("index/") and path.endswith(".md"):
+        c = path[len("index/"):-3]
+        return f"collections/{c}/_index.md" if c in colls else None
     if path.startswith("seed/"):
-        return f"collections/{coll}/{path[len('seed/'):]}" if coll else None
+        rest = path[len("seed/"):]
+        if "/" in rest:
+            c, tail = rest.split("/", 1)
+            if c in colls:
+                return f"collections/{c}/{tail}"
+        return f"collections/{primary}/{rest}" if primary else None
     if path.startswith("assets/"):
         return f"assets/{pid}/{path[len('assets/'):]}"
     return None
@@ -163,7 +196,7 @@ def _lint_markdown(path: str, text: str, out: list[Finding]) -> None:
         if e < 0:
             break
         name = text[s + 2:e].strip()
-        ok = name in TEMPLATE_VARS or (name == "today" and (path.startswith("seed/") or path == "index.md"))
+        ok = name in TEMPLATE_VARS or (name == "today" and (path.startswith("seed/") or is_index(path)))
         if not ok:
             err(f"unknown placeholder {{{{{name}}}}} (templates: date, time, title, uuid; seeds and index.md: today)")
         i = e + 2
@@ -251,7 +284,7 @@ def lint(pack: Pack) -> list[Finding]:
             err(path, f"file type .{ext} is not allowed (md, yaml, png, jpg, webp, svg)")
         at_root = "/" not in path
         if not (at_root and path in ROOT_FILES) and parts[0] not in ALLOWED_DIRS:
-            err(path, "files live in templates/, schemas/, seed/, assets/ or are index.md / README.md / preview.png")
+            err(path, "files live in templates/, schemas/, seed/, index/, assets/ or are index.md / README.md / preview.png")
         if ext in ("png", "jpg", "webp", "svg") and len(data) > 200 * 1024:
             err(path, "images must be 200 KB or smaller")
         if ext == "md":
@@ -259,52 +292,90 @@ def lint(pack: Pack) -> list[Finding]:
     if total > 2 * 1024 * 1024:
         err(None, "pack is larger than 2 MB")
 
-    # Collection packs: schema, views, seeds and row template agree.
+    # Collection packs: per collection, the schema, views, seeds and row template agree.
     if kind == "collection":
-        coll = str(m.get("collection") or "")
-        schema_path = f"schemas/{coll}.yaml"
-        schema_text = pack.text(schema_path)
-        props: dict[str, str] = {}
-        if schema_text is None:
-            err(schema_path, "collection packs ship a schema named after the collection")
-        else:
-            r = _schema_props(schema_text)
-            if isinstance(r, str):
-                err(schema_path, r)
+        colls = collections(m)
+        primary = colls[0] if colls else ""
+        all_props: dict[str, dict[str, str]] = {}
+        for c in colls:
+            schema_path = f"schemas/{c}.yaml"
+            schema_text = pack.text(schema_path)
+            props: dict[str, str] = {}
+            if schema_text is None:
+                err(schema_path, f"collection packs ship a schema named after each collection ({c})")
             else:
-                props = r
-        index = pack.text("index.md")
-        if index is None:
-            err("index.md", "collection packs ship index.md with the views")
-        else:
-            fm = frontmatter(index.replace(TODAY, "2000-01-01"))
-            if fm is None:
-                err("index.md", "no frontmatter")
+                r = _schema_props(schema_text)
+                if isinstance(r, str):
+                    err(schema_path, r)
+                else:
+                    props = r
+            all_props[c] = props
+        for c in colls:
+            props = all_props[c]
+            index_path = "index.md" if c == primary else f"index/{c}.md"
+            index = pack.text(index_path)
+            if index is None:
+                err(index_path, f"collection packs ship {index_path} with the views for {c}")
             else:
-                views = fm.get("views") if isinstance(fm.get("views"), list) else []
-                if not views:
-                    err("index.md", "no views")
-                for v in views:
-                    if not isinstance(v, dict):
-                        continue
-                    for key in ("group", "date"):
-                        p = v.get(key)
-                        if isinstance(p, str) and p not in props:
-                            err("index.md", f"view `{key}: {p}` names a property the schema lacks")
-                    if v.get("type") == "calendar":
-                        d = v.get("date")
-                        if not (isinstance(d, str) and props.get(d) == "date"):
-                            err("index.md", "a calendar view needs `date:` naming a date property")
-        if pack.text(f"templates/{coll}.md") is None:
-            warn(None, f"no row template templates/{coll}.md — New row will have no shape")
+                fm = frontmatter(index.replace(TODAY, "2000-01-01"))
+                if fm is None:
+                    err(index_path, "no frontmatter")
+                else:
+                    views = fm.get("views") if isinstance(fm.get("views"), list) else []
+                    if not views:
+                        err(index_path, "no views")
+                    for v in views:
+                        if not isinstance(v, dict):
+                            continue
+                        vkind = v.get("type") if isinstance(v.get("type"), str) else "table"
+                        if vkind == "tracker":
+                            # `date`/`done` belong to the log; checked when the log is part of this pack.
+                            log = v.get("log") if isinstance(v.get("log"), str) else ""
+                            if not log.startswith("collections/"):
+                                err(index_path, "a tracker view needs `log: collections/<name>` — the collection with one row per day")
+                            else:
+                                l = log[len("collections/"):]
+                                lp = all_props.get(l.rstrip("/"))
+                                if lp is not None:
+                                    date = v.get("date") if isinstance(v.get("date"), str) else "date"
+                                    done = v.get("done") if isinstance(v.get("done"), str) else "done"
+                                    if lp.get(date) != "date":
+                                        err(index_path, f"tracker `date: {date}` must be a date property of {l}")
+                                    if lp.get(done) not in ("relation", "multi_select"):
+                                        err(index_path, f"tracker `done: {done}` must be a relation or multi_select property of {l}")
+                            continue
+                        for key in ("group", "date"):
+                            p = v.get(key)
+                            if isinstance(p, str) and p not in props:
+                                err(index_path, f"view `{key}: {p}` names a property the schema lacks")
+                        if vkind == "calendar":
+                            d = v.get("date")
+                            if not (isinstance(d, str) and props.get(d) == "date"):
+                                err(index_path, "a calendar view needs `date:` naming a date property")
+            if pack.text(f"templates/{c}.md") is None:
+                warn(None, f"no row template templates/{c}.md — New row in {c} will have no shape")
+        # Seeds and row templates use only their own collection's properties.
         for path in pack.files:
-            if path.startswith("seed/") or path == f"templates/{coll}.md":
-                text = _strip_template_vars(pack.text(path).replace(TODAY, "2000-01-01"))
-                fm = frontmatter(text)
-                if fm:
-                    for key in fm:
-                        if key not in FREE_KEYS and key not in props:
-                            err(path, f"property `{key}` is not in the schema")
+            owner: str | None = None
+            if path.startswith("seed/"):
+                rest = path[len("seed/"):]
+                if "/" in rest and rest.split("/", 1)[0] in colls:
+                    owner = rest.split("/", 1)[0]
+                else:
+                    owner = primary
+            elif path.startswith("templates/") and path.endswith(".md"):
+                t = path[len("templates/"):-3]
+                if t in colls:
+                    owner = t
+            if owner is None or owner not in all_props:
+                continue
+            props = all_props[owner]
+            text = _strip_template_vars(pack.text(path).replace(TODAY, "2000-01-01"))
+            fm = frontmatter(text)
+            if fm:
+                for key in fm:
+                    if key not in FREE_KEYS and key not in props:
+                        err(path, f"property `{key}` is not in the {owner} schema")
     return out
 
 
@@ -334,6 +405,8 @@ def manifest_json(m: dict) -> dict:
         out["min_cortex"] = str(m["min_cortex"])
     if m.get("collection"):
         out["collection"] = str(m["collection"])
+    if m.get("collections"):
+        out["collections"] = [str(x) for x in m["collections"]]
     if m.get("includes"):
         out["includes"] = [str(x) for x in m["includes"]]
     out["files"] = [str(f) for f in (m.get("files") or [])]

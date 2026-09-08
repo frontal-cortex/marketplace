@@ -41,8 +41,8 @@ and describing it honestly.
 - **Plain files only**: nothing executable, no raw HTML beyond `<br>`,
   `<sub>`, `<sup>` and comments, no remote images.
 - **Quoted placeholders**: `created: "{{date}}"`. Templates may use
-  `{{date}}`, `{{time}}`, `{{title}}`, `{{uuid}}`; seeds and `index.md` may
-  use `{{today}}`.
+  `{{date}}`, `{{time}}`, `{{title}}`, `{{uuid}}`; seeds, `index.md` and
+  `index/*.md` may use `{{today}}`.
 - **One thing, well**: a pack does one job and its summary says what that
   is in one line. A bundle (`kind: bundle`, `includes: [...]`) groups packs
   that belong together.

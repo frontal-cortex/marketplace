@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-09-08T09:23:28Z",
+  "generated": "2026-09-08T13:59:52Z",
   "base": "https://frontal-cortex.github.io/marketplace/packs/",
   "packs": [
     {
@@ -39,7 +39,7 @@
         "seed/example-transaction.md": "4cb1f0f197c728fac4ad3d4064b0fc80b7ad7861e5e028fb094d091f8e9844ba",
         "templates/budget.md": "b1f209997a4632bd4953c5d0b3f90893fc4ff7e2a24ada2885dbd89de8f2b6a4"
       },
-      "commit": "7bda0d40dce3e0547c55760a09d2d23db0571e9e"
+      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
     },
     {
       "format": 1,
@@ -78,7 +78,7 @@
         "seed/example-contact.md": "85851fc3f30055007cfb783fa24ff3a4831a20301c38480bfd3a3d97565f892a",
         "templates/contacts.md": "6238ebf5e040aba128511789a4fb9fc74201e3d25f073af4bc1e0382c5a23dbb"
       },
-      "commit": "7bda0d40dce3e0547c55760a09d2d23db0571e9e"
+      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
     },
     {
       "format": 1,
@@ -117,7 +117,7 @@
         "seed/example-post.md": "16d63248e86ab1a72bb8e65546738afa3567672302aa6ccf9e77a984e1a4f6e1",
         "templates/content.md": "e5e73319f86031c7e353d3a9e383fa1907c9f2314a80e7723cec0b8b71bfd1b2"
       },
-      "commit": "7bda0d40dce3e0547c55760a09d2d23db0571e9e"
+      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
     },
     {
       "format": 1,
@@ -148,7 +148,7 @@
         "manifest.yaml": "826da3b29b79d3ddeeb1364d2fbf0f36b7c55273eca46cbd989f59add6de6b65",
         "templates/daily.md": "76fbda54a3af643a9f797b8be6abbfceda201f5188154c17f3328d7193ed65ff"
       },
-      "commit": "7bda0d40dce3e0547c55760a09d2d23db0571e9e"
+      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
     },
     {
       "format": 1,
@@ -179,7 +179,7 @@
         "manifest.yaml": "63b032d5f87e542b8b644fbdc0926aa62f97a06455409885181b2bfac2addce3",
         "templates/decision.md": "cfa8ca07334530a55a954984af32d6b96202ee9f529683a660921bf169434fd8"
       },
-      "commit": "7bda0d40dce3e0547c55760a09d2d23db0571e9e"
+      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
     },
     {
       "format": 1,
@@ -218,45 +218,62 @@
         "seed/example-goal.md": "989ede6d96ed07f3504932619bbfffc479ce87faed2e2dbac925e72444bc703f",
         "templates/goals.md": "d46bfb14974ba4f40e2f2ea2a79fa5a44bb2ada3c07bebc71b91dd2719c1696c"
       },
-      "commit": "7bda0d40dce3e0547c55760a09d2d23db0571e9e"
+      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
     },
     {
       "format": 1,
       "id": "habit-tracker",
       "name": "Habit Tracker",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "kind": "collection",
-      "summary": "One row per habit per week, a checkbox per day — history kept, calendar view included.",
-      "description": "The simplest habit tracker that keeps working: each week, add a row per habit (New row, pick the habit, the week's Monday is the date). Tick the days. Because every week is its own row, the calendar view shows the history and nothing has to be reset. Review it in the Weekly Review.\n",
+      "summary": "Habits as rows, one file per day; streaks, day scores and a year heatmap computed on read, never stored.",
+      "description": "Each habit is a row with its own page; each day is one small file whose `done:` list names what you did. Tick today in the Today view (Space on a habit, or `mod+shift+h` for \"Log habit…\" from anywhere), and the week grid, month, and year heatmap fill in on their own — current and longest streaks, perfect days, completion — all computed from the files, so nothing is ever reset and nothing goes stale. A day with no file is a day with nothing done; the first tick creates it. Pair it with `templates/daily-with-habits.md` as your daily note so today's habits sit at the top of your journal.\n",
       "tags": [
         "health",
         "habits",
-        "database"
+        "database",
+        "tracker"
       ],
       "author": {
         "name": "Cortex team",
         "url": "https://github.com/frontal-cortex"
       },
       "license": "CC0-1.0",
-      "credits": "Habit trackers from Notion's gallery, remodelled so history is kept.",
+      "credits": "The streak, heatmap and week-grid ideas come from the habit trackers in Notion's gallery; the day-file model is our own so history is never reset.",
       "min_cortex": "0.1.0",
       "collection": "habits",
+      "collections": [
+        "habit-log"
+      ],
       "files": [
-        "templates/habits.md",
         "schemas/habits.yaml",
+        "schemas/habit-log.yaml",
         "index.md",
-        "seed/example-week.md"
+        "index/habit-log.md",
+        "templates/habits.md",
+        "templates/habit-log.md",
+        "templates/daily-with-habits.md",
+        "seed/habits/exercise.md",
+        "seed/habits/read.md",
+        "seed/habits/sleep-by-11.md"
       ],
       "tier": "official",
       "preview": null,
       "sha256": {
-        "index.md": "dfe0ebf62cd8bb1c73317a53514aa328e94db06d31d9444286d6cd25ac597c68",
-        "manifest.yaml": "3c7caab89fdc397dee292bacfbe6ccdd2d825b87c4240176e5cfc5877672c257",
-        "schemas/habits.yaml": "ee70d1f0da8cdf336b33f2aa4dd6be623372f0fd82efa976df5f625a3391905e",
-        "seed/example-week.md": "440774c9b16489aa5d4e4a25b6f8094737d78f261462c4a130756c370f78e0fe",
-        "templates/habits.md": "e739e1187cd94039012a35a8f4efbc90e7848616c02d90792076fb686d656b34"
+        "README.md": "3546485cec74f68a434018479bbd4bbdb94621557d507dad810cabf253af625f",
+        "index.md": "919ccaf4eb38b36f3cf20bfd81b794fd81b6d2ca588e9311e87b38962c783518",
+        "index/habit-log.md": "a030bbcfd62e7c9d2504992557b5a784741666ab748fafe7c240a7848e974865",
+        "manifest.yaml": "446ea62dd08f2337aba0256dfac22de1a91c347b3e1b9400bacf3f936341da83",
+        "schemas/habit-log.yaml": "b7f19d0ffa1b92c8bd586d169f208809b44b70cb0ec951f7b3fb4876dceca385",
+        "schemas/habits.yaml": "f7c4a8c3d9885bcfc561490933cdb00532756a477b96b33203bcef7183ab534b",
+        "seed/habits/exercise.md": "68c1e19b08f430960d63f9d9f221f92b6f72012863d745704c237f431152fbf0",
+        "seed/habits/read.md": "e4619d61fc29ecdc3a6643c1542078fbc20cad5891e2cfcc897b0c64d003ee81",
+        "seed/habits/sleep-by-11.md": "f136af6ab80c7a1049207b92a16f6f2e25b6e2df715aa7ea2fc4b1851efd93e6",
+        "templates/daily-with-habits.md": "6b732f2709cde554c8e4564d9f91eb00c92b9d493d69d218b6141764806ac2b3",
+        "templates/habit-log.md": "401ec03f7d552e8d42ca1ee2d8289e065a8f05c87195688e6e0085a9b6f9c566",
+        "templates/habits.md": "1143a143e8d02326b32ac460090ec368b7b4912275b79298c30f0c84a2f4f43a"
       },
-      "commit": "7bda0d40dce3e0547c55760a09d2d23db0571e9e"
+      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
     },
     {
       "format": 1,
@@ -286,7 +303,7 @@
         "manifest.yaml": "825f98f46f75240827da81c2a303b6849a4cd1cbd5eef322fb506cd18956a0ee",
         "templates/meeting.md": "cee7701bb8073688be732733111b330954a559a67f68756311c425100c0c579f"
       },
-      "commit": "7bda0d40dce3e0547c55760a09d2d23db0571e9e"
+      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
     },
     {
       "format": 1,
@@ -317,7 +334,7 @@
         "manifest.yaml": "48193646514778e68073062e28645d452a5426eb44c7cad88255cb75d7b47fc3",
         "templates/one-on-one.md": "ba521cf32db6961b0b3b3ad260bd6989de04e4f693dc397affce7e29649345db"
       },
-      "commit": "7bda0d40dce3e0547c55760a09d2d23db0571e9e"
+      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
     },
     {
       "format": 1,
@@ -348,7 +365,7 @@
         "manifest.yaml": "ec767fdfdb7c46c04f5ede4912c91c1805debba14f975782a68cd370ad9b2acb",
         "templates/para-index.md": "014254aea932560bd5dea7a120e15bdc7c33a8ae0693432c6aa074fb67d8d99c"
       },
-      "commit": "7bda0d40dce3e0547c55760a09d2d23db0571e9e"
+      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
     },
     {
       "format": 1,
@@ -386,7 +403,7 @@
         "seed/example-project.md": "47dd8dfc479511d3ed5e1c55cccc5109945fdee49f30bcfffa30fb84676d20c7",
         "templates/projects.md": "99afc2d788437535262844a541777755005e6ea86a31ab79bd8536024691266a"
       },
-      "commit": "7bda0d40dce3e0547c55760a09d2d23db0571e9e"
+      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
     },
     {
       "format": 1,
@@ -425,7 +442,7 @@
         "seed/example-book.md": "4d72a0d4a66937fde544c4cbcaca4752932f785b62a1a4d7ea57eb3214165594",
         "templates/reading.md": "a27bd8e0718fce9ee971f621902f2980abaed1d8752ab58f2a2c798b8c81d861"
       },
-      "commit": "7bda0d40dce3e0547c55760a09d2d23db0571e9e"
+      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
     },
     {
       "format": 1,
@@ -463,7 +480,7 @@
         "seed/example-recipe.md": "8cdfc6cee83cd3bcd12e4732f35c83d2e45bafc2f4601a77c18e4396e996b542",
         "templates/recipes.md": "fa63799d85110f2216c0c593117932a5814afc5a620552ee9f1a2e6cdb14505d"
       },
-      "commit": "7bda0d40dce3e0547c55760a09d2d23db0571e9e"
+      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
     },
     {
       "format": 1,
@@ -501,7 +518,7 @@
         "seed/example-task.md": "8c53c55d51e22b006026655992cb872e95b0a554147f46ba365f12a6e94659e5",
         "templates/tasks.md": "8baea023f8676a394f37dbcc8299bc3fcbb84d20ffca670a24432c73d7786a97"
       },
-      "commit": "7bda0d40dce3e0547c55760a09d2d23db0571e9e"
+      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
     },
     {
       "format": 1,
@@ -532,7 +549,7 @@
         "manifest.yaml": "6f8884dc6cb506872150ea6dd941b0efdc568ef343ee39ae8543ffa8cf6b2212",
         "templates/weekly-review.md": "aee23f34da321577eae047a4f691972d59e33adf0ea04889817f1712cee41c63"
       },
-      "commit": "7bda0d40dce3e0547c55760a09d2d23db0571e9e"
+      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
     }
   ]
 }
