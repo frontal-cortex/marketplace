@@ -97,11 +97,27 @@ Bundles list `includes: [pack ids]` instead of `files`.
 - `files` lists every installed file and every listed file exists.
 - Frontmatter parses. **Placeholders are quoted** (`created: "{{date}}"`).
   Templates may use `{{date}}`, `{{time}}`, `{{title}}`, `{{uuid}}` (expanded
-  when a note is created from them — row templates too); seeds, `index.md`
-  and `index/*.md` may use `{{today}}` (expanded once, at install).
+  when a note is created from them — row templates too). Any file may use the
+  **date words** `{{today}}`, `{{tomorrow}}`, `{{yesterday}}`, `{{monday}}`,
+  `{{sunday}}` (this week's), `{{month}}` (`YYYY-MM`), `{{year}}`, `{{week}}`
+  (`YYYY-Www`), each with an optional offset — `{{today+7}}`, `{{monday-1}}`,
+  `{{month+1}}` (seeds and indexes: expanded once, at install; templates: when
+  the note is created). Anything else in `{{…}}` is an error.
 - Schema property types are ones the app knows (`text`, `number`, `date`,
   `checkbox`, `select`, `multi_select`, `status`, `person`, `url`,
-  `relation`); every `group:` / `date:` in an index names a schema property;
+  `relation`, `rollup`, `formula`). A property may carry `collection`,
+  `relation`, `property`, `function`, `from`, `where`, `expr`, `format`,
+  `min`, `max`, `unit`, `auto` (see the app's docs on views, filters and
+  computed properties). A property is not named `type`, `title`, `tags`,
+  `created`, `id`, `path`, `icon` or `cover` — those are a note's own keys.
+  A `formula` has `expr:`; a `rollup` has `relation:` (plus `from:` for the
+  reverse side); `format` is `percent`, `progress`, `currency`, `stars`,
+  `integer` or `decimal`; `auto:` is a filter (`status == done`); a
+  `relation` to a collection the pack does not install is a warning, not an
+  error. The app's `cortex packs lint` is authoritative for formula syntax;
+  `tools/lint.py` (what CI runs) only catches the obvious — empty, unbalanced
+  parentheses, unterminated string — so run the app's lint too.
+- Every `group:` / `date:` in an index names a schema property;
   a calendar view's `date:` is a date property; a tracker view names its
   `log: collections/<name>`, and when that log is in the pack its `date` is a
   date property and its `done` a relation or multi-select; seed rows and each

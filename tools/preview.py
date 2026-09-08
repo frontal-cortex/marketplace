@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from packlib import PackError, collections, destination, frontmatter, lint, load_pack, load_tiers  # noqa: E402
+from packlib import PackError, collections, destination, frontmatter, lint, lint_dates, load_pack, load_tiers  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 MARKER = "<!-- pack-preview -->"
@@ -95,7 +95,7 @@ def render(pid: str, tiers: dict[str, str]) -> str:
             if cols:
                 out += [f"**Columns{label}:** " + ", ".join(cols), ""]
         index = pack.text("index.md" if coll == colls[0] else f"index/{coll}.md")
-        fm = frontmatter(index.replace("{{today}}", "2000-01-01")) if index else None
+        fm = frontmatter(lint_dates(index)) if index else None
         views = (fm or {}).get("views") or []
         if views:
             names = []

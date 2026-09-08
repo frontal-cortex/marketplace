@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import re
 from dataclasses import dataclass, field
+from datetime import date, timedelta
 from pathlib import Path
 
 import yaml
@@ -24,12 +25,20 @@ UNLISTED = {"manifest.yaml", "README.md", "preview.png"}
 TEMPLATE_VARS = ("date", "time", "title", "uuid")
 RAW_HTML_OK = ("<br", "<sub", "</sub", "<sup", "</sup", "<!--")
 PRODUCT_WORDS = ("notion", "obsidian", "evernote", "roam", "logseq", "craft")
-PROPERTY_TYPES = {"text", "number", "date", "checkbox", "select", "multi_select", "status", "person", "url", "relation"}
+PROPERTY_TYPES = {"text", "number", "date", "checkbox", "select", "multi_select", "status", "person", "url", "relation", "rollup", "formula"}
+# Keys a property may carry besides name/type/options (`cortex_core::schema::PropertyDef`).
+PROPERTY_KEYS = {"collection", "relation", "property", "function", "from", "where", "expr", "format", "min", "max", "unit", "auto"}
+# A property may not shadow a note's own keys.
+RESERVED_PROPERTY_NAMES = ("type", "title", "tags", "created", "id", "path", "icon", "cover")
+FORMATS = ("percent", "progress", "currency", "stars", "integer", "decimal")
 # Frontmatter keys every note may carry, whatever the schema says.
 FREE_KEYS = {"title", "type", "tags", "created", "icon", "cover"}
 KINDS = ("note", "collection", "bundle")
 TIERS = ("official", "verified", "community")
-TODAY = "{{today}}"
+# Date placeholders are resolved against this fixed day (a Monday) so lint can
+# parse frontmatter — the same day `cortex_core::marketplace::lint_dates` uses.
+LINT_BASE = date(2000, 1, 3)
+OFFSET_RE = re.compile(r"^[+-]\d+$")
 SEMVER = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$")
 ID_RE = re.compile(r"^[a-z0-9-]+$")
 
@@ -150,6 +159,239 @@ def destination(manifest: dict, path: str) -> str | None:
     return None
 
 
+# ── Date placeholders (mirrors `cortex_core::placeholders`) ─────────────────
+#
+# `{{today}}`, `{{today+7}}`, `{{monday-1}}`, `{{month}}`, `{{week}}` … — one
+# vocabulary for templates, seeds and (after `@`) filters. Everything resolves
+# against one base day.
+
+def _split_offset(name: str) -> tuple[str, int] | None:
+    i = min((k for k in (name.find("+"), name.find("-")) if k >= 0), default=-1)
+    if i < 0:
+        return name, 0
+    word, off = name[:i], name[i:]
+    if not OFFSET_RE.match(off):
+        return None
+    return word, int(off)
+
+
+def _monday(d: date) -> date:
+    return d - timedelta(days=d.weekday())
+
+
+def _shift_month(d: date, by: int) -> date:
+    total = d.year * 12 + (d.month - 1) + by
+    return date(total // 12, total % 12 + 1, 1)
+
+
+def resolve_date(name: str, base: date) -> str | None:
+    """One placeholder name (without braces or `@`) against `base`; None when
+    it is not a date word."""
+    parts = _split_offset(name.strip())
+    if parts is None:
+        return None
+    word, n = parts
+    if word in ("today", "date", "now"):
+        d = base + timedelta(days=n)
+    elif word == "tomorrow":
+        d = base + timedelta(days=1 + n)
+    elif word == "yesterday":
+        d = base - timedelta(days=1 - n)
+    elif word == "monday":
+        d = _monday(base) + timedelta(days=7 * n)
+    elif word == "sunday":
+        d = _monday(base) + timedelta(days=6 + 7 * n)
+    elif word == "month":
+        return _shift_month(base, n).strftime("%Y-%m")
+    elif word == "year":
+        return str(base.year + n)
+    elif word == "week":
+        y, w, _ = (_monday(base) + timedelta(days=7 * n)).isocalendar()
+        return f"{y}-W{w:02d}"
+    else:
+        return None
+    return d.strftime("%Y-%m-%d")
+
+
+def is_date_word(name: str) -> bool:
+    return resolve_date(name, LINT_BASE) is not None
+
+
+def expand_dates(text: str, base: date) -> str:
+    """Expand every `{{word±n}}` date placeholder in `text` against `base`.
+    Other placeholders (`{{title}}`, `{{uuid}}`, unknown words) are left alone."""
+    out: list[str] = []
+    rest = text
+    while True:
+        start = rest.find("{{")
+        if start < 0:
+            break
+        out.append(rest[:start])
+        after = rest[start + 2:]
+        end = after.find("}}")
+        if end < 0:
+            out.append(rest[start:])
+            return "".join(out)
+        name = after[:end]
+        v = resolve_date(name, base)
+        out.append(v if v is not None else "{{" + name + "}}")
+        rest = after[end + 2:]
+    out.append(rest)
+    return "".join(out)
+
+
+def lint_dates(text: str) -> str:
+    """Placeholders resolved against a fixed day so lint can parse frontmatter."""
+    return expand_dates(text, LINT_BASE)
+
+
+# ── Filters (mirrors `cortex_core::data::parse_filter`) ─────────────────────
+#
+# `field OP value` joined by `and` / `or`; ops == = != > >= < <= contains;
+# strings in single or double quotes. Only the grammar is mirrored — enough to
+# say whether an `auto:` condition parses; the app evaluates it.
+
+def _filter_tokens(s: str) -> list[str]:
+    out: list[str] = []
+    cur = ""
+    i, n = 0, len(s)
+    while i < n:
+        c = s[i]
+        i += 1
+        if c in ("'", '"'):
+            lit = ""
+            while i < n:
+                ch = s[i]
+                i += 1
+                if ch == c:
+                    break
+                lit += ch
+            out.append("\x01" + lit)  # \x01 marks a string literal, as in Rust
+        elif c.isspace():
+            if cur:
+                out.append(cur)
+                cur = ""
+        elif c in "=!<>":
+            if cur:
+                out.append(cur)
+                cur = ""
+            op = c
+            if i < n and s[i] == "=":
+                op += "="
+                i += 1
+            out.append(op)
+        else:
+            cur += c
+    if cur:
+        out.append(cur)
+    return out
+
+
+def _rust_debug_str(s: str) -> str:
+    """`{:?}` of a Rust String, close enough for the tokens a filter yields."""
+    body = s.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n").replace("\t", "\\t").replace("\x01", "\\u{1}")
+    return f'"{body}"'
+
+
+def filter_error(text: str) -> str | None:
+    """None when `text` parses as a filter, else the message the app gives.
+    This is the tail after "auto condition does not parse: "; it mirrors the
+    Rust strings for every case the grammar has, though a token's `{:?}`
+    rendering may differ for exotic characters."""
+    toks = _filter_tokens(text)
+    pos = 0
+
+    def cmp() -> str | None:
+        nonlocal pos
+        if pos >= len(toks):
+            return "Expected field"
+        if pos + 1 >= len(toks):
+            return "Expected operator"
+        if pos + 2 >= len(toks):
+            return "Expected value"
+        op = toks[pos + 1].lower()
+        pos += 3
+        if op not in ("==", "=", "!=", ">", ">=", "<", "<=", "contains"):
+            return f"Unknown operator: {op}"
+        return None
+
+    e = cmp()
+    if e:
+        return e
+    while pos < len(toks) and toks[pos].lower() in ("and", "or"):
+        pos += 1
+        e = cmp()
+        if e:
+            return e
+    if pos != len(toks):
+        return f"Unexpected token in filter: Some({_rust_debug_str(toks[pos])})"
+    return None
+
+
+# ── Formulas (a light mirror of `cortex_core::formula::Formula::parse`) ─────
+#
+# Python does not run the formula parser; `cortex packs lint` in CI is
+# authoritative for formula syntax. This catches what a tokenizer sees —
+# empty, an unterminated string, a stray character, a bad number — and
+# unbalanced parentheses, with the app's messages where it has one. A formula
+# that passes here can still be rejected by the app (`a +`, `if(a)`, …).
+
+def formula_error(src: str) -> str | None:
+    depth = 0
+    i, n = 0, len(src)
+    toks = 0
+    while i < n:
+        c = src[i]
+        if c.isspace():
+            i += 1
+            continue
+        if c.isdigit() or (c == "." and i + 1 < n and src[i + 1].isdigit()):
+            start = i
+            while i < n and (src[i].isdigit() or src[i] == "."):
+                i += 1
+            num = src[start:i]
+            try:
+                float(num)
+            except ValueError:
+                return f"bad number {num}"
+            toks += 1
+            continue
+        if c in ("'", '"'):
+            i += 1
+            while i < n and src[i] != c:
+                i += 1
+            if i >= n:
+                return "unterminated string"
+            i += 1
+            toks += 1
+            continue
+        if c.isalpha() or c == "_":
+            while i < n and (src[i].isalnum() or src[i] == "_"):
+                i += 1
+            toks += 1
+            continue
+        if c == "(":
+            depth += 1
+        elif c == ")":
+            if depth == 0:
+                return "unexpected RParen after the expression"
+            depth -= 1
+        elif c in ",+-*/%":
+            pass
+        elif c in "=!<>":
+            if i + 1 < n and src[i + 1] == "=":
+                i += 1
+        else:
+            return f"unexpected character {c!r}"
+        toks += 1
+        i += 1
+    if toks == 0:
+        return "empty formula"
+    if depth > 0:
+        return "expected )"
+    return None
+
+
 # ── Lint ────────────────────────────────────────────────────────────────────
 
 def _strip_template_vars(text: str) -> str:
@@ -183,10 +425,10 @@ def _lint_markdown(path: str, text: str, out: list[Finding]) -> None:
                 _, v = line.split(":", 1)
                 if v.lstrip().startswith("{{"):
                     err(f'unquoted placeholder in frontmatter: `{line.strip()}` — write `"{v.strip()}"`')
-        probe = _strip_template_vars(text.replace(TODAY, "2000-01-01"))
+        probe = _strip_template_vars(lint_dates(text))
         if frontmatter(probe) is None:
             err("frontmatter does not parse as YAML")
-    # Only the placeholders the app expands.
+    # Only the placeholders the app expands: template vars and date words with offsets.
     i = 0
     while True:
         s = text.find("{{", i)
@@ -196,9 +438,9 @@ def _lint_markdown(path: str, text: str, out: list[Finding]) -> None:
         if e < 0:
             break
         name = text[s + 2:e].strip()
-        ok = name in TEMPLATE_VARS or (name == "today" and (path.startswith("seed/") or is_index(path)))
+        ok = name in TEMPLATE_VARS or is_date_word(name)
         if not ok:
-            err(f"unknown placeholder {{{{{name}}}}} (templates: date, time, title, uuid; seeds and index.md: today)")
+            err(f"unknown placeholder {{{{{name}}}}} (date, time, title, uuid; date words today, monday, sunday, month, year, week, with offsets like today+7)")
         i = e + 2
     # Raw HTML beyond the allow-list.
     for m in re.finditer("<", text):
@@ -209,20 +451,55 @@ def _lint_markdown(path: str, text: str, out: list[Finding]) -> None:
             break
 
 
-def _schema_props(text: str) -> dict[str, str] | str:
-    """name → type from a schema file, or an error message."""
+def _schema_props(text: str) -> list[dict] | str:
+    """The property definitions of a schema file, or an error message.
+
+    The app deserialises into `schema::TypeSchema`; the message for a schema
+    it rejects is serde's and differs from ours — the verdict is the same."""
     try:
         s = yaml.safe_load(text)
     except yaml.YAMLError as e:
         return f"schema does not parse: {e}"
     if not isinstance(s, dict) or not isinstance(s.get("properties"), list):
         return "schema does not parse: expected `properties:` as a list"
-    props: dict[str, str] = {}
     for p in s["properties"]:
         if not isinstance(p, dict) or not isinstance(p.get("name"), str) or p.get("type") not in PROPERTY_TYPES:
             return f"schema does not parse: property {p!r} needs a name and a known type ({', '.join(sorted(PROPERTY_TYPES))})"
-        props[p["name"]] = p["type"]
-    return props
+        for k in ("min", "max"):
+            if k in p and (isinstance(p[k], bool) or not isinstance(p[k], (int, float))):
+                return f"schema does not parse: property `{p['name']}`: `{k}` must be a number"
+    return s["properties"]
+
+
+def _lint_property(schema_path: str, p: dict, colls: list[str], out: list[Finding]) -> None:
+    """The per-property rules of `cortex_core::marketplace::lint`, same messages."""
+    err = lambda m: out.append(Finding("error", schema_path, m))
+    warn = lambda m: out.append(Finding("warning", schema_path, m))
+    name, ty = p["name"], p["type"]
+    if name in RESERVED_PROPERTY_NAMES:
+        err(f"a property may not be named `{name}` — it is a note's own key; use kind, name, …")
+    if ty == "formula":
+        expr = p.get("expr")
+        if expr is None:
+            err(f"formula `{name}` needs `expr:`")
+        else:
+            e = formula_error(str(expr))
+            if e:
+                err(f"formula `{name}` does not parse: {e}")
+    if ty == "rollup" and p.get("relation") is None:
+        err(f"rollup `{name}` needs `relation:` (and `from:` for the reverse side)")
+    f = p.get("format")
+    if f is not None and str(f) not in FORMATS:
+        err(f"`{name}`: unknown format `{f}` ({', '.join(FORMATS)})")
+    a = p.get("auto")
+    if a is not None:
+        e = filter_error(str(a))
+        if e:
+            err(f"`{name}`: auto condition does not parse: {e}")
+    if ty == "relation" and p.get("collection") is not None:
+        target = str(p["collection"])
+        if target not in colls:
+            warn(f"`{name}` relates to `{target}`, which this pack does not install — fine when that pack is present")
 
 
 def lint(pack: Pack) -> list[Finding]:
@@ -308,7 +585,9 @@ def lint(pack: Pack) -> list[Finding]:
                 if isinstance(r, str):
                     err(schema_path, r)
                 else:
-                    props = r
+                    for p in r:
+                        _lint_property(schema_path, p, colls, out)
+                    props = {p["name"]: p["type"] for p in r}
             all_props[c] = props
         for c in colls:
             props = all_props[c]
@@ -317,7 +596,7 @@ def lint(pack: Pack) -> list[Finding]:
             if index is None:
                 err(index_path, f"collection packs ship {index_path} with the views for {c}")
             else:
-                fm = frontmatter(index.replace(TODAY, "2000-01-01"))
+                fm = frontmatter(lint_dates(index))
                 if fm is None:
                     err(index_path, "no frontmatter")
                 else:
@@ -370,7 +649,7 @@ def lint(pack: Pack) -> list[Finding]:
             if owner is None or owner not in all_props:
                 continue
             props = all_props[owner]
-            text = _strip_template_vars(pack.text(path).replace(TODAY, "2000-01-01"))
+            text = _strip_template_vars(lint_dates(pack.text(path)))
             fm = frontmatter(text)
             if fm:
                 for key in fm:
