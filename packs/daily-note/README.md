@@ -25,9 +25,12 @@ That is the whole routine: thirty seconds of properties, a few minutes of
 page. The template deliberately has few sections — a journal that takes ten
 minutes stops after a fortnight.
 
-The **Today** button is not this collection: it opens or creates a plain note
-in `notes/journal/` from the `journal_template` setting. A day here is made
-with New row. Use one or the other, not both.
+To make the **Today** button (`mod+shift+t`) open this journal, set
+`journal_template` to `collections/journal` in Settings → Notes (or
+`cortex settings set journal_template=collections/journal`). Today then opens
+the day's row, creating it from the row template the first time. Left at
+its default, Today keeps making plain notes in `notes/journal/` and a day
+here is made with New row — use one or the other, not both.
 
 ## How it works
 
