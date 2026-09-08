@@ -1,0 +1,60 @@
+# Every pull request: lint every pack, refuse a changed pack without a version
+# bump, and post a rendered preview of the changed packs as a PR comment.
+name: Lint packs
+
+on:
+  pull_request:
+  push:
+    branches-ignore: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml
+
+      - name: Lint every pack
+        run: python3 tools/lint.py
+
+      - name: Refuse a changed pack without a version bump
+        run: |
+          git show origin/main:index.json > /tmp/base-index.json 2>/dev/null || echo '{"packs":[]}' > /tmp/base-index.json
+          python3 tools/check_versions.py /tmp/base-index.json
+
+      - name: Render a preview of the changed packs
+        if: github.event_name == 'pull_request'
+        run: |
+          ids=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" -- packs tiers.yaml | grep '^packs/' | cut -d/ -f2 | sort -u)
+          if [ -z "$ids" ]; then
+            printf '<!-- pack-preview -->\n## Pack preview\n\nNo pack changed in this pull request.\n' > preview.md
+          else
+            python3 tools/preview.py $ids > preview.md
+          fi
+          cat preview.md
+
+      - name: Post the preview on the pull request
+        if: github.event_name == 'pull_request'
+        # A fork's token is read-only; the preview is then only in the log above.
+        continue-on-error: true
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('preview.md', 'utf8');
+            const marker = '<!-- pack-preview -->';
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const { data: comments } = await github.rest.issues.listComments({ owner, repo, issue_number, per_page: 100 });
+            const mine = comments.find((c) => c.body && c.body.includes(marker));
+            if (mine) await github.rest.issues.updateComment({ owner, repo, comment_id: mine.id, body });
+            else await github.rest.issues.createComment({ owner, repo, issue_number, body });

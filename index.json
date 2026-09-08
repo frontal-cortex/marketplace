@@ -1,0 +1,538 @@
+{
+  "format": 1,
+  "generated": "2026-09-08T09:23:28Z",
+  "base": "https://frontal-cortex.github.io/marketplace/packs/",
+  "packs": [
+    {
+      "format": 1,
+      "id": "budget-tracker",
+      "name": "Budget Tracker",
+      "version": "1.0.0",
+      "kind": "collection",
+      "summary": "A row per transaction: date, amount, category, account — simple enough to keep filled in.",
+      "description": "Every budget template that survives contact with real life is this one: a transaction a row, negative for spending, positive for income, a category to group by on the board, and a date the calendar view shows. Add a chart block over it for the monthly picture.\n",
+      "tags": [
+        "finance",
+        "budget",
+        "database"
+      ],
+      "author": {
+        "name": "Cortex team",
+        "url": "https://github.com/frontal-cortex"
+      },
+      "license": "CC0-1.0",
+      "credits": "The free budget trackers near the top of every Notion template list.",
+      "min_cortex": "0.1.0",
+      "collection": "budget",
+      "files": [
+        "templates/budget.md",
+        "schemas/budget.yaml",
+        "index.md",
+        "seed/example-transaction.md"
+      ],
+      "tier": "official",
+      "preview": null,
+      "sha256": {
+        "index.md": "ebe2000e710267505570922d93b39d60266760307fd1610b240499d1aea9e2d7",
+        "manifest.yaml": "e2bab142765ef791b09f1c0d14b5347d4361b152194d4d4ccfbd8cd3875a4e1c",
+        "schemas/budget.yaml": "ab2bc13f3a6ad489e18f339389427f465dba5468c6a75a51ac730f93162f90ad",
+        "seed/example-transaction.md": "4cb1f0f197c728fac4ad3d4064b0fc80b7ad7861e5e028fb094d091f8e9844ba",
+        "templates/budget.md": "b1f209997a4632bd4953c5d0b3f90893fc4ff7e2a24ada2885dbd89de8f2b6a4"
+      },
+      "commit": ""
+    },
+    {
+      "format": 1,
+      "id": "contacts",
+      "name": "Contacts",
+      "version": "1.0.0",
+      "kind": "collection",
+      "summary": "A people database: relationship, company, last contact, next follow-up — with a follow-up calendar.",
+      "description": "A lightweight personal CRM. One row per person with how you know them, where they work, when you last spoke and when to reach out next. The calendar view turns follow-ups into a to-do you cannot forget; the board groups everyone by relationship. Each row is a note, so the history of a relationship lives under the properties.\n",
+      "tags": [
+        "people",
+        "crm",
+        "relationships",
+        "database"
+      ],
+      "author": {
+        "name": "Cortex team",
+        "url": "https://github.com/frontal-cortex"
+      },
+      "license": "CC0-1.0",
+      "credits": "The personal CRM templates that circulate for every notes app, reduced to the fields people actually keep up to date.",
+      "min_cortex": "0.1.0",
+      "collection": "contacts",
+      "files": [
+        "templates/contacts.md",
+        "schemas/contacts.yaml",
+        "index.md",
+        "seed/example-contact.md"
+      ],
+      "tier": "official",
+      "preview": null,
+      "sha256": {
+        "index.md": "109562997eedc0560976a3f9168348bf3964efe2e1be4182b10fa8b11a5de3a7",
+        "manifest.yaml": "679a2bef85bafeadcbee6d198571bce794983c158c9d05e4fae0fbb7d3f23693",
+        "schemas/contacts.yaml": "35020594b64d37806fc6a0b58cb67e907bf32ac36184ff03771ba34852e243c1",
+        "seed/example-contact.md": "85851fc3f30055007cfb783fa24ff3a4831a20301c38480bfd3a3d97565f892a",
+        "templates/contacts.md": "6238ebf5e040aba128511789a4fb9fc74201e3d25f073af4bc1e0382c5a23dbb"
+      },
+      "commit": ""
+    },
+    {
+      "format": 1,
+      "id": "content-calendar",
+      "name": "Content Calendar",
+      "version": "1.0.0",
+      "kind": "collection",
+      "summary": "Posts, newsletters and videos from idea to published: status board, channel, publish date on a calendar.",
+      "description": "One row per piece of content. The status board carries an idea through drafting, review and scheduling to published; the calendar shows what goes out when; the channel says where. The row is the draft itself, so writing and planning happen in the same place.\n",
+      "tags": [
+        "writing",
+        "content",
+        "marketing",
+        "database"
+      ],
+      "author": {
+        "name": "Cortex team",
+        "url": "https://github.com/frontal-cortex"
+      },
+      "license": "CC0-1.0",
+      "credits": "Editorial calendar templates common to every notes and project tool, with the draft kept inside the row.",
+      "min_cortex": "0.1.0",
+      "collection": "content",
+      "files": [
+        "templates/content.md",
+        "schemas/content.yaml",
+        "index.md",
+        "seed/example-post.md"
+      ],
+      "tier": "official",
+      "preview": null,
+      "sha256": {
+        "index.md": "1ac96402daea500ae59af19da0038a3b5657506324545e362bfd09a6fda94f9a",
+        "manifest.yaml": "590f109c99133d69754da80e010fd4393e06aa762156fe948525bc98449dfa43",
+        "schemas/content.yaml": "0ab6e4f6316314a58c6f5f2e9f9797992e613d9a2f1a3ba8d49e21a55ce25904",
+        "seed/example-post.md": "16d63248e86ab1a72bb8e65546738afa3567672302aa6ccf9e77a984e1a4f6e1",
+        "templates/content.md": "e5e73319f86031c7e353d3a9e383fa1907c9f2314a80e7723cec0b8b71bfd1b2"
+      },
+      "commit": ""
+    },
+    {
+      "format": 1,
+      "id": "daily-note",
+      "name": "Daily Note",
+      "version": "1.0.0",
+      "kind": "note",
+      "summary": "A focused daily log: top three priorities, a running log, a short reflection.",
+      "description": "The one template every note-taking app is built around. Three priorities at the top so the day has a shape, a log to capture as you go, and a two-minute reflection at the end that feeds the weekly review. Wire it to Today by setting `journal_template: daily.md`.\n",
+      "tags": [
+        "productivity",
+        "journal",
+        "daily"
+      ],
+      "author": {
+        "name": "Cortex team",
+        "url": "https://github.com/frontal-cortex"
+      },
+      "license": "CC0-1.0",
+      "credits": "The shape shared by Obsidian's daily notes and Notion's daily journal templates.",
+      "min_cortex": "0.1.0",
+      "files": [
+        "templates/daily.md"
+      ],
+      "tier": "official",
+      "preview": null,
+      "sha256": {
+        "manifest.yaml": "826da3b29b79d3ddeeb1364d2fbf0f36b7c55273eca46cbd989f59add6de6b65",
+        "templates/daily.md": "76fbda54a3af643a9f797b8be6abbfceda201f5188154c17f3328d7193ed65ff"
+      },
+      "commit": ""
+    },
+    {
+      "format": 1,
+      "id": "decision-log",
+      "name": "Decision Log",
+      "version": "1.0.0",
+      "kind": "note",
+      "summary": "One note per decision: context, options weighed, what was chosen and why, when to revisit.",
+      "description": "The note you wish you had six months later. Context in two sentences, the options that were on the table with their trade-offs, the decision itself, its consequences, and a date to look at it again. Works for a team's architecture decisions and for a person's life ones.\n",
+      "tags": [
+        "work",
+        "decisions",
+        "thinking"
+      ],
+      "author": {
+        "name": "Cortex team",
+        "url": "https://github.com/frontal-cortex"
+      },
+      "license": "CC0-1.0",
+      "credits": "Architecture decision records (Michael Nygard) and the decision journals popular in personal knowledge management circles.",
+      "min_cortex": "0.1.0",
+      "files": [
+        "templates/decision.md"
+      ],
+      "tier": "official",
+      "preview": null,
+      "sha256": {
+        "manifest.yaml": "63b032d5f87e542b8b644fbdc0926aa62f97a06455409885181b2bfac2addce3",
+        "templates/decision.md": "cfa8ca07334530a55a954984af32d6b96202ee9f529683a660921bf169434fd8"
+      },
+      "commit": ""
+    },
+    {
+      "format": 1,
+      "id": "goals",
+      "name": "Goals",
+      "version": "1.0.0",
+      "kind": "collection",
+      "summary": "Goals with a status, a life area, a target date and a progress number — board by status, calendar of target dates.",
+      "description": "Quarterly or yearly goals as rows, each with the area of life it belongs to, a status that says whether it is on track, a target date the calendar shows, and a progress percentage you update when you review. Each goal is a note, so the why, the milestones and the review log live under its properties. Pairs with Weekly Review.\n",
+      "tags": [
+        "productivity",
+        "goals",
+        "planning",
+        "database"
+      ],
+      "author": {
+        "name": "Cortex team",
+        "url": "https://github.com/frontal-cortex"
+      },
+      "license": "CC0-1.0",
+      "credits": "OKR trackers and the goal-setting templates every notes app gallery carries, kept to five properties.",
+      "min_cortex": "0.1.0",
+      "collection": "goals",
+      "files": [
+        "templates/goals.md",
+        "schemas/goals.yaml",
+        "index.md",
+        "seed/example-goal.md"
+      ],
+      "tier": "official",
+      "preview": null,
+      "sha256": {
+        "index.md": "6eb6686e1519f372015ae911db2a0ee9e8400565b7b3bebb809bb4a3dc66f534",
+        "manifest.yaml": "5c777f64dcb4cd903e685f1f43af2f4b4112ce67355aa9a31e8e0d9f905f6699",
+        "schemas/goals.yaml": "1017a932302d40f0c15a56797a87811236e3deb664975733f702078befb4f908",
+        "seed/example-goal.md": "989ede6d96ed07f3504932619bbfffc479ce87faed2e2dbac925e72444bc703f",
+        "templates/goals.md": "d46bfb14974ba4f40e2f2ea2a79fa5a44bb2ada3c07bebc71b91dd2719c1696c"
+      },
+      "commit": ""
+    },
+    {
+      "format": 1,
+      "id": "habit-tracker",
+      "name": "Habit Tracker",
+      "version": "1.0.0",
+      "kind": "collection",
+      "summary": "One row per habit per week, a checkbox per day — history kept, calendar view included.",
+      "description": "The simplest habit tracker that keeps working: each week, add a row per habit (New row, pick the habit, the week's Monday is the date). Tick the days. Because every week is its own row, the calendar view shows the history and nothing has to be reset. Review it in the Weekly Review.\n",
+      "tags": [
+        "health",
+        "habits",
+        "database"
+      ],
+      "author": {
+        "name": "Cortex team",
+        "url": "https://github.com/frontal-cortex"
+      },
+      "license": "CC0-1.0",
+      "credits": "Habit trackers from Notion's gallery, remodelled so history is kept.",
+      "min_cortex": "0.1.0",
+      "collection": "habits",
+      "files": [
+        "templates/habits.md",
+        "schemas/habits.yaml",
+        "index.md",
+        "seed/example-week.md"
+      ],
+      "tier": "official",
+      "preview": null,
+      "sha256": {
+        "index.md": "dfe0ebf62cd8bb1c73317a53514aa328e94db06d31d9444286d6cd25ac597c68",
+        "manifest.yaml": "3c7caab89fdc397dee292bacfbe6ccdd2d825b87c4240176e5cfc5877672c257",
+        "schemas/habits.yaml": "ee70d1f0da8cdf336b33f2aa4dd6be623372f0fd82efa976df5f625a3391905e",
+        "seed/example-week.md": "440774c9b16489aa5d4e4a25b6f8094737d78f261462c4a130756c370f78e0fe",
+        "templates/habits.md": "e739e1187cd94039012a35a8f4efbc90e7848616c02d90792076fb686d656b34"
+      },
+      "commit": ""
+    },
+    {
+      "format": 1,
+      "id": "meeting-notes",
+      "name": "Meeting Notes",
+      "version": "1.0.0",
+      "kind": "note",
+      "summary": "Attendees, agenda, decisions, and action items with owners.",
+      "description": "The shape a meeting note needs so it is useful a month later: who was there, what was decided, and who owns what. Action items are task checkboxes, so they show up in searches for open work.\n",
+      "tags": [
+        "work",
+        "meetings"
+      ],
+      "author": {
+        "name": "Cortex team",
+        "url": "https://github.com/frontal-cortex"
+      },
+      "license": "CC0-1.0",
+      "credits": "The most-duplicated work template in Notion's gallery, trimmed to what gets filled in.",
+      "min_cortex": "0.1.0",
+      "files": [
+        "templates/meeting.md"
+      ],
+      "tier": "official",
+      "preview": null,
+      "sha256": {
+        "manifest.yaml": "825f98f46f75240827da81c2a303b6849a4cd1cbd5eef322fb506cd18956a0ee",
+        "templates/meeting.md": "cee7701bb8073688be732733111b330954a559a67f68756311c425100c0c579f"
+      },
+      "commit": ""
+    },
+    {
+      "format": 1,
+      "id": "one-on-one",
+      "name": "1:1 Notes",
+      "version": "1.0.0",
+      "kind": "note",
+      "summary": "A running note per person: talking points that carry over, dated entries below.",
+      "description": "One note per person for recurring 1:1s, mentorship, or just keeping up with someone. Each meeting adds a dated block at the top; older ones stay below, so context carries forward instead of being reinvented each time. Link the person with a wiki link so the note shows up in their backlinks.\n",
+      "tags": [
+        "work",
+        "people",
+        "meetings"
+      ],
+      "author": {
+        "name": "Cortex team",
+        "url": "https://github.com/frontal-cortex"
+      },
+      "license": "CC0-1.0",
+      "credits": "The 1:1 template pattern from Notion's team galleries and Obsidian's people notes.",
+      "min_cortex": "0.1.0",
+      "files": [
+        "templates/one-on-one.md"
+      ],
+      "tier": "official",
+      "preview": null,
+      "sha256": {
+        "manifest.yaml": "48193646514778e68073062e28645d452a5426eb44c7cad88255cb75d7b47fc3",
+        "templates/one-on-one.md": "ba521cf32db6961b0b3b3ad260bd6989de04e4f693dc397affce7e29649345db"
+      },
+      "commit": ""
+    },
+    {
+      "format": 1,
+      "id": "para-index",
+      "name": "PARA Index",
+      "version": "1.0.0",
+      "kind": "note",
+      "summary": "Projects, Areas, Resources, Archive as one index note — the second-brain backbone.",
+      "description": "Everything you keep falls into one of four buckets, sorted by how actionable it is right now rather than by topic. This is the index note that holds the buckets; each entry is a wiki link to a real note. Review it weekly: finished projects move to Archive, a resource that just became actionable becomes a project.\n",
+      "tags": [
+        "second-brain",
+        "para",
+        "index"
+      ],
+      "author": {
+        "name": "Cortex team",
+        "url": "https://github.com/frontal-cortex"
+      },
+      "license": "CC0-1.0",
+      "credits": "The PARA method by Tiago Forte (Building a Second Brain).",
+      "min_cortex": "0.1.0",
+      "files": [
+        "templates/para-index.md"
+      ],
+      "tier": "official",
+      "preview": null,
+      "sha256": {
+        "manifest.yaml": "ec767fdfdb7c46c04f5ede4912c91c1805debba14f975782a68cd370ad9b2acb",
+        "templates/para-index.md": "014254aea932560bd5dea7a120e15bdc7c33a8ae0693432c6aa074fb67d8d99c"
+      },
+      "commit": ""
+    },
+    {
+      "format": 1,
+      "id": "project-tracker",
+      "name": "Project Tracker",
+      "version": "1.0.0",
+      "kind": "collection",
+      "summary": "A solo-friendly project database: status, priority, deadline, next action.",
+      "description": "What is the project, what is next, what is stalled. Deliberately four properties, not fifteen: a status board, a priority, a deadline for the calendar, and a single next action so a stalled project is obvious. Pair with Tasks by naming the project in each task's project field.\n",
+      "tags": [
+        "work",
+        "projects",
+        "database"
+      ],
+      "author": {
+        "name": "Cortex team",
+        "url": "https://github.com/frontal-cortex"
+      },
+      "license": "CC0-1.0",
+      "credits": "The project tracker that tops Notion's gallery, cut down to the solo version.",
+      "min_cortex": "0.1.0",
+      "collection": "projects",
+      "files": [
+        "templates/projects.md",
+        "schemas/projects.yaml",
+        "index.md",
+        "seed/example-project.md"
+      ],
+      "tier": "official",
+      "preview": null,
+      "sha256": {
+        "index.md": "dbbf1c97f09c37e68d8cc6106bd28ffe155f32d1ffd61100d00efe445d5360ae",
+        "manifest.yaml": "ada9db299d7d2898269b027ecc69398328127bb7ad5005052ac93d723ac324f4",
+        "schemas/projects.yaml": "7707bee508628396ac06245dbed8dc3385612ee8c4b2db94f51c43f3b1120a32",
+        "seed/example-project.md": "47dd8dfc479511d3ed5e1c55cccc5109945fdee49f30bcfffa30fb84676d20c7",
+        "templates/projects.md": "99afc2d788437535262844a541777755005e6ea86a31ab79bd8536024691266a"
+      },
+      "commit": ""
+    },
+    {
+      "format": 1,
+      "id": "reading-list",
+      "name": "Reading List",
+      "version": "1.0.0",
+      "kind": "collection",
+      "summary": "Books and articles with status, rating and dates; each row is a full reading note.",
+      "description": "A reading database rather than a loose note: to-read, reading, finished as a board; a rating; started and finished dates. Each row opens into a reading note — why you picked it up, key ideas, quotes worth keeping, how you will use it — so the list and the notes live in one place.\n",
+      "tags": [
+        "reading",
+        "notes",
+        "second-brain",
+        "database"
+      ],
+      "author": {
+        "name": "Cortex team",
+        "url": "https://github.com/frontal-cortex"
+      },
+      "license": "CC0-1.0",
+      "credits": "The reading-list databases in Notion's gallery and Obsidian's literature notes.",
+      "min_cortex": "0.1.0",
+      "collection": "reading",
+      "files": [
+        "templates/reading.md",
+        "schemas/reading.yaml",
+        "index.md",
+        "seed/example-book.md"
+      ],
+      "tier": "official",
+      "preview": null,
+      "sha256": {
+        "index.md": "896d1da13e0e10e2f53ea03372cb8ef29311f6e216427377e94a078a893fbd21",
+        "manifest.yaml": "6241541672df41b103a62833c4683c49d59a64216afefd6b98aee4b0301fafa2",
+        "schemas/reading.yaml": "f32d5d02b13ac2e2b6512eb75c9243f5cccda23eab65151b6efb8aa7200eea94",
+        "seed/example-book.md": "4d72a0d4a66937fde544c4cbcaca4752932f785b62a1a4d7ea57eb3214165594",
+        "templates/reading.md": "a27bd8e0718fce9ee971f621902f2980abaed1d8752ab58f2a2c798b8c81d861"
+      },
+      "commit": ""
+    },
+    {
+      "format": 1,
+      "id": "recipe-box",
+      "name": "Recipe Box",
+      "version": "1.0.0",
+      "kind": "collection",
+      "summary": "Recipes with cuisine, prep time and rating; ingredients and steps in the note body.",
+      "description": "A recipe database: filter by cuisine on the board, sort by prep time, rate what you cooked. Each row is the recipe itself — ingredients and steps in the body — so the gallery view is a cookbook.\n",
+      "tags": [
+        "personal",
+        "food",
+        "database"
+      ],
+      "author": {
+        "name": "Cortex team",
+        "url": "https://github.com/frontal-cortex"
+      },
+      "license": "CC0-1.0",
+      "credits": "A perennial gallery favourite in both apps.",
+      "min_cortex": "0.1.0",
+      "collection": "recipes",
+      "files": [
+        "templates/recipes.md",
+        "schemas/recipes.yaml",
+        "index.md",
+        "seed/example-recipe.md"
+      ],
+      "tier": "official",
+      "preview": null,
+      "sha256": {
+        "index.md": "60103b83c1e2b993c4616046646aaf403d497df853f4d4c8a7c9e25f6fd80cfd",
+        "manifest.yaml": "4600a6be08a90be30ae6fcafa64ecbc5aaba4231801b382f2ae4605a47d06e64",
+        "schemas/recipes.yaml": "4934b542ca2cda787d909887e8adb49139fefaaadc94a96a471d1b3f729d425f",
+        "seed/example-recipe.md": "8cdfc6cee83cd3bcd12e4732f35c83d2e45bafc2f4601a77c18e4396e996b542",
+        "templates/recipes.md": "fa63799d85110f2216c0c593117932a5814afc5a620552ee9f1a2e6cdb14505d"
+      },
+      "commit": ""
+    },
+    {
+      "format": 1,
+      "id": "tasks",
+      "name": "Tasks",
+      "version": "1.0.0",
+      "kind": "collection",
+      "summary": "A to-do database: status, priority, due date, project — with board and calendar views.",
+      "description": "The most-used database there is. One row per task with a status board (To do / Doing / Done), a priority, a due date the calendar view shows, and a free-text project field to group by. Start here if you use one database only.\n",
+      "tags": [
+        "productivity",
+        "tasks",
+        "database"
+      ],
+      "author": {
+        "name": "Cortex team",
+        "url": "https://github.com/frontal-cortex"
+      },
+      "license": "CC0-1.0",
+      "credits": "The task databases in Notion's gallery and the purpose of the Obsidian Tasks plugin.",
+      "min_cortex": "0.1.0",
+      "collection": "tasks",
+      "files": [
+        "templates/tasks.md",
+        "schemas/tasks.yaml",
+        "index.md",
+        "seed/example-task.md"
+      ],
+      "tier": "official",
+      "preview": null,
+      "sha256": {
+        "index.md": "bc444859763ccf667e4e2acddd71b1b9b23cd212e73ea005132535ed2a8a3a00",
+        "manifest.yaml": "530f0aabccfc6fd3300fc38e3397a5d7f772a2f6ce5861ea78a06490fe19b1bb",
+        "schemas/tasks.yaml": "cebfb7e91e6d636bceadc1f5df3934beec845de986f79554d028ce64c50d4326",
+        "seed/example-task.md": "8c53c55d51e22b006026655992cb872e95b0a554147f46ba365f12a6e94659e5",
+        "templates/tasks.md": "8baea023f8676a394f37dbcc8299bc3fcbb84d20ffca670a24432c73d7786a97"
+      },
+      "commit": ""
+    },
+    {
+      "format": 1,
+      "id": "weekly-review",
+      "name": "Weekly Review",
+      "version": "1.0.0",
+      "kind": "note",
+      "summary": "A Sunday review: wins, what slipped, open loops, next week's focus.",
+      "description": "The habit that keeps any note system alive. Look back at the week, close what can be closed, pick three things for the next one. Pairs with Daily Note (reflections feed in) and the PARA index (move finished projects to Archive).\n",
+      "tags": [
+        "productivity",
+        "review",
+        "journal"
+      ],
+      "author": {
+        "name": "Cortex team",
+        "url": "https://github.com/frontal-cortex"
+      },
+      "license": "CC0-1.0",
+      "credits": "The weekly review from Getting Things Done, as practised in both communities.",
+      "min_cortex": "0.1.0",
+      "files": [
+        "templates/weekly-review.md"
+      ],
+      "tier": "official",
+      "preview": null,
+      "sha256": {
+        "manifest.yaml": "6f8884dc6cb506872150ea6dd941b0efdc568ef343ee39ae8543ffa8cf6b2212",
+        "templates/weekly-review.md": "aee23f34da321577eae047a4f691972d59e33adf0ea04889817f1712cee41c63"
+      },
+      "commit": ""
+    }
+  ]
+}

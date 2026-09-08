@@ -1,0 +1,72 @@
+# Every merge to main: regenerate index.json (committed back so the repo is
+# the source of truth), then publish index.json and the pack files to GitHub
+# Pages — the static CDN the app reads. The app sees a merged pack on its next
+# Refresh; nothing changes in anyone's vault until they click Update.
+#
+# Pages deploys only once the repository's PAGES_ENABLED variable is "true"
+# (Settings → Pages → Source: GitHub Actions, then Settings → Variables).
+name: Index and publish
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml
+
+      - name: Lint every pack
+        run: python3 tools/lint.py
+
+      - name: Regenerate index.json
+        run: python3 tools/gen_index.py
+
+      - name: Commit index.json if it changed
+        run: |
+          if git diff --quiet -- index.json; then
+            echo "index.json is current"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add index.json
+            git commit -m "index: regenerate for $(git rev-parse --short HEAD)"
+            git push
+          fi
+
+      - name: Build the site
+        run: python3 tools/build_site.py _site
+
+      - name: Upload the site
+        if: vars.PAGES_ENABLED == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: index
+    if: vars.PAGES_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

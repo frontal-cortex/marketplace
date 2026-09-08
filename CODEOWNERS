@@ -1,0 +1,7 @@
+# Reviewers. Every pack change needs one of these; `tiers.yaml` and the
+# tooling need one of these too (a contributor cannot promote their own pack).
+*                @diyaclanker
+/tiers.yaml      @diyaclanker
+/featured.yaml   @diyaclanker
+/tools/          @diyaclanker
+/.github/        @diyaclanker
