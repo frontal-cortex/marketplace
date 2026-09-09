@@ -29,7 +29,7 @@ PROPERTY_TYPES = {"text", "number", "date", "checkbox", "select", "multi_select"
 # Keys a property may carry besides name/type/options (`cortex_core::schema::PropertyDef`).
 PROPERTY_KEYS = {"collection", "relation", "property", "function", "from", "where", "expr", "format", "min", "max", "unit", "auto"}
 # A property may not shadow a note's own keys.
-RESERVED_PROPERTY_NAMES = ("type", "title", "tags", "created", "id", "path", "icon", "cover")
+RESERVED_PROPERTY_NAMES = ("type", "title", "tags", "created", "id", "path", "icon", "cover", "parent", "pack")
 FORMATS = ("percent", "progress", "currency", "stars", "integer", "decimal")
 # Frontmatter keys every note may carry, whatever the schema says.
 FREE_KEYS = {"title", "type", "tags", "created", "icon", "cover"}
@@ -415,8 +415,43 @@ def frontmatter(text: str) -> dict | None:
     return fm if isinstance(fm, dict) else None
 
 
+# Text that reads as an instruction to an AI agent, or as a shell command that
+# changes a machine. Packs are Markdown an agent will read as the user's notes;
+# a pack that talks to the agent instead of the reader is the one attack a
+# data-only format still allows. A warning, for the reviewer. Mirrors the Rust
+# list (marketplace.rs AGENT_DIRECTED) — keep them identical.
+AGENT_DIRECTED = [
+    r"ignore (all |any )?(previous|prior|earlier|above) (instructions|prompts|rules|messages)",
+    r"\byou are (now )?(an? )?(ai|assistant|agent|llm|language model|claude|chatgpt|copilot)\b",
+    r"\bsystem prompt\b",
+    r"\b(disregard|override) (your|the|all) (instructions|guidelines|rules|safety)\b",
+    r"\b(curl|wget)\b[^\n]*\|\s*(sudo\s+)?(ba|z|da)?sh\b",
+    r"\brm\s+-rf\b",
+    r"\bsudo\b",
+    r"\bbase64\s+(-d|--decode)\b",
+    r"\b(powershell|invoke-expression)\b",
+    r"\bchmod\s+\+x\b",
+    r"\.ssh/",
+]
+
+
+def agent_directed(text: str) -> str | None:
+    for pat in AGENT_DIRECTED:
+        m = re.search(pat, text, re.IGNORECASE)
+        if m:
+            line_start = text.rfind("\n", 0, m.start()) + 1
+            line_end = text.find("\n", m.end())
+            if line_end < 0:
+                line_end = len(text)
+            return text[line_start:line_end].strip()[:80]
+    return None
+
+
 def _lint_markdown(path: str, text: str, out: list[Finding]) -> None:
     err = lambda m: out.append(Finding("error", path, m))
+    hit = agent_directed(text)
+    if hit is not None:
+        out.append(Finding("warning", path, f"reads like an instruction to an AI agent or a command that changes a machine: `{hit}` — agents read pack content as the user's notes; a reviewer should look at this"))
     if text.startswith("---"):
         for line in text.split("\n")[1:]:
             if line == "---":
