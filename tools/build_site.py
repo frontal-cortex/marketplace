@@ -25,7 +25,10 @@ def main(argv: list[str]) -> int:
         if (ROOT / f).is_file():
             shutil.copy(ROOT / f, out / f)
     for e in index["packs"]:
-        for p in e["sha256"]:
+        # The hashed files plus the gallery (`previews` is `<id>/preview/<file>`,
+        # not in the hash map because install never fetches it).
+        paths = list(e["sha256"]) + [p.split("/", 1)[1] for p in e.get("previews", [])]
+        for p in paths:
             src = ROOT / "packs" / e["id"] / p
             dst = out / "packs" / e["id"] / p
             dst.parent.mkdir(parents=True, exist_ok=True)

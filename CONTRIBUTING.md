@@ -16,7 +16,9 @@ and describing it honestly.
    That writes `my-pack/` with a `manifest.yaml`. Edit `summary`,
    `description`, `tags`, `author`, `license`; strip personal data from seed
    rows (they are examples, and everyone will see them); add a `preview.png`
-   if you like (a screenshot of the table or note, ≤ 200 KB).
+   if you like (a screenshot of the table or note, ≤ 200 KB), and more
+   screenshots under `preview/` — one per view, named so they sort in the
+   order you want them shown (`01-reading-shelf.png`, `02-…`).
 3. **Lint** until clean: `cortex packs lint my-pack` (or `tools/lint.py my-pack`
    from a checkout of this repository — same rules).
 4. **Submit**: fork this repository, copy your folder to `packs/my-pack/`,
