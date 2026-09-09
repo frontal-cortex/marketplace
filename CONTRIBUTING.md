@@ -40,6 +40,16 @@ and describing it honestly.
   addresses, account numbers — yours or anyone else's.
 - **Plain files only**: nothing executable, no raw HTML beyond `<br>`,
   `<sub>`, `<sup>` and comments, no remote images.
+- **Written for the reader, not for an agent**: people point AI agents at
+  their vaults, and your seeds and pages become part of what those agents
+  read. Text that addresses an agent ("ignore previous instructions", "you
+  are an assistant…") or tells anyone to run commands that change a machine
+  (`curl … | sh`, `rm -rf`, `sudo`) makes lint warn and a reviewer refuse.
+  Mentioning `cortex set` in a how-to is fine.
+- **Your own name**: a pack's `id`, `name` and hero must not imitate another
+  pack's. The bundled packs' ids are reserved; a look-alike ("tasks-pro" with
+  the Tasks hero) is declined, and an existing id can only be updated by its
+  listed author or a maintainer.
 - **Quoted placeholders**: `created: "{{date}}"`. Templates may use
   `{{date}}`, `{{time}}`, `{{title}}`, `{{uuid}}`; any file may use the date
   words `{{today}}`, `{{monday}}`, `{{month}}`, `{{week}}`, … with offsets
@@ -62,6 +72,11 @@ install:
   row template matches the schema.
 - No personal data, no third-party trademarks in names, licence set, credits
   given where a design is borrowed.
+- Every seed body and page body read in full, with an agent in mind: nothing
+  addresses an AI, nothing asks the reader to run commands that change a
+  machine, no links to schemes other than `http`, `https`, `mailto`, no remote
+  images. Lint's warnings for this are resolved, not waved through.
+- The name and hero are the pack's own, not a look-alike of another pack.
 - Uninstall leaves nothing behind.
 
 `verified` is recorded in `tiers.yaml` by a maintainer. It is revoked the same
