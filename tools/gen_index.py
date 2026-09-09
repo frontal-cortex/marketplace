@@ -15,7 +15,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from packlib import FORMAT, PackError, lint, load_pack, load_tiers, manifest_json, sha256_hex  # noqa: E402
+from packlib import FORMAT, PackError, lint, load_pack, load_tiers, manifest_json, preview_images, sha256_hex  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_BASE = "https://frontal-cortex.github.io/marketplace/packs/"
@@ -37,8 +37,14 @@ def build_index(repo: Path, base: str) -> dict:
             raise PackError(f"{d}: id does not match folder")
         entry = manifest_json(pack.manifest)
         entry["tier"] = tiers.get(pack.id, "community")
-        entry["preview"] = f"{pack.id}/preview.png" if "preview.png" in pack.files else None
-        entry["sha256"] = {p: sha256_hex(b) for p, b in sorted(pack.files.items())}
+        # The gallery: every screenshot under preview/, sorted by filename, as
+        # paths relative to `base` like `preview`. The hero is preview.png, or
+        # the first gallery image when a pack has no hero of its own.
+        previews = [f"{pack.id}/{p}" for p in preview_images(pack.files)]
+        entry["preview"] = f"{pack.id}/preview.png" if "preview.png" in pack.files else (previews[0] if previews else None)
+        entry["previews"] = previews
+        # Install never fetches the gallery, so it is not hashed.
+        entry["sha256"] = {p: sha256_hex(b) for p, b in sorted(pack.files.items()) if not p.startswith("preview/")}
         entry["commit"] = commit
         entries.append(entry)
     return {

@@ -42,7 +42,8 @@ def main(argv: list[str]) -> int:
             print(f"{pack.id}: new pack")
             continue
         now_v, old_v = str(pack.manifest.get("version", "")), str(old.get("version", ""))
-        hashes = {p: sha256_hex(b) for p, b in pack.files.items()}
+        # Same map the index carries: the gallery under preview/ is not hashed.
+        hashes = {p: sha256_hex(b) for p, b in pack.files.items() if not p.startswith("preview/")}
         changed = hashes != old.get("sha256", {})
         if semver_key(now_v) < semver_key(old_v):
             print(f"{pack.id}: error: version {now_v} is lower than the published {old_v}")

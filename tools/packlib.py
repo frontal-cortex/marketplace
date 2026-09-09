@@ -18,10 +18,18 @@ import yaml
 
 FORMAT = 1
 ALLOWED_EXT = {"md", "yaml", "png", "jpg", "webp", "svg"}
-ALLOWED_DIRS = {"templates", "schemas", "seed", "assets", "index"}
+ALLOWED_DIRS = {"templates", "schemas", "seed", "assets", "index", "preview"}
 ROOT_FILES = {"manifest.yaml", "README.md", "index.md", "preview.png"}
-# Shipped with the pack but not listed under `files` (they are not installed).
+# Shipped with the pack but not listed under `files` (they are not installed):
+# these root files, plus every screenshot under preview/ (see `is_unlisted`).
 UNLISTED = {"manifest.yaml", "README.md", "preview.png"}
+IMAGE_EXT = {"png", "jpg", "webp", "svg"}
+# The gallery under preview/: raster screenshots only, one level deep, a few
+# of them, each a little larger than an installed image may be. Never
+# installed, never hashed into the index (`cortex_core::marketplace`).
+PREVIEW_EXT = {"png", "jpg", "jpeg", "webp"}
+PREVIEW_MAX_FILES = 8
+PREVIEW_MAX_BYTES = 600 * 1024
 TEMPLATE_VARS = ("date", "time", "title", "uuid")
 RAW_HTML_OK = ("<br", "<sub", "</sub", "<sup", "</sup", "<!--")
 PRODUCT_WORDS = ("notion", "obsidian", "evernote", "roam", "logseq", "craft")
@@ -70,6 +78,17 @@ class Pack:
 
 class PackError(Exception):
     pass
+
+
+def is_unlisted(path: str) -> bool:
+    """A file the pack ships but never installs: the manifest, the README,
+    the hero image and the screenshots under preview/."""
+    return path in UNLISTED or path.startswith("preview/")
+
+
+def preview_images(files) -> list[str]:
+    """The gallery under preview/, sorted by filename — the order the app shows them."""
+    return sorted(p for p in files if p.startswith("preview/") and p.rsplit(".", 1)[-1].lower() in PREVIEW_EXT)
 
 
 def load_pack(dir: Path) -> Pack:
@@ -580,25 +599,35 @@ def lint(pack: Pack) -> list[Finding]:
 
     # Files: listed ⇔ present, allowed types and places, size.
     listed = set(listed_files)
-    present = {p for p in pack.files if p not in UNLISTED}
+    present = {p for p in pack.files if not is_unlisted(p)}
     for p in sorted(listed - present):
         err(p, "listed in `files` but missing")
     for p in sorted(present - listed):
         err(p, "present but not listed in `files`")
     total = 0
+    gallery = 0
     for path, data in pack.files.items():
         total += len(data)
         parts = path.split("/")
         if path.startswith("/") or any(c in ("..", ".", "") for c in parts):
             err(path, "path must be relative and free of `..`")
         ext = path.rsplit(".", 1)[-1].lower() if "." in parts[-1] else ""
+        at_root = "/" not in path
+        if parts[0] == "preview" and not at_root:
+            gallery += 1
+            if len(parts) != 2 or ext not in PREVIEW_EXT:
+                err(path, "preview/ holds only screenshots (png, jpg, jpeg, webp), one level deep")
+            if len(data) > PREVIEW_MAX_BYTES:
+                err(path, f"preview images must be {PREVIEW_MAX_BYTES // 1024} KB or smaller")
+            continue
         if ext not in ALLOWED_EXT:
             err(path, f"file type .{ext} is not allowed (md, yaml, png, jpg, webp, svg)")
-        at_root = "/" not in path
         if not (at_root and path in ROOT_FILES) and parts[0] not in ALLOWED_DIRS:
-            err(path, "files live in templates/, schemas/, seed/, index/, assets/ or are index.md / README.md / preview.png")
-        if ext in ("png", "jpg", "webp", "svg") and len(data) > 200 * 1024:
+            err(path, "files live in templates/, schemas/, seed/, index/, assets/, preview/ or are index.md / README.md / preview.png")
+        if ext in IMAGE_EXT and len(data) > 200 * 1024:
             err(path, "images must be 200 KB or smaller")
+    if gallery > PREVIEW_MAX_FILES:
+        err("preview/", f"at most {PREVIEW_MAX_FILES} preview images")
         if ext == "md":
             _lint_markdown(path, data.decode("utf-8", "replace"), out)
     if total > 2 * 1024 * 1024:

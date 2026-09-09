@@ -23,8 +23,10 @@ own vault with `cortex packs new`, lint, open a pull request.
 ## How it is served
 
 - `index.json` is **generated** on every merge to `main` and committed back —
-  never edited by hand. It lists every pack with its manifest, trust tier, a
-  sha256 per file and the commit it was generated from.
+  never edited by hand. It lists every pack with its manifest, trust tier, its
+  images (`preview`, the hero, and `previews`, the gallery under `preview/`,
+  both as paths under `base`), a sha256 per file and the commit it was
+  generated from.
 - The same workflow publishes `index.json` and every pack's files to GitHub
   Pages: <https://frontal-cortex.github.io/marketplace/> — the app's default
   index URL. The app verifies each downloaded file against the hash in the
@@ -44,7 +46,9 @@ marketplace/
 ├── packs/<id>/            # one folder per pack, any tier
 │   ├── manifest.yaml
 │   ├── README.md          # optional long description
-│   ├── preview.png        # optional card image, ≤ 200 KB
+│   ├── preview.png        # optional hero image for the card, ≤ 200 KB
+│   ├── preview/*.png      # optional screenshots, one per view (`01-tasks-board.png`); shown
+│   │                      #   in filename order, never installed; the first stands in for a missing hero
 │   ├── templates/*.md     # → <vault>/templates/ — except templates/<collection>.md,
 │   │                      #   which is that collection's row template → collections/<collection>/_template-<collection>.md
 │   ├── schemas/*.yaml     # → <vault>/.cortex/schemas/<collection>.yaml    (collection packs)
@@ -94,7 +98,12 @@ Bundles list `includes: [pack ids]` instead of `files`.
 
 - Only `.md`, `.yaml`, `.png`, `.jpg`, `.webp`, `.svg`; only in the folders
   above; no `..`, no absolute paths; ≤ 2 MB per pack, ≤ 200 KB per image.
+  `preview/` holds only screenshots (png, jpg, jpeg, webp), one level deep,
+  at most 8 of them, ≤ 600 KB each; they are never installed and are not in
+  the index's `sha256` map.
 - `files` lists every installed file and every listed file exists.
+  `manifest.yaml`, `README.md`, `preview.png` and `preview/` are shipped
+  with the pack but never installed, so they are not listed.
 - Frontmatter parses. **Placeholders are quoted** (`created: "{{date}}"`).
   Templates may use `{{date}}`, `{{time}}`, `{{title}}`, `{{uuid}}` (expanded
   when a note is created from them — row templates too). Any file may use the
