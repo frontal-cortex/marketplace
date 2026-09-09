@@ -1,19 +1,20 @@
 {
   "format": 1,
-  "generated": "2026-09-08T09:26:31Z",
+  "generated": "2026-09-09T07:48:02Z",
   "base": "https://frontal-cortex.github.io/marketplace/packs/",
   "packs": [
     {
       "format": 1,
       "id": "budget-tracker",
       "name": "Budget Tracker",
-      "version": "1.0.0",
+      "version": "2.1.0",
       "kind": "collection",
-      "summary": "A row per transaction: date, amount, category, account — simple enough to keep filled in.",
-      "description": "Every budget template that survives contact with real life is this one: a transaction a row, negative for spending, positive for income, a category to group by on the board, and a date the calendar view shows. Add a chart block over it for the monthly picture.\n",
+      "summary": "A ledger of transactions, limits per category with spent and remaining computed, bills that advance when you tick paid.",
+      "description": "Three small databases that stay filled in. `budget` is the ledger: one row per transaction with a date, an amount, a kind (expense, income, transfer), a category and an account; This month and This month by category roll over on the 1st by themselves. `budget-limits` holds one row per category with the monthly amount you mean to spend; the table shows what this month's ledger rows add up to, what is left, the share used as a bar, and last month's figure, and each limit's page charts the category month by month. `budget-bills` is every recurring charge with its cycle and next due date: tick paid and the date moves forward one cycle in the same row; Upcoming, Overdue and a per-month cost list answer what is about to land, what you missed, and what everything costs. Link a transaction to its bill and the bill knows when it was last paid and what it has cost in total. Everything is computed from the rows when you open the page, nothing to update by hand.\n",
       "tags": [
         "finance",
         "budget",
+        "money",
         "database"
       ],
       "author": {
@@ -21,34 +22,73 @@
         "url": "https://github.com/frontal-cortex"
       },
       "license": "CC0-1.0",
-      "credits": "The free budget trackers near the top of every Notion template list.",
+      "credits": "The transactions / limits / bills split and the budget-versus-actual page follow the budget trackers in Notion's gallery (Easlo, Thomas Frank, Matthias Frank) and the envelope spreadsheets they copy; the computed-on-read design is our own.",
       "min_cortex": "0.1.0",
       "collection": "budget",
+      "collections": [
+        "budget-limits",
+        "budget-bills"
+      ],
       "files": [
-        "templates/budget.md",
         "schemas/budget.yaml",
+        "schemas/budget-limits.yaml",
+        "schemas/budget-bills.yaml",
         "index.md",
-        "seed/example-transaction.md"
+        "index/budget-limits.md",
+        "index/budget-bills.md",
+        "templates/budget.md",
+        "templates/budget-limits.md",
+        "templates/budget-bills.md",
+        "seed/budget/weekly-shop.md",
+        "seed/budget/weekly-shop-last-week.md",
+        "seed/budget/coffee.md",
+        "seed/budget/salary.md",
+        "seed/budget/salary-last-month.md",
+        "seed/budget/rent.md",
+        "seed/budget/rent-last-month.md",
+        "seed/budget-limits/groceries.md",
+        "seed/budget-limits/dining.md",
+        "seed/budget-limits/subscriptions.md",
+        "seed/budget-bills/rent.md",
+        "seed/budget-bills/music-streaming.md"
       ],
       "tier": "official",
       "preview": null,
       "sha256": {
-        "index.md": "ebe2000e710267505570922d93b39d60266760307fd1610b240499d1aea9e2d7",
-        "manifest.yaml": "e2bab142765ef791b09f1c0d14b5347d4361b152194d4d4ccfbd8cd3875a4e1c",
-        "schemas/budget.yaml": "ab2bc13f3a6ad489e18f339389427f465dba5468c6a75a51ac730f93162f90ad",
-        "seed/example-transaction.md": "4cb1f0f197c728fac4ad3d4064b0fc80b7ad7861e5e028fb094d091f8e9844ba",
-        "templates/budget.md": "b1f209997a4632bd4953c5d0b3f90893fc4ff7e2a24ada2885dbd89de8f2b6a4"
+        "README.md": "13a7de1d7e992ce906f327cebba9c5de959a983bef3883dca43316a893cd5fb5",
+        "index.md": "7230645684986ff3bc196c56c490fe73f08c376e3a57032bfd25e0f4b7fe9966",
+        "index/budget-bills.md": "d56079c8b36f6659dda1ca86b75c4eeae87e7c8be429506b803fc5eacf28aa60",
+        "index/budget-limits.md": "ffa268ab3d9d09bb12c74cb2190a96d6200414c8efecbde18c9ef58ca587f3b8",
+        "manifest.yaml": "a78adf3e3c39d5769eaba7191f93dd30a1dbe3ea91411fd68a091adbc3d09187",
+        "schemas/budget-bills.yaml": "bc9335d20571a619751b4c4818f84819984c456a7b1dac51394f290d30a7a19a",
+        "schemas/budget-limits.yaml": "8bcdf2fd0aa99abdbc26885561cb4dee5566cc48c6a3fc7bcb4ba1baebbd3dc6",
+        "schemas/budget.yaml": "79d65b3bf8d6dc46efc11df17b7a2ff56c5a41f9acab3a77075f9033ba71fe92",
+        "seed/budget-bills/music-streaming.md": "1a404a6037fb1ca1b958fc20895e681314c032a9af11f8b7f834b68d41f21c55",
+        "seed/budget-bills/rent.md": "19f2ca06109f5d97754c53b036aac3a1d6e4a1670995ac7a363f11b929fd380d",
+        "seed/budget-limits/dining.md": "63a536d6683abd5b9fd1657a20586f1ec586441fccfd65d09e0d6b88f5fdf790",
+        "seed/budget-limits/groceries.md": "e457395442a64f7383445e05f9bfc39d1cf0b480609b547827f0bd3d9c5cee15",
+        "seed/budget-limits/subscriptions.md": "15f9996eb52fa565c6431b33c2b489d714bfd3a5780569792cbf4459cd620e8b",
+        "seed/budget/coffee.md": "7a7d45c9b95ce4aaf78e20f0303483e805dd67034813c180909fff0dde513e84",
+        "seed/budget/rent-last-month.md": "7d8f3f92eecfda60f24730c994dc4ee4c9de32adea4016ae7d3a75e1685ae559",
+        "seed/budget/rent.md": "14e0e42677582aa55b4753cb3048f0267026d558cf4a5a10fb3ef53578b202e4",
+        "seed/budget/salary-last-month.md": "ee525f79f077b1bf9ffa2cd440e13c565f427d704925fb3c252791fca116ac0c",
+        "seed/budget/salary.md": "b3611a902334c211c6937d0f4db794bbec8615e7cbe7bc4c1e713fe269417d78",
+        "seed/budget/weekly-shop-last-week.md": "f6901e1e36742a90f8b345966c904a1e280d688546a7bdec3c3aafe6b2cb0796",
+        "seed/budget/weekly-shop.md": "6b8980faf9fcc131d7ee5e968a3e8a884aa1869051d37da3f8a127bf022fbb92",
+        "templates/budget-bills.md": "46e12d382849a1913cd7218467b93139277d210ab04f6c976b9b2fcf549b838e",
+        "templates/budget-limits.md": "63393abd63890472820d8ba7a58c81eeb7c808dc4b299dadd3388bc44fc176b9",
+        "templates/budget.md": "8d7347f377c9ac6db0e97fe6424296c8acaa9c27e3237ac46e7b630bfc7f01e7"
       },
-      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
+      "commit": "82645bee9d4a429bd539be39cd3f71c9e9c4f8c1"
     },
     {
       "format": 1,
       "id": "contacts",
       "name": "Contacts",
-      "version": "1.0.0",
+      "version": "2.1.0",
       "kind": "collection",
-      "summary": "A people database: relationship, company, last contact, next follow-up — with a follow-up calendar.",
-      "description": "A lightweight personal CRM. One row per person with how you know them, where they work, when you last spoke and when to reach out next. The calendar view turns follow-ups into a to-do you cannot forget; the board groups everyone by relationship. Each row is a note, so the history of a relationship lives under the properties.\n",
+      "summary": "People with a keep-in-touch cadence and a log of every conversation: who is overdue, follow-ups, history.",
+      "description": "A personal CRM in two databases. Contacts is one row per person: how you know them, how often you mean to be in touch (monthly, quarterly, twice a year…), plus company, role, birthday, and a page for how you met and what to remember. Interactions is one row per conversation — date, who, what kind, one line of summary — and every person's page embeds their own history from it. The person's `last_seen` is read from their newest interaction, `quiet_days` counts from it, and `due_in` measures that against the cadence, so the Reach out view is the people who are actually overdue, most overdue first, with nothing to update by hand. Follow-ups due lists the promises whose date has come, the Follow-ups calendar shows the ones ahead, and the month chart, one bar per kind, shows whether you are keeping in touch.\n",
       "tags": [
         "people",
         "crm",
@@ -60,38 +100,57 @@
         "url": "https://github.com/frontal-cortex"
       },
       "license": "CC0-1.0",
-      "credits": "The personal CRM templates that circulate for every notes app, reduced to the fields people actually keep up to date.",
+      "credits": "The keep-in-touch cadence comes from Dex and the tiered personal CRMs in Notion's gallery (Circles of Trust); the one-file-per-interaction log and the person page that lists its own meetings come from Dann Berg's Obsidian people template and the obsidian-personal-crm plugin.",
       "min_cortex": "0.1.0",
       "collection": "contacts",
+      "collections": [
+        "interactions"
+      ],
       "files": [
-        "templates/contacts.md",
         "schemas/contacts.yaml",
+        "schemas/interactions.yaml",
         "index.md",
-        "seed/example-contact.md"
+        "index/interactions.md",
+        "templates/contacts.md",
+        "templates/interactions.md",
+        "seed/contacts/alex-example.md",
+        "seed/contacts/jordan-sample.md",
+        "seed/contacts/sam-specimen.md",
+        "seed/interactions/coffee-with-alex-example.md",
+        "seed/interactions/call-with-jordan-sample.md"
       ],
       "tier": "official",
       "preview": null,
       "sha256": {
-        "index.md": "109562997eedc0560976a3f9168348bf3964efe2e1be4182b10fa8b11a5de3a7",
-        "manifest.yaml": "679a2bef85bafeadcbee6d198571bce794983c158c9d05e4fae0fbb7d3f23693",
-        "schemas/contacts.yaml": "35020594b64d37806fc6a0b58cb67e907bf32ac36184ff03771ba34852e243c1",
-        "seed/example-contact.md": "85851fc3f30055007cfb783fa24ff3a4831a20301c38480bfd3a3d97565f892a",
-        "templates/contacts.md": "6238ebf5e040aba128511789a4fb9fc74201e3d25f073af4bc1e0382c5a23dbb"
+        "README.md": "cbe4cce0e52739c5bd7636eccc02bfd539bb44aade8257ef7a50e55afe41e748",
+        "index.md": "4bcb634cf371afaccca50a9de160749e511f5b1116577a769e71e7273b505eab",
+        "index/interactions.md": "bcbeb9520d92c17ef08cc2e0e60ab31aac1ca10d3750a464ecc56c81e551bf40",
+        "manifest.yaml": "261159cf3ad4d5cf8f3ab5a46de5fdcb5820e2c05ffaefd00f0c379dce7c8881",
+        "schemas/contacts.yaml": "866e9713116791722d81094cc06257ed911ac35bde1f0e4a301a7d520232fbcf",
+        "schemas/interactions.yaml": "a0f526eee339edfa091cb8ed2f3a7bed09446a485b5251b85b2239dbc9ff7b33",
+        "seed/contacts/alex-example.md": "604c08ed16e6d9eb12252d0cd555e2ec5edb7d7e9e718a0680365891e1b93b0e",
+        "seed/contacts/jordan-sample.md": "270d50691eb8f35ba2280f7e63b554c130936cd8216c71ce58c5292f4142289b",
+        "seed/contacts/sam-specimen.md": "d708797ec52e32e16b300cd40a49cb274c7babd8f26f56dcc4b47bef31566872",
+        "seed/interactions/call-with-jordan-sample.md": "0ed954525b2c338795a9fd52deeafb83093d23d47f4c2e7a329e25bd27c8ef82",
+        "seed/interactions/coffee-with-alex-example.md": "9dcd2921650de273b233d91b65176d642905af20c8c8947c41b9aff682fa6b29",
+        "templates/contacts.md": "9f92f6bbc651852c7fa9cf2899ed0a5e8465faad72be7071bd3e79782fb6a191",
+        "templates/interactions.md": "715191a44219721a76ebb8f86fcddedffffa33b3723ccdc9c7003a99666ed3b7"
       },
-      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
+      "commit": "82645bee9d4a429bd539be39cd3f71c9e9c4f8c1"
     },
     {
       "format": 1,
       "id": "content-calendar",
       "name": "Content Calendar",
-      "version": "1.0.0",
+      "version": "2.1.0",
       "kind": "collection",
-      "summary": "Posts, newsletters and videos from idea to published: status board, channel, publish date on a calendar.",
-      "description": "One row per piece of content. The status board carries an idea through drafting, review and scheduling to published; the calendar shows what goes out when; the channel says where. The row is the draft itself, so writing and planning happen in the same place.\n",
+      "summary": "Content from idea to published: pipeline board, calendar, this week, overdue, a queue with days left, campaigns, chart.",
+      "description": "One row per piece of content — the row is the draft. `status` carries it from idea through drafting, review and scheduled to published; `channel` and `format` say where and what; `due` is the draft deadline and `publish` the day it goes out, with `days_left` counted down for you and `published_on` stamped when it ships. The Pipeline board is the flow, the Calendar is the month, This week is Monday to Sunday, Overdue is every draft past its deadline, the Queue is what is next in publish order, Ideas is the inbox with the high priority ones on top, and a bar chart counts what shipped per month, one bar per channel. A newsletter or episode with `repeat: weekly` comes back on its own once published. Campaigns are a second collection: a launch or a series with a start and an end on a timeline, counting its pieces and how many have shipped, with its own page that shows them as a live board and schedule. Each piece's page carries a brief, an outline, the draft, a publish checklist and a table of what was repurposed from it.\n",
       "tags": [
         "writing",
         "content",
         "marketing",
+        "creator",
         "database"
       ],
       "author": {
@@ -99,100 +158,149 @@
         "url": "https://github.com/frontal-cortex"
       },
       "license": "CC0-1.0",
-      "credits": "Editorial calendar templates common to every notes and project tool, with the draft kept inside the row.",
+      "credits": "Shaped by the content and editorial calendars in Notion's gallery (Notion's own Content Calendar and Social Media Calendar, Easlo's Content Calendar, Thomas Frank's Creator's Companion) and by Bases-driven calendars in the Obsidian community.",
       "min_cortex": "0.1.0",
       "collection": "content",
+      "collections": [
+        "campaigns"
+      ],
       "files": [
-        "templates/content.md",
         "schemas/content.yaml",
+        "schemas/campaigns.yaml",
         "index.md",
-        "seed/example-post.md"
+        "index/campaigns.md",
+        "templates/content.md",
+        "templates/campaigns.md",
+        "seed/content/why-plain-files-last.md",
+        "seed/content/launch-week-newsletter.md",
+        "seed/content/three-folders-no-app.md",
+        "seed/content/friday-five.md",
+        "seed/content/one-folder-one-month.md",
+        "seed/content/how-i-plan-a-week.md",
+        "seed/campaigns/launch-week.md"
       ],
       "tier": "official",
       "preview": null,
       "sha256": {
-        "index.md": "1ac96402daea500ae59af19da0038a3b5657506324545e362bfd09a6fda94f9a",
-        "manifest.yaml": "590f109c99133d69754da80e010fd4393e06aa762156fe948525bc98449dfa43",
-        "schemas/content.yaml": "0ab6e4f6316314a58c6f5f2e9f9797992e613d9a2f1a3ba8d49e21a55ce25904",
-        "seed/example-post.md": "16d63248e86ab1a72bb8e65546738afa3567672302aa6ccf9e77a984e1a4f6e1",
-        "templates/content.md": "e5e73319f86031c7e353d3a9e383fa1907c9f2314a80e7723cec0b8b71bfd1b2"
+        "README.md": "6ae8b96ec2f9f52a04d4bb412cf2c1f844ec21d8590bbf3dc697bb48f80bf117",
+        "index.md": "f5bbe93d7a4dcc7ee11cda484743344bbe20e4c80a4ee77de0ae93fc25e066ba",
+        "index/campaigns.md": "cb9b995f68c62930059c7870a7a9e838e45d71414aa4893e8c728ae445e7560f",
+        "manifest.yaml": "a918dbb48761f42e3ea5efb28a69bf62e852736e39e59b2c3e3f6805fd2147e3",
+        "schemas/campaigns.yaml": "dc113842eb1b294f588bb14337d4d93ac3081ac489052fe39ae74ff0f95be625",
+        "schemas/content.yaml": "82ff695ac6a459900cd86dd91c8765d41f62ce201670026e71d92dfdaf7f7a81",
+        "seed/campaigns/launch-week.md": "c7062d76580ed056836fe632d21f2950d8842a5e849401c571fd315d571fef1a",
+        "seed/content/friday-five.md": "7b554169c5df08ed31b6f00dcba884bf95f65f08cd533cb2991a61da92e69cb9",
+        "seed/content/how-i-plan-a-week.md": "59af7c0cdc91204f898b4aaa2b883bcf0afa8e9652a44c2ebb8996ded98bdc9e",
+        "seed/content/launch-week-newsletter.md": "a070cf3f18e8541866cf0b53c8354f6afc381864625f5ab10a9fe2cd26bce895",
+        "seed/content/one-folder-one-month.md": "50c91bbece31d75a5329cf404b0788e4cd95976dd0926dffea97fa37e4857eb5",
+        "seed/content/three-folders-no-app.md": "3fe5aba4bd427369c14e532ee89268f6ff93de5847083546da784e46f044e8e6",
+        "seed/content/why-plain-files-last.md": "5d6489c3f5119ea994a32fc0eea86cd262dfc574ed3d378d6bbcb946a69ab823",
+        "templates/campaigns.md": "c3d1bb2a0efa176fc116e09cd50bccab4955186920b2b7561a42bf668c7416b4",
+        "templates/content.md": "36895d2d4decdc7b06a4730fd0787154c4778da5be884b04600ce2c3924758b4"
       },
-      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
+      "commit": "82645bee9d4a429bd539be39cd3f71c9e9c4f8c1"
     },
     {
       "format": 1,
       "id": "daily-note",
       "name": "Daily Note",
-      "version": "1.0.0",
-      "kind": "note",
-      "summary": "A focused daily log: top three priorities, a running log, a short reflection.",
-      "description": "The one template every note-taking app is built around. Three priorities at the top so the day has a shape, a log to capture as you go, and a two-minute reflection at the end that feeds the weekly review. Wire it to Today by setting `journal_template: daily.md`.\n",
+      "version": "2.1.0",
+      "kind": "collection",
+      "summary": "One page per day with mood, energy and sleep: this week's days, a calendar of the days you wrote, weekly trend charts.",
+      "description": "A journal as a database: every day is one row with a `mood`, an `energy` (stars out of five) and `sleep` (hours), the areas it touched and a one-line highlight, plus a page whose body is the day — an intention and three priorities in the morning, a timestamped log as you go, a short evening reflection. This week lists the days since Monday in order, ready to read before a weekly review; the calendar shows the days you wrote (and the gaps); the Energy and Sleep charts average each week so a bad month is visible before you feel it; the Moods chart stacks each month's days by mood. New row gives you today in one keystroke, already titled with the date and linked to its week. Pairs with Weekly Review (which counts and averages the week's days from here) and Habit Tracker (habits stay in their own log).\n",
       "tags": [
         "productivity",
         "journal",
-        "daily"
+        "daily",
+        "database"
       ],
       "author": {
         "name": "Cortex team",
         "url": "https://github.com/frontal-cortex"
       },
       "license": "CC0-1.0",
-      "credits": "The shape shared by Obsidian's daily notes and Notion's daily journal templates.",
+      "credits": "Mood, energy and sleep as properties with a calendar and weekly trend charts is the shape of the best-rated daily journals in Notion's gallery (Eve Jiyū's Daily Reflection Journal, mrpugo's Energy Journal, Easlo's minimal journal); the morning-intention / log / evening-highlight body follows the Obsidian daily-note templates of Sébastien Dubois and Vault of Josh.",
       "min_cortex": "0.1.0",
+      "collection": "journal",
       "files": [
-        "templates/daily.md"
+        "schemas/journal.yaml",
+        "index.md",
+        "templates/journal.md",
+        "seed/example-day.md",
+        "seed/example-rough-day.md"
       ],
       "tier": "official",
       "preview": null,
       "sha256": {
-        "manifest.yaml": "826da3b29b79d3ddeeb1364d2fbf0f36b7c55273eca46cbd989f59add6de6b65",
-        "templates/daily.md": "76fbda54a3af643a9f797b8be6abbfceda201f5188154c17f3328d7193ed65ff"
+        "README.md": "e1eae0af41f15fc83a0ee2dc62d4f7c78367b9eee38c2c662fb56863d1a26606",
+        "index.md": "eca563534163494a77d1cc889188905c8c1a29d68331fc283ee6700becf8b651",
+        "manifest.yaml": "07eb38eca527bea89ef977ec25bee15e5dc8c32c3b516d5958c5b035e72f908f",
+        "schemas/journal.yaml": "b702b0648bd429ea6e7453de6f3c72ace5a1ade574b39fa521b37a1954594b78",
+        "seed/example-day.md": "f22030668dc3a04750c7f8c7a94b51326657d59b1bf0d4dd5f095813b9511c8c",
+        "seed/example-rough-day.md": "b9a8d709b5897c696600d72f27a2d98aec7cdb988c02e66f6a516fdc25320572",
+        "templates/journal.md": "0221dbbe9c62040c3dde1f615bca05bf6983e6e8c5a0084ccf8a7fef8cf60e78"
       },
-      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
+      "commit": "82645bee9d4a429bd539be39cd3f71c9e9c4f8c1"
     },
     {
       "format": 1,
       "id": "decision-log",
       "name": "Decision Log",
-      "version": "1.0.0",
-      "kind": "note",
-      "summary": "One note per decision: context, options weighed, what was chosen and why, when to revisit.",
-      "description": "The note you wish you had six months later. Context in two sentences, the options that were on the table with their trade-offs, the decision itself, its consequences, and a date to look at it again. Works for a team's architecture decisions and for a person's life ones.\n",
+      "version": "2.1.0",
+      "kind": "collection",
+      "summary": "One row per decision: context, options, what was chosen and why, a review date that comes due by itself, the outcome.",
+      "description": "A decisions database rather than a loose note. Each row carries `status` (proposed, accepted, rejected, deprecated, superseded), an `area`, its `impact` and whether it is `reversible`, your `confidence` at the time and, once you have looked back, the `outcome`. The dates take care of themselves: `decided` is stamped the day a row is accepted, `reviewed` the day you set an outcome, and `days_to_review` counts down to the `review` date you chose. The row's page is the record: context and state of mind, the options with their good and bad points, the decision and the one reason that carried it, what you expect to happen, the consequences, and a review section you fill in on the review date. A `supersedes` relation links a new decision to the one it replaces, and the old row's `superseded_by` fills in on its own. Views: Log, Board by status, Due for review (the next thirty days and anything overdue), a Timeline from decided to review, Outcomes by month and a Calibration chart of outcomes by the confidence you wrote down. Works for a team's architecture decisions and for one person's life ones.\n",
       "tags": [
         "work",
         "decisions",
-        "thinking"
+        "thinking",
+        "database"
       ],
       "author": {
         "name": "Cortex team",
         "url": "https://github.com/frontal-cortex"
       },
       "license": "CC0-1.0",
-      "credits": "Architecture decision records (Michael Nygard) and the decision journals popular in personal knowledge management circles.",
+      "credits": "Architecture decision records (Michael Nygard; the MADR template), Farnam Street's decision journal, and the decision databases in Notion's gallery that add a review date and an outcome.",
       "min_cortex": "0.1.0",
+      "collection": "decisions",
       "files": [
-        "templates/decision.md"
+        "schemas/decisions.yaml",
+        "index.md",
+        "templates/decisions.md",
+        "seed/use-a-document-store-for-the-catalogue.md",
+        "seed/use-postgres-for-the-catalogue.md",
+        "seed/replace-the-daily-standup-with-a-written-update.md",
+        "seed/try-a-four-day-week-for-one-quarter.md"
       ],
       "tier": "official",
       "preview": null,
       "sha256": {
-        "manifest.yaml": "63b032d5f87e542b8b644fbdc0926aa62f97a06455409885181b2bfac2addce3",
-        "templates/decision.md": "cfa8ca07334530a55a954984af32d6b96202ee9f529683a660921bf169434fd8"
+        "README.md": "cf7a9185817d06551857cde1ae3a083d9ab4be15773728db82c7bd2ff06609c5",
+        "index.md": "9a4000c9bf8cbae3c1487f555babf8ab00d850191e60ebb1c65555ffdc14dab3",
+        "manifest.yaml": "aa299b5a17c361462ee184290b7b9f13fae1b97bb0e1a8a3f3504d620479fdc2",
+        "schemas/decisions.yaml": "1576b1e42034da151c1de125b566cbf55167a46304d94b53d6dd36a0f2557da2",
+        "seed/replace-the-daily-standup-with-a-written-update.md": "0b9611774040aeb6a23503c55015b58c9aee84311b85fbacc3bd368fb10409d5",
+        "seed/try-a-four-day-week-for-one-quarter.md": "e7be0c335c9564ccc40072dc3c69716a4b9b41480e73edd75866d8e8f8280cf9",
+        "seed/use-a-document-store-for-the-catalogue.md": "9cebdc61ccf27e86fa934d124189b54499e756381de27069da74dd09a7008f6a",
+        "seed/use-postgres-for-the-catalogue.md": "4366653055fd547342f9f453f7fe5ca3777e9d6e28adaadda1b675a4a407f7b0",
+        "templates/decisions.md": "af02fed807ea59d40488e1ae9e4772b90d1f9f2f0456a9e17a0070e9bd545f01"
       },
-      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
+      "commit": "82645bee9d4a429bd539be39cd3f71c9e9c4f8c1"
     },
     {
       "format": 1,
       "id": "goals",
       "name": "Goals",
-      "version": "1.0.0",
+      "version": "2.1.0",
       "kind": "collection",
-      "summary": "Goals with a status, a life area, a target date and a progress number — board by status, calendar of target dates.",
-      "description": "Quarterly or yearly goals as rows, each with the area of life it belongs to, a status that says whether it is on track, a target date the calendar shows, and a progress percentage you update when you review. Each goal is a note, so the why, the milestones and the review log live under its properties. Pairs with Weekly Review.\n",
+      "summary": "Goals with milestones and dated check-ins; progress and days left computed per goal, a weekly review list, a timeline.",
+      "description": "Three databases. `goals` is one row per goal with its life area, timeframe (year, quarter, month), priority, start and target dates, a one-line measure of done, and a status that says planned, on track, at risk, off track, done or dropped; its progress bar, last check-in date, share of milestones done, next milestone date and days left are computed from the other two databases every time you look, and the day you mark it done is stamped for you. `goal-milestones` breaks a goal into dated steps with a status board, an overdue list and a calendar. `goal-checkins` is the review log: one short row per check-in with the date, the progress number and your confidence, so progress is a line over time instead of a number you overwrite. Due for review lists the open goals with no check-in in a week; the Timeline lays them out from start to target. Open a goal and its page lists its milestones, charts its check-ins and keeps the why, the plan and the obstacles under them.\n",
       "tags": [
         "productivity",
         "goals",
         "planning",
+        "okr",
         "database"
       ],
       "author": {
@@ -200,167 +308,192 @@
         "url": "https://github.com/frontal-cortex"
       },
       "license": "CC0-1.0",
-      "credits": "OKR trackers and the goal-setting templates every notes app gallery carries, kept to five properties.",
+      "credits": "Goals / milestones / check-ins follows the goal trackers in Notion's gallery (Benny Builds It, Jithin Rajiv, Easlo, Thomas Frank's Ultimate Brain) and the OKR check-in habit; the per-goal progress chart and the computed-on-read columns are our own.",
       "min_cortex": "0.1.0",
       "collection": "goals",
+      "collections": [
+        "goal-milestones",
+        "goal-checkins"
+      ],
       "files": [
-        "templates/goals.md",
         "schemas/goals.yaml",
+        "schemas/goal-milestones.yaml",
+        "schemas/goal-checkins.yaml",
         "index.md",
-        "seed/example-goal.md"
+        "index/goal-milestones.md",
+        "index/goal-checkins.md",
+        "templates/goals.md",
+        "templates/goal-milestones.md",
+        "templates/goal-checkins.md",
+        "seed/goals/run-a-half-marathon.md",
+        "seed/goals/three-months-saved.md",
+        "seed/goals/read-24-books.md",
+        "seed/goals/clear-the-credit-card.md",
+        "seed/goal-milestones/run-10-km.md",
+        "seed/goal-milestones/run-15-km.md",
+        "seed/goal-milestones/register-for-the-race.md",
+        "seed/goal-milestones/work-out-the-monthly-number.md",
+        "seed/goal-checkins/half-marathon-check-in-1.md",
+        "seed/goal-checkins/half-marathon-check-in-2.md",
+        "seed/goal-checkins/three-months-saved-check-in-1.md",
+        "seed/goal-checkins/read-24-books-check-in-1.md"
       ],
       "tier": "official",
       "preview": null,
       "sha256": {
-        "index.md": "6eb6686e1519f372015ae911db2a0ee9e8400565b7b3bebb809bb4a3dc66f534",
-        "manifest.yaml": "5c777f64dcb4cd903e685f1f43af2f4b4112ce67355aa9a31e8e0d9f905f6699",
-        "schemas/goals.yaml": "1017a932302d40f0c15a56797a87811236e3deb664975733f702078befb4f908",
-        "seed/example-goal.md": "989ede6d96ed07f3504932619bbfffc479ce87faed2e2dbac925e72444bc703f",
-        "templates/goals.md": "d46bfb14974ba4f40e2f2ea2a79fa5a44bb2ada3c07bebc71b91dd2719c1696c"
+        "README.md": "b949902b40959495174586aa358cbd1022bb31fc74a5b834434673e7d668aec5",
+        "index.md": "e1cd3f559a0f72e991a7c495930c3d468aa863fd79b75b4e707e40a8f0ba49d3",
+        "index/goal-checkins.md": "f742c7809bf97a86bba4f6bdb0802384d0f155d03e6631c894b63c918c49258d",
+        "index/goal-milestones.md": "e7ee41c8bc5ca7ade6e312ebd2e970ea3df575f7786a1ed0d2f725f5ed763c1c",
+        "manifest.yaml": "1cc6cb84a2eecd07d27a028a2a0ecfcbc97b4ad4af4313183b3d9c4fc7ea2a9e",
+        "schemas/goal-checkins.yaml": "d421dfc6721218b8da3d78b8c0764ff4cd5dda4e0c39f53581a45b8a007b46f3",
+        "schemas/goal-milestones.yaml": "2b79998842fcedcf5fee0e00b869a0771a19e8d00b310272843342fe39b29a78",
+        "schemas/goals.yaml": "cf667ba1f54dfc6b385feed7c09b6010479312dfb7473f939ab294b63ce9f984",
+        "seed/goal-checkins/half-marathon-check-in-1.md": "46f45eb406b14fc2ef77fe6b054592cc800dbe0c4d4092800b1d5b43bb60dce9",
+        "seed/goal-checkins/half-marathon-check-in-2.md": "162d415403b5904490cc3f4cea51c39822f20a5a14ddb9d10f7de3e25d077833",
+        "seed/goal-checkins/read-24-books-check-in-1.md": "d5f8c6507c09bef400f733e596979c60e763d2ec754b8f54eac4f503894b626c",
+        "seed/goal-checkins/three-months-saved-check-in-1.md": "599ac89f32f2d17c580ba9c78abe59291e2bfbef694678f7af82ab53a9469908",
+        "seed/goal-milestones/register-for-the-race.md": "b75965d708f568c3775d093fb109e41bcb4f10a50a42468e0173bb2d0bb14a58",
+        "seed/goal-milestones/run-10-km.md": "c44d4b3a572b67a92448f2443a7e3393f12b8e377a85ef3b97249575a3822739",
+        "seed/goal-milestones/run-15-km.md": "0d29e320f4ad8080c66c170455f08bd1785d044a2367f4ae443f9bc5dbdfe41c",
+        "seed/goal-milestones/work-out-the-monthly-number.md": "40abff74144c48092c930e56b31669771aeb28c3c95bcf2e79e11afadae4d17e",
+        "seed/goals/clear-the-credit-card.md": "d030c65262ec2b54f09ca2e3878f3410992d099289371f0a002b2859887efcf2",
+        "seed/goals/read-24-books.md": "1a20bda74e75163cf32fe4fe935f377a62fd60f49d8a229b82acf8e47abfea00",
+        "seed/goals/run-a-half-marathon.md": "bff07e08df4f65a16c0c5dcb1b304f6d7195ffb863f3bbe18f75949c51edef58",
+        "seed/goals/three-months-saved.md": "286b169fb56a18cdb0ff597c92073ab1ed6ff8b7c525866ba6c355bc59249f8d",
+        "templates/goal-checkins.md": "24319f1d84051b687766071daf51ef31d30136e447b071af8695d6d3125b5381",
+        "templates/goal-milestones.md": "4fa449c855d4864688d6504bcd8739b7c08ccce14a02649db699b7f6acab44eb",
+        "templates/goals.md": "e95352cca00b2878f1eea4a485b79152d9d710f3d7a87ec0b4036848360d60dd"
       },
-      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
+      "commit": "82645bee9d4a429bd539be39cd3f71c9e9c4f8c1"
     },
     {
       "format": 1,
       "id": "habit-tracker",
       "name": "Habit Tracker",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "kind": "collection",
-      "summary": "One row per habit per week, a checkbox per day — history kept, calendar view included.",
-      "description": "The simplest habit tracker that keeps working: each week, add a row per habit (New row, pick the habit, the week's Monday is the date). Tick the days. Because every week is its own row, the calendar view shows the history and nothing has to be reset. Review it in the Weekly Review.\n",
+      "summary": "Habits as rows, one file per day; streaks, day scores and a year heatmap computed on read, never stored.",
+      "description": "Each habit is a row with its own page; each day is one small file whose `done:` list names what you did. Tick today in the Today view (Space on a habit, or `mod+shift+h` for \"Log today…\" from anywhere), and the week grid, month, and year heatmap fill in on their own — current and longest streaks, perfect days, completion — all computed from the files, so nothing is ever reset and nothing goes stale. A day with no file is a day with nothing done; the first tick creates it. Pair it with `templates/daily-with-habits.md` as your daily note so today's habits sit at the top of your journal.\n",
       "tags": [
         "health",
         "habits",
-        "database"
+        "database",
+        "tracker"
       ],
       "author": {
         "name": "Cortex team",
         "url": "https://github.com/frontal-cortex"
       },
       "license": "CC0-1.0",
-      "credits": "Habit trackers from Notion's gallery, remodelled so history is kept.",
+      "credits": "The streak, heatmap and week-grid ideas come from the habit trackers in Notion's gallery; the day-file model is our own so history is never reset.",
       "min_cortex": "0.1.0",
       "collection": "habits",
+      "collections": [
+        "habit-log"
+      ],
       "files": [
-        "templates/habits.md",
         "schemas/habits.yaml",
+        "schemas/habit-log.yaml",
         "index.md",
-        "seed/example-week.md"
+        "index/habit-log.md",
+        "templates/habits.md",
+        "templates/habit-log.md",
+        "templates/daily-with-habits.md",
+        "seed/habits/exercise.md",
+        "seed/habits/read.md",
+        "seed/habits/sleep-by-11.md"
       ],
       "tier": "official",
       "preview": null,
       "sha256": {
-        "index.md": "dfe0ebf62cd8bb1c73317a53514aa328e94db06d31d9444286d6cd25ac597c68",
-        "manifest.yaml": "3c7caab89fdc397dee292bacfbe6ccdd2d825b87c4240176e5cfc5877672c257",
-        "schemas/habits.yaml": "ee70d1f0da8cdf336b33f2aa4dd6be623372f0fd82efa976df5f625a3391905e",
-        "seed/example-week.md": "440774c9b16489aa5d4e4a25b6f8094737d78f261462c4a130756c370f78e0fe",
-        "templates/habits.md": "e739e1187cd94039012a35a8f4efbc90e7848616c02d90792076fb686d656b34"
+        "README.md": "7de682ec03ba02c51d206a9b230af252bce937fd3d60c11c5b6644d3ebfad73e",
+        "index.md": "ecb45336439aea28b2598d3bdc7ba8565c06464b54919ff50259ce10c87c265e",
+        "index/habit-log.md": "a030bbcfd62e7c9d2504992557b5a784741666ab748fafe7c240a7848e974865",
+        "manifest.yaml": "2603a363fc3f86082862863a5cc1b50094b60f4239ffa32b9afa5a3f3cb0ce7b",
+        "schemas/habit-log.yaml": "b7f19d0ffa1b92c8bd586d169f208809b44b70cb0ec951f7b3fb4876dceca385",
+        "schemas/habits.yaml": "f7c4a8c3d9885bcfc561490933cdb00532756a477b96b33203bcef7183ab534b",
+        "seed/habits/exercise.md": "68c1e19b08f430960d63f9d9f221f92b6f72012863d745704c237f431152fbf0",
+        "seed/habits/read.md": "e4619d61fc29ecdc3a6643c1542078fbc20cad5891e2cfcc897b0c64d003ee81",
+        "seed/habits/sleep-by-11.md": "f136af6ab80c7a1049207b92a16f6f2e25b6e2df715aa7ea2fc4b1851efd93e6",
+        "templates/daily-with-habits.md": "6b732f2709cde554c8e4564d9f91eb00c92b9d493d69d218b6141764806ac2b3",
+        "templates/habit-log.md": "401ec03f7d552e8d42ca1ee2d8289e065a8f05c87195688e6e0085a9b6f9c566",
+        "templates/habits.md": "1143a143e8d02326b32ac460090ec368b7b4912275b79298c30f0c84a2f4f43a"
       },
-      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
+      "commit": "82645bee9d4a429bd539be39cd3f71c9e9c4f8c1"
     },
     {
       "format": 1,
       "id": "meeting-notes",
       "name": "Meeting Notes",
-      "version": "1.0.0",
-      "kind": "note",
-      "summary": "Attendees, agenda, decisions, and action items with owners.",
-      "description": "The shape a meeting note needs so it is useful a month later: who was there, what was decided, and who owns what. Action items are task checkboxes, so they show up in searches for open work.\n",
+      "version": "2.1.0",
+      "kind": "collection",
+      "summary": "Meetings as rows with date, kind, status and attendees; action items in their own list, linked to the meeting.",
+      "description": "One row per meeting in `collections/meetings/`: when, what kind, who was there, a one-line summary, a status that moves from scheduled to held to followed-up, and an optional `repeat` that brings a standing meeting back on its own. Open a meeting and the page has the shape a note needs a month later — agenda, notes, decisions, action items, open questions — with a live table of that meeting's action items at the bottom. Action items are rows of their own in `collections/action-items/` with an owner, a due date and a status; the engine counts each meeting's open items and its share closed, stamps `completed` when an item is done, and shows the days left on each. Views: All, This week, Upcoming, To write up, Calendar, a board by status for follow-up, and a chart of meetings per week by kind; on the action items, Open, Overdue, This week, Mine, Board, Due and By week.\n",
       "tags": [
         "work",
-        "meetings"
+        "meetings",
+        "database",
+        "tasks"
       ],
       "author": {
         "name": "Cortex team",
         "url": "https://github.com/frontal-cortex"
       },
       "license": "CC0-1.0",
-      "credits": "The most-duplicated work template in Notion's gallery, trimmed to what gets filled in.",
+      "credits": "The properties and views follow the most-used meeting-notes databases in Notion's gallery and Dann Berg's meeting template for Obsidian; the separate action-items list is the advice that comes up in every review of them.",
       "min_cortex": "0.1.0",
+      "collection": "meetings",
+      "collections": [
+        "action-items"
+      ],
       "files": [
-        "templates/meeting.md"
+        "schemas/meetings.yaml",
+        "schemas/action-items.yaml",
+        "index.md",
+        "index/action-items.md",
+        "templates/meetings.md",
+        "templates/action-items.md",
+        "seed/weekly-team-sync.md",
+        "seed/design-review.md",
+        "seed/client-kickoff.md",
+        "seed/action-items/send-the-sync-summary.md",
+        "seed/action-items/flip-the-sign-up-form-flag.md",
+        "seed/action-items/draft-the-kickoff-agenda.md"
       ],
       "tier": "official",
       "preview": null,
       "sha256": {
-        "manifest.yaml": "825f98f46f75240827da81c2a303b6849a4cd1cbd5eef322fb506cd18956a0ee",
-        "templates/meeting.md": "cee7701bb8073688be732733111b330954a559a67f68756311c425100c0c579f"
+        "README.md": "20b8c207fcfc1be7d646a31fa8fa6777ff6fdb73c3cdaa87c14b7cce2f3b5bdd",
+        "index.md": "f3de43d0356d2154666d1be8fd8b4d349c53fcd2ca1249772a440a52910a8cbf",
+        "index/action-items.md": "762982de08902b546bdb17d4d00cab75706146a2a26ba371e573fa426a88f4b3",
+        "manifest.yaml": "2756b209becf6eb8151575bf53cd486f0e6bc0e9384646f00f2595cd01025154",
+        "schemas/action-items.yaml": "e78ed305c22bdac40436e211bc12560cf38116d1059952055882e0245d65b038",
+        "schemas/meetings.yaml": "4caa106a3e271e54b90cfd4015cbd6e88457fa551be50a9ae80316d8ed47018e",
+        "seed/action-items/draft-the-kickoff-agenda.md": "ccfb8898a0ecdedde1d1f27aa23f948d04d351d513df1ca85f33b1c158187b3f",
+        "seed/action-items/flip-the-sign-up-form-flag.md": "54bb5bd0794aa596803cd0a8a7dfe9cbf356d5d967646703cf50723477991d00",
+        "seed/action-items/send-the-sync-summary.md": "d4d64a30edc79536939484fcb3bc7c192367675af3e5c47be4b2d1531921d453",
+        "seed/client-kickoff.md": "315ac16f4523911a98aa9577ca1188fde5dc30a6232ee2f7fc661a3c416190af",
+        "seed/design-review.md": "8cc1db6470daefca9b501e8c34dfb9ffa103b9571475485f538be6f36f44ef27",
+        "seed/weekly-team-sync.md": "097078d6a66fcc9bd9c0cfb222e214040022774cd47ec8edb630c906646e8cd1",
+        "templates/action-items.md": "95b01a83449a26f183bcb08a81a57540ccc2eb70b209e7c732e6bbef3a003c28",
+        "templates/meetings.md": "15ed02bd1e3ca685f4e5122c21c3081b0c2caa7ff6438c1da8160368e954c8eb"
       },
-      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
+      "commit": "82645bee9d4a429bd539be39cd3f71c9e9c4f8c1"
     },
     {
       "format": 1,
       "id": "one-on-one",
       "name": "1:1 Notes",
-      "version": "1.0.0",
-      "kind": "note",
-      "summary": "A running note per person: talking points that carry over, dated entries below.",
-      "description": "One note per person for recurring 1:1s, mentorship, or just keeping up with someone. Each meeting adds a dated block at the top; older ones stay below, so context carries forward instead of being reinvented each time. Link the person with a wiki link so the note shows up in their backlinks.\n",
+      "version": "2.1.0",
+      "kind": "collection",
+      "summary": "A page per person with a running agenda, one row per 1:1, and the follow-ups from all of them in one list.",
+      "description": "Three small databases that fit together. `collections/people/` is one page per person you meet regularly: role, cadence, current focus, a topics list that carries from one meeting to the next, and live tables of their 1:1s and open follow-ups. The engine adds the numbers you would otherwise look up — when you last met, the next 1:1 on the books, how many you have held in ninety days, how many promises are open — and a `due` flag that compares the gap since you last met with the person's cadence, so Due is the list to book from and Weekly is a tracker of the weekly people against the 1:1s list. `collections/one-on-ones/` is one row per meeting — date, person, mood, one-line summary, an optional `repeat` that brings a standing 1:1 back when it is held — with a page shaped for the conversation: their topics, yours, since last time, wins, blockers, growth, feedback, follow-ups. `collections/follow-ups/` holds what each of you promised, with an owner, a due date, the days left and a stamped `completed` date, so what you owe, what you are owed and what is overdue are views rather than a search. Charts on the 1:1s page count meetings per week by mood and per month by person.\n",
       "tags": [
         "work",
         "people",
-        "meetings"
-      ],
-      "author": {
-        "name": "Cortex team",
-        "url": "https://github.com/frontal-cortex"
-      },
-      "license": "CC0-1.0",
-      "credits": "The 1:1 template pattern from Notion's team galleries and Obsidian's people notes.",
-      "min_cortex": "0.1.0",
-      "files": [
-        "templates/one-on-one.md"
-      ],
-      "tier": "official",
-      "preview": null,
-      "sha256": {
-        "manifest.yaml": "48193646514778e68073062e28645d452a5426eb44c7cad88255cb75d7b47fc3",
-        "templates/one-on-one.md": "ba521cf32db6961b0b3b3ad260bd6989de04e4f693dc397affce7e29649345db"
-      },
-      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
-    },
-    {
-      "format": 1,
-      "id": "para-index",
-      "name": "PARA Index",
-      "version": "1.0.0",
-      "kind": "note",
-      "summary": "Projects, Areas, Resources, Archive as one index note — the second-brain backbone.",
-      "description": "Everything you keep falls into one of four buckets, sorted by how actionable it is right now rather than by topic. This is the index note that holds the buckets; each entry is a wiki link to a real note. Review it weekly: finished projects move to Archive, a resource that just became actionable becomes a project.\n",
-      "tags": [
-        "second-brain",
-        "para",
-        "index"
-      ],
-      "author": {
-        "name": "Cortex team",
-        "url": "https://github.com/frontal-cortex"
-      },
-      "license": "CC0-1.0",
-      "credits": "The PARA method by Tiago Forte (Building a Second Brain).",
-      "min_cortex": "0.1.0",
-      "files": [
-        "templates/para-index.md"
-      ],
-      "tier": "official",
-      "preview": null,
-      "sha256": {
-        "manifest.yaml": "ec767fdfdb7c46c04f5ede4912c91c1805debba14f975782a68cd370ad9b2acb",
-        "templates/para-index.md": "014254aea932560bd5dea7a120e15bdc7c33a8ae0693432c6aa074fb67d8d99c"
-      },
-      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
-    },
-    {
-      "format": 1,
-      "id": "project-tracker",
-      "name": "Project Tracker",
-      "version": "1.0.0",
-      "kind": "collection",
-      "summary": "A solo-friendly project database: status, priority, deadline, next action.",
-      "description": "What is the project, what is next, what is stalled. Deliberately four properties, not fifteen: a status board, a priority, a deadline for the calendar, and a single next action so a stalled project is obvious. Pair with Tasks by naming the project in each task's project field.\n",
-      "tags": [
-        "work",
-        "projects",
+        "meetings",
+        "management",
         "database"
       ],
       "author": {
@@ -368,36 +501,213 @@
         "url": "https://github.com/frontal-cortex"
       },
       "license": "CC0-1.0",
-      "credits": "The project tracker that tops Notion's gallery, cut down to the solo version.",
+      "credits": "Sections follow Notion's own one-on-one template (past week, this week, blockers, action items) and Dann Berg's people-note pattern for Obsidian; the person page as the durable record with per-meeting notes underneath is the shape every manager's guide converges on.",
       "min_cortex": "0.1.0",
-      "collection": "projects",
+      "collection": "people",
+      "collections": [
+        "one-on-ones",
+        "follow-ups"
+      ],
       "files": [
-        "templates/projects.md",
-        "schemas/projects.yaml",
+        "schemas/people.yaml",
+        "schemas/one-on-ones.yaml",
+        "schemas/follow-ups.yaml",
         "index.md",
-        "seed/example-project.md"
+        "index/one-on-ones.md",
+        "index/follow-ups.md",
+        "templates/people.md",
+        "templates/one-on-ones.md",
+        "templates/follow-ups.md",
+        "seed/people/alex-example.md",
+        "seed/people/sam-example.md",
+        "seed/one-on-ones/alex-example-first-one-on-one.md",
+        "seed/one-on-ones/alex-example-weekly-one-on-one.md",
+        "seed/one-on-ones/sam-example-onboarding-kickoff.md",
+        "seed/one-on-ones/sam-example-onboarding-sync.md",
+        "seed/follow-ups/move-alex-to-secondary-on-call.md",
+        "seed/follow-ups/write-up-the-conference-talk-idea.md",
+        "seed/follow-ups/share-the-roadmap-draft.md",
+        "seed/follow-ups/send-alex-the-project-shortlist.md"
       ],
       "tier": "official",
       "preview": null,
       "sha256": {
-        "index.md": "dbbf1c97f09c37e68d8cc6106bd28ffe155f32d1ffd61100d00efe445d5360ae",
-        "manifest.yaml": "ada9db299d7d2898269b027ecc69398328127bb7ad5005052ac93d723ac324f4",
-        "schemas/projects.yaml": "7707bee508628396ac06245dbed8dc3385612ee8c4b2db94f51c43f3b1120a32",
-        "seed/example-project.md": "47dd8dfc479511d3ed5e1c55cccc5109945fdee49f30bcfffa30fb84676d20c7",
-        "templates/projects.md": "99afc2d788437535262844a541777755005e6ea86a31ab79bd8536024691266a"
+        "README.md": "68360cdec7153f575793714b2216797133eb8196846fe6a71107d76749d4c7ea",
+        "index.md": "658f092634c454bd06ffaaeeecc85981bf28c1971e1c9be89792946292395eca",
+        "index/follow-ups.md": "24ae7dede41dd8d4c161a42a3471ee6bd1388cfc43389a7279685efa0fce4fe4",
+        "index/one-on-ones.md": "4ec20a39ca75ad76572940dc09b121fa8ea4b72efdcd364fb8235576608e8650",
+        "manifest.yaml": "c8750f9e895443a379b6d93246871144bfd947b3c9991acbe6ec86eab0840fdc",
+        "schemas/follow-ups.yaml": "ce37908aaf4f6ce0a6bb508f476eb1d7f6a7343c2d4400f7af8d880fee5d3010",
+        "schemas/one-on-ones.yaml": "ea32aa443fd7ce38d6e72ceb89c41a45f8f6bb81d9e7a951b8bd9db0e1a34fa2",
+        "schemas/people.yaml": "0bdda03815baf3e54589dcc7da9cbf951a23c054f7b860bd3c5e4d116b399225",
+        "seed/follow-ups/move-alex-to-secondary-on-call.md": "89eed717891b8d23ea0c0d53ad0cb666e3e5338b6e86e69f0808dc22dd4f9971",
+        "seed/follow-ups/send-alex-the-project-shortlist.md": "dee741de45e0d2a9d3905ab0c6dd631dbab8a8911ce64bc9f77b022e546885fe",
+        "seed/follow-ups/share-the-roadmap-draft.md": "1e6370ffdb9609704b453c814fe961670b1be99471f1e9516a1fa48a6edfdb1a",
+        "seed/follow-ups/write-up-the-conference-talk-idea.md": "5b69faabebcb6b03a55cc07f3ddad284ca1b58c1b549ad5afd71ad3806d6546a",
+        "seed/one-on-ones/alex-example-first-one-on-one.md": "66b4bc33d658b14070f8b91ae37f5ec849279731dab31855ef5bae202f95fc0a",
+        "seed/one-on-ones/alex-example-weekly-one-on-one.md": "1e56c77cb141a0e46a0f5636a59b28d9023105f8a850b301a22838f02f843153",
+        "seed/one-on-ones/sam-example-onboarding-kickoff.md": "d4acebbc2598351d265c1dcf9ff82f306ad9cb4b4f4a3ecb77a89fecbc1c5d51",
+        "seed/one-on-ones/sam-example-onboarding-sync.md": "dfe75709369763ba3d47726f32d20916c3599d90c62cf792f0241ae2a75097be",
+        "seed/people/alex-example.md": "906487db713bc723a11246469de78b24f578d8b3825e5b7b217da239a2980ab4",
+        "seed/people/sam-example.md": "7bc2669b2cccd97801f52b137641cbe33ee90e73fbb34bb4c4d0aa2c501b6828",
+        "templates/follow-ups.md": "c7a82b9fe1611741032c10ba262b35a0332a7dad32a62481dadab10d70393eda",
+        "templates/one-on-ones.md": "c25a6d2fc6e062adcef28273d491b833e78e54b544a65135be59f2c2f9ee445c",
+        "templates/people.md": "e0515c8da527cb44ed09162dd2fa8a7febf56a9c876516c2f4b2fd6dea2394c6"
       },
-      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
+      "commit": "82645bee9d4a429bd539be39cd3f71c9e9c4f8c1"
+    },
+    {
+      "format": 1,
+      "id": "para-index",
+      "name": "PARA Index",
+      "version": "2.1.0",
+      "kind": "collection",
+      "summary": "Projects, Areas and Resources as three linked databases; archive is a status, and an index note shows it all live.",
+      "description": "The PARA method as databases instead of folders. Areas are the ongoing responsibilities (Health, Finances, Career) with a standard to keep and a review date — a Due for review list shows which have come round, and each area counts its own open projects and resources. Projects have an outcome, a deadline and the area they serve; `start` and `completed` stamp themselves when a project goes active and done, `days_left` counts down, and a Due soon list and a Timeline show where the deadlines pile up. Resources are the articles, books and tools you keep, tied to the area or project they are for, with an inbox that shows how long each has waited. Nothing is ever moved to an Archive folder — a project is `done` or `dropped`, an area or resource is `archived`, and the Archive views filter on that, so relations and history survive. The `Second Brain` note template is the one-page index: active projects, what is due, areas, recent resources and the archive, all live.\n",
+      "tags": [
+        "second-brain",
+        "para",
+        "projects",
+        "areas",
+        "resources",
+        "database"
+      ],
+      "author": {
+        "name": "Cortex team",
+        "url": "https://github.com/frontal-cortex"
+      },
+      "license": "CC0-1.0",
+      "credits": "The PARA method by Tiago Forte (Building a Second Brain). Archive-as-a-status and the area page that lists its own projects and resources come from the PARA templates in Notion's gallery, notably Thomas Frank's and Notion Mastery's.",
+      "min_cortex": "0.1.0",
+      "collection": "para-areas",
+      "collections": [
+        "para-projects",
+        "para-resources"
+      ],
+      "files": [
+        "schemas/para-areas.yaml",
+        "schemas/para-projects.yaml",
+        "schemas/para-resources.yaml",
+        "index.md",
+        "index/para-projects.md",
+        "index/para-resources.md",
+        "templates/para-areas.md",
+        "templates/para-projects.md",
+        "templates/para-resources.md",
+        "templates/para-index.md",
+        "seed/para-areas/health.md",
+        "seed/para-areas/finances.md",
+        "seed/para-areas/career.md",
+        "seed/para-projects/run-a-10k.md",
+        "seed/para-projects/file-the-tax-return.md",
+        "seed/para-projects/set-up-the-home-office.md",
+        "seed/para-resources/couch-to-10k-plan.md",
+        "seed/para-resources/the-para-method-explained.md",
+        "seed/para-resources/index-fund-comparison.md"
+      ],
+      "tier": "official",
+      "preview": null,
+      "sha256": {
+        "README.md": "13eaf711e055183514b858decde08da74526f6df4844fba343bbc32ee77ce6e7",
+        "index.md": "962540b2d7e42ccd5f6a6fb3224dede451595e01a462126d6cf5470e0ff0c3c5",
+        "index/para-projects.md": "c7cfa792ccb603a93b113d2d3be62cebb4700af45288d577bb2db9e89f2e6cf5",
+        "index/para-resources.md": "9eb21aae5ee3e7cac06360e5b6980b3071d58715f0858f94287d6f14aa756c6e",
+        "manifest.yaml": "5c703845207b36fd7c9f06501998d7b38e24d5e4043c55f67f05f7d4566c5084",
+        "schemas/para-areas.yaml": "f7fd2556a05d609cc9ca557dd92548ed374d9877dabfc300e1efe371cfaa7be7",
+        "schemas/para-projects.yaml": "009bf14543003471e454aba92e0738f632dce570e5e86fbcd4a991cefc1ae72f",
+        "schemas/para-resources.yaml": "b1096a6560d7ee58326284af0b9809a6e1b56521aaaa5c20cc58198d90ef3f72",
+        "seed/para-areas/career.md": "5714c4a017e4c6cd751c6f016f1f4a7c44a39077df69fdc1bf082b83f75e03d0",
+        "seed/para-areas/finances.md": "ffadfea1562c9fc01c6680583fc38bf4afe00432b1912c4d106ba28d176a19b2",
+        "seed/para-areas/health.md": "a05cc5d2326c11ab779bb5e86d5974aeaeb65c9acf6e877748d35eb14c467e03",
+        "seed/para-projects/file-the-tax-return.md": "bcdd78cb400e2c1ac332bd161e2d4c984c970f5569a2fba22839e4a24b9bc4d1",
+        "seed/para-projects/run-a-10k.md": "80304c3bcc94b2c2851f3eeea34ab1e337b41896ff3380be1e73940a5bbcc57b",
+        "seed/para-projects/set-up-the-home-office.md": "24d1a99920707682bf1652e1f1a0e26f27997bd07ffdaaa6864956bc2e69fcfb",
+        "seed/para-resources/couch-to-10k-plan.md": "36c3d9d0be512449a0afafc9b52b0baa526d5269cde3f7f9ab4d034ea8a8de13",
+        "seed/para-resources/index-fund-comparison.md": "9f146732b8a1ac9bf5b8455b172439e134d0eeae4d5be18e186fb8830bf04b37",
+        "seed/para-resources/the-para-method-explained.md": "ccbf604eb6950c271c14a3dfd3e3c03b63fc447025266dab6ff4413cded0e346",
+        "templates/para-areas.md": "0f6e8f45c59f6df391e4b2df9f62ec347fa8da9d5e72ede18919fe9439323ef4",
+        "templates/para-index.md": "f567f732945241b5a20b4ee9dd46ce1c712d8d4aabe78386b738c9730062137b",
+        "templates/para-projects.md": "fe29172998c548f1f59791a730c49044bc7eb1782204ad27849ab1fa031e6974",
+        "templates/para-resources.md": "7971a3a62095470fd5d17db50c5d2687386a9a505a2a895d964993e52b05f564"
+      },
+      "commit": "82645bee9d4a429bd539be39cd3f71c9e9c4f8c1"
+    },
+    {
+      "format": 1,
+      "id": "project-tracker",
+      "name": "Project Tracker",
+      "version": "2.1.0",
+      "kind": "collection",
+      "summary": "Projects with status, priority, deadline, computed progress and one next action; milestones; a timeline; a page each.",
+      "description": "One row per project, and a second small collection of milestones — the dated steps a project is made of. A project has a status (planned / active / on_hold / done / dropped), a priority, an `area`, `start` and `deadline` dates and one `next_action` so a stalled project is obvious. The rest is computed: `progress` is the share of its milestones ticked done, `next_milestone` the soonest still open, `days_left` a countdown to the deadline, `open_tasks` a count from the Tasks pack when it is installed, and `completed` is stamped the day status becomes done. Views: Open (what is live, p1 first), Board by status, a Timeline from start to deadline, Due in 30 days, Stalled (active projects with no next action) and Finished per month. Each project's page states the outcome, embeds its own milestones, and — if the Tasks pack is installed — a board of the tasks that name it. Milestones have their own calendar, so every key date across every project is on one page.\n",
+      "tags": [
+        "work",
+        "projects",
+        "database",
+        "planning"
+      ],
+      "author": {
+        "name": "Cortex team",
+        "url": "https://github.com/frontal-cortex"
+      },
+      "license": "CC0-1.0",
+      "credits": "Follows the project databases in Notion's gallery (Notion's Projects & Tasks, Thomas Frank's Ultimate Brain projects, Easlo's Project Tracker); the single next action is from Getting Things Done.",
+      "min_cortex": "0.1.0",
+      "collection": "projects",
+      "collections": [
+        "milestones"
+      ],
+      "files": [
+        "schemas/projects.yaml",
+        "schemas/milestones.yaml",
+        "index.md",
+        "index/milestones.md",
+        "templates/projects.md",
+        "templates/milestones.md",
+        "seed/projects/website-relaunch.md",
+        "seed/projects/learn-to-cook-ten-dishes.md",
+        "seed/projects/move-flat.md",
+        "seed/projects/file-the-tax-return.md",
+        "seed/milestones/brief-signed-off.md",
+        "seed/milestones/design-approved.md",
+        "seed/milestones/content-migrated.md",
+        "seed/milestones/keys-handed-over.md",
+        "seed/milestones/deposit-returned.md"
+      ],
+      "tier": "official",
+      "preview": null,
+      "sha256": {
+        "README.md": "049378dbf063bb944146b5fdf07ed46c5ccf3548f2043b05642cc7337d710ad4",
+        "index.md": "2cd27b0a2905d4ee45b31a1e18602cb007da0e90df9b1ba0309b557dee6d4a06",
+        "index/milestones.md": "a344b207fd81afdfd071ce48b6dbcdc435c38442f9773d276ddab39cdc13ab8f",
+        "manifest.yaml": "da02463eaeb72a6b710b4a8eef0747e4730e5433fb46d402e555ac4313446766",
+        "schemas/milestones.yaml": "1ceffb83855ea264b232a46cd954ea37dec5ee3198764718837be29b9ecdc5e8",
+        "schemas/projects.yaml": "2dcb1f2ec8d0cdc715c3175b9116208db6d3317a04a08f7d6b6fe89e3d8ee279",
+        "seed/milestones/brief-signed-off.md": "ef1869d96d69973cd984bf9c25869d52e507a4633ca0411d71407b7c2c186d06",
+        "seed/milestones/content-migrated.md": "0073a83e5eb5f4d7053b8ed74f5427e2d122a5d983d2daba248189c3c2bb6a49",
+        "seed/milestones/deposit-returned.md": "7ff84228b84c7a473d10f0989aaebc9237b22f517a20c23e09d4c813ed2b305a",
+        "seed/milestones/design-approved.md": "3aee278276e49bbcaaffb2a39c3d36ae37cd638ef36c468d9e96dc80f982f1d8",
+        "seed/milestones/keys-handed-over.md": "e7f55d1a9b11f5266724f448c8e1cc98b75ff57c815fb530aedf57b0e3d34ac1",
+        "seed/projects/file-the-tax-return.md": "537ee2ee82918967235da4c671a9029655abe0c51ad83240c3f424749ac418b9",
+        "seed/projects/learn-to-cook-ten-dishes.md": "ccb4ce858f3601ee2309976e89fd55b78af3db0bf63f5e85b090a6340f40e5f6",
+        "seed/projects/move-flat.md": "b57f214664c1bccb7871b85a924179dfe8c05507749b799934e313a38fe8b345",
+        "seed/projects/website-relaunch.md": "01efb30fa1cb068e0e651119f941ea8bd40421bf6578bf9cc280010304d60d06",
+        "templates/milestones.md": "5a5cb4cea39149323ef5d332e30dd1c0b744b92af259683b4d2436669ab6eeb8",
+        "templates/projects.md": "78723c2b19c4b670cf07a2781b57d18a16669374718b795e8c82559749052e43"
+      },
+      "commit": "82645bee9d4a429bd539be39cd3f71c9e9c4f8c1"
     },
     {
       "format": 1,
       "id": "reading-list",
       "name": "Reading List",
-      "version": "1.0.0",
+      "version": "2.1.0",
       "kind": "collection",
-      "summary": "Books and articles with status, rating and dates; each row is a full reading note.",
-      "description": "A reading database rather than a loose note: to-read, reading, finished as a board; a rating; started and finished dates. Each row opens into a reading note — why you picked it up, key ideas, quotes worth keeping, how you will use it — so the list and the notes live in one place.\n",
+      "summary": "Books, articles and papers as rows with a note each, a progress bar per book, and an optional log of sittings.",
+      "description": "One row per thing you read — book, ebook, audiobook, article or paper — with author, status, format, genre, a star rating, page count, who recommended it and when you started and finished. `started` and `finished` stamp themselves when `status` moves; a `progress` bar is worked out from the pages you have read over the page count. The row's page is the reading note: why you picked it up, the ideas, the quotes, the verdict. A second collection, `reading-log`, holds one small row per sitting (date, book, pages); from those each book sums its `logged` pages and knows its `last_read` day, the Reading list draws a week grid of what you are reading, each book's page a year heatmap, and the log charts pages per week by book. Views: Reading now (with progress and days idle), Shelf by status, Finished (with days to finish), Per month, a Timeline of every book started and This week. The log is optional — the list works without it.\n",
       "tags": [
         "reading",
+        "books",
         "notes",
         "second-brain",
         "database"
@@ -407,37 +717,64 @@
         "url": "https://github.com/frontal-cortex"
       },
       "license": "CC0-1.0",
-      "credits": "The reading-list databases in Notion's gallery and Obsidian's literature notes.",
+      "credits": "Shaped by the reading trackers in Notion's gallery (Thomas Frank's Books, the Bookworm and Book Tracker templates) and by the Obsidian book-tracking write-ups that keep a list of read dates per book.",
       "min_cortex": "0.1.0",
       "collection": "reading",
+      "collections": [
+        "reading-log"
+      ],
       "files": [
-        "templates/reading.md",
         "schemas/reading.yaml",
+        "schemas/reading-log.yaml",
         "index.md",
-        "seed/example-book.md"
+        "index/reading-log.md",
+        "templates/reading.md",
+        "templates/reading-log.md",
+        "seed/reading/thinking-in-systems.md",
+        "seed/reading/the-left-hand-of-darkness.md",
+        "seed/reading/how-to-do-great-work.md",
+        "seed/reading/piranesi.md",
+        "seed/reading-log/first-sitting.md",
+        "seed/reading-log/second-sitting.md",
+        "seed/reading-log/third-sitting.md",
+        "seed/reading-log/left-hand-first-half.md",
+        "seed/reading-log/left-hand-finish.md"
       ],
       "tier": "official",
       "preview": null,
       "sha256": {
-        "index.md": "896d1da13e0e10e2f53ea03372cb8ef29311f6e216427377e94a078a893fbd21",
-        "manifest.yaml": "6241541672df41b103a62833c4683c49d59a64216afefd6b98aee4b0301fafa2",
-        "schemas/reading.yaml": "f32d5d02b13ac2e2b6512eb75c9243f5cccda23eab65151b6efb8aa7200eea94",
-        "seed/example-book.md": "4d72a0d4a66937fde544c4cbcaca4752932f785b62a1a4d7ea57eb3214165594",
-        "templates/reading.md": "a27bd8e0718fce9ee971f621902f2980abaed1d8752ab58f2a2c798b8c81d861"
+        "README.md": "8f26f60a7973cee196108e006b5bbcf1cbfdbf0653129e7e6d40de4df3fe3bcc",
+        "index.md": "b9260eb6c1f5781df7cfa3d7b695502dd057451acd4ce492b04f636240b56730",
+        "index/reading-log.md": "87d756b6be50f7501e4ffd49ad5486c13813ffad701bf352ec0dea33ea22f991",
+        "manifest.yaml": "90f3021fa5e6c6c190f747cf67f765cde2e8f70bd1484d8377f4d25dd0d86c38",
+        "schemas/reading-log.yaml": "2b656716082a0a0521bef3c8faf74efce10801dbda7155729220d41040c9b44b",
+        "schemas/reading.yaml": "93e3cc20e2d22a95aba01ab9022c7a91e1ee19edc9d4d1d055a73a4f54f3efe4",
+        "seed/reading-log/first-sitting.md": "176ac890d05c33fae4832bc6b5d57fed7496fd754028acba09a50f384fa21cf4",
+        "seed/reading-log/left-hand-finish.md": "56dfc25a532e94a9a1587bc3eb91e68782359b525a3f9e847ab736cee3fe0374",
+        "seed/reading-log/left-hand-first-half.md": "36c29dee01301b92ba93a943cfaf97a7ac0253e3a18091f56b63cfdbf49ec384",
+        "seed/reading-log/second-sitting.md": "6690d484c82b2515365e4cb575cfb0bcc12793d7550eda64f0708e0b9a4c484b",
+        "seed/reading-log/third-sitting.md": "eb746cd5b0fbfba09d3e184562e0e78723991ccb0e8ee170f0b980a2763e7028",
+        "seed/reading/how-to-do-great-work.md": "ef91b009aae5992f0dde1e2bbb40072abd90efb943d75135d461ae53610ac0ac",
+        "seed/reading/piranesi.md": "dbc656cdd38bc8e9e6296b6feffb7327135c8b61631d4dd3f7d6ff54c9a18666",
+        "seed/reading/the-left-hand-of-darkness.md": "68a3c2630c625c602e556df9ef46558c705d9c3c989e0a31c2436ac6edacb0b9",
+        "seed/reading/thinking-in-systems.md": "1e21c32240f868d74cf2b3220caf695716c7c6e528373962c46391d139b80450",
+        "templates/reading-log.md": "1b785ab5cf723ed4c58b565dbcb3c44803c565799922c532e0a2b2029405e1b2",
+        "templates/reading.md": "a3b12c98aa79fd0f72e7b7ac9874ddfcdb15e708781f7e33f184b014c4fd44f7"
       },
-      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
+      "commit": "82645bee9d4a429bd539be39cd3f71c9e9c4f8c1"
     },
     {
       "format": 1,
       "id": "recipe-box",
       "name": "Recipe Box",
-      "version": "1.0.0",
+      "version": "2.1.0",
       "kind": "collection",
-      "summary": "Recipes with cuisine, prep time and rating; ingredients and steps in the note body.",
-      "description": "A recipe database: filter by cuisine on the board, sort by prep time, rate what you cooked. Each row is the recipe itself — ingredients and steps in the body — so the gallery view is a cookbook.\n",
+      "summary": "Recipes with cook counts and last-cooked dates, a meal plan for today and this week, a grocery list in aisle order.",
+      "description": "Three collections that work as one kitchen. Recipes carry course, cuisine, main ingredient, diet, difficulty, prep and cook minutes, servings, a star rating, status and source; total minutes, how often and when the recipe was last cooked, when it is next planned and how many of its grocery items are still to buy are worked out from the other two collections, so Quick dinners, Rotation and To try answer themselves. The ingredients are a checklist and the method a numbered list in the body, and the page ends with a live cook log. Meals are one row per planned meal — a date, a slot, a recipe — with a calendar, a Today list, a This week list and board, and a bar chart of what you cooked per week. Groceries are items with an aisle and a `bought` box: the To buy table is the shopping list in aisle order, the board is the shop.\n",
       "tags": [
-        "personal",
         "food",
+        "cooking",
+        "meal-planning",
         "database"
       ],
       "author": {
@@ -445,37 +782,123 @@
         "url": "https://github.com/frontal-cortex"
       },
       "license": "CC0-1.0",
-      "credits": "A perennial gallery favourite in both apps.",
+      "credits": "The recipe, meal-plan and grocery trio follows the recipe managers in Notion's gallery (Matthias Frank's meal planner, the Ultimate Home Chef dashboard, the Frugal and Thriving recipe database) and the Recipe Box and Recipe View plugins for Obsidian.",
       "min_cortex": "0.1.0",
       "collection": "recipes",
+      "collections": [
+        "meals",
+        "groceries"
+      ],
       "files": [
-        "templates/recipes.md",
         "schemas/recipes.yaml",
+        "schemas/meals.yaml",
+        "schemas/groceries.yaml",
         "index.md",
-        "seed/example-recipe.md"
+        "index/meals.md",
+        "index/groceries.md",
+        "templates/recipes.md",
+        "templates/meals.md",
+        "templates/groceries.md",
+        "seed/recipes/weeknight-tomato-pasta.md",
+        "seed/recipes/overnight-oats.md",
+        "seed/recipes/chicken-tikka-masala.md",
+        "seed/meals/last-week-pasta.md",
+        "seed/meals/breakfast-oats.md",
+        "seed/meals/tonight-pasta.md",
+        "seed/meals/curry-night.md",
+        "seed/groceries/chopped-tomatoes.md",
+        "seed/groceries/spaghetti.md",
+        "seed/groceries/basil.md"
       ],
       "tier": "official",
       "preview": null,
       "sha256": {
-        "index.md": "60103b83c1e2b993c4616046646aaf403d497df853f4d4c8a7c9e25f6fd80cfd",
-        "manifest.yaml": "4600a6be08a90be30ae6fcafa64ecbc5aaba4231801b382f2ae4605a47d06e64",
-        "schemas/recipes.yaml": "4934b542ca2cda787d909887e8adb49139fefaaadc94a96a471d1b3f729d425f",
-        "seed/example-recipe.md": "8cdfc6cee83cd3bcd12e4732f35c83d2e45bafc2f4601a77c18e4396e996b542",
-        "templates/recipes.md": "fa63799d85110f2216c0c593117932a5814afc5a620552ee9f1a2e6cdb14505d"
+        "README.md": "dd2b96d6f46d8d9890757ccf84cb944df781a36f2dd288384293464bf9e7333b",
+        "index.md": "9ea0ecfdfae3285bb103a0c68a0e9f19a767e1867bb5671a2a982b64707a0262",
+        "index/groceries.md": "1cfd9a0513fa044d23cb4c999afbcbedc142588e52c4166e3a1c605cc85a5c2c",
+        "index/meals.md": "f1f7b8ed6cc80d6f2f112aea053313efffbd01fbed1dc4c2811f1b5aa317a06b",
+        "manifest.yaml": "3989f797bcc4f33bb10487847836e7ff61eb11a8a2b99558606697d5a4946607",
+        "schemas/groceries.yaml": "ca467ac8a2947f68c6df87eea80f2e03cd9c25051377b0c2de589b0f20bfcbad",
+        "schemas/meals.yaml": "429b111d60ac364cea00eb72cba80cf4372d61a6fdf2b6db35f38ec2f76dcb38",
+        "schemas/recipes.yaml": "6e7b6b9fa2f546be59fbf0f874ff7583c5c886a2f4d976488c9662629a513757",
+        "seed/groceries/basil.md": "d38220a465c531a15b6a1c3775669880080bfbd82102d3a5a24c8fc10a065706",
+        "seed/groceries/chopped-tomatoes.md": "c322e6c2abd3d326e7260cae521bc65a13158a458cfd61ca5624aa0653d885d3",
+        "seed/groceries/spaghetti.md": "31fc2e4500271809a508e1673c3acd87e2eee0e6bc5af1d674436837f1bfa904",
+        "seed/meals/breakfast-oats.md": "bccbbbe7083596911c76e735bb530ad5fdd55d43e5199916819152ecbb8bd857",
+        "seed/meals/curry-night.md": "8a3e96da4878e8753d167f58fbb4b219ce3618bf08da213c65edc0ccb33ba84f",
+        "seed/meals/last-week-pasta.md": "33b92e23cb724e98d3eab086e11a26c870b15b9c5456907ebc3c067ff4c31e50",
+        "seed/meals/tonight-pasta.md": "fa8c78d7f8f4bbe8ce8165ae082f4a1a6b52b0abc1beaae0559cae016cfdc567",
+        "seed/recipes/chicken-tikka-masala.md": "e1ebdf78e2a4ca8bfeefcf3deb9b71330b990cabd0845db5864e4cd85887fee6",
+        "seed/recipes/overnight-oats.md": "1170134457ba416d2401d1c6a12f0b49ace12471b037bbda710df2a7ccfb5151",
+        "seed/recipes/weeknight-tomato-pasta.md": "445cf97be161cb242f8b91539077116f49983076591d7635a9cd0da205bc7fdd",
+        "templates/groceries.md": "061daa2cd7572ceea81bd1f6a74b526f0cba3aa3ff3d8b7ddecf6683d041a74f",
+        "templates/meals.md": "d325a401d4b0ecde54c00cce9a8e506b46ddfb9054129fbc1709e794e72f201f",
+        "templates/recipes.md": "1cc42613451826804f91113d37ede17c9742c0893ce03391188cbde98fac58e2"
       },
-      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
+      "commit": "82645bee9d4a429bd539be39cd3f71c9e9c4f8c1"
     },
     {
       "format": 1,
       "id": "tasks",
       "name": "Tasks",
-      "version": "1.0.0",
+      "version": "2.1.0",
       "kind": "collection",
-      "summary": "A to-do database: status, priority, due date, project — with board and calendar views.",
-      "description": "The most-used database there is. One row per task with a status board (To do / Doing / Done), a priority, a due date the calendar view shows, and a free-text project field to group by. Start here if you use one database only.\n",
+      "summary": "One row per task with status, priority, due and repeat; Today, This week, Upcoming, Inbox, a board and a done chart.",
+      "description": "The task list most people end up building, done once. Each task is a row with a status (todo / doing / waiting / someday / done), a priority (p1–p3), a `due` date, an optional `repeat`, an `area` and a free-text `project`. The views are the ones to-do apps ship, and they follow the calendar by themselves: Today (due today or earlier), This week, Upcoming, Inbox for what you captured and have not dated, a board by status, and a chart of tasks finished per week. `completed` is stamped when a task is set to done; a task with `repeat: weekly` comes back with its date moved forward. Each task's page has a \"done when\" line, a checklist of steps and room for notes. Name the same project in the Project Tracker pack and its page shows these tasks and counts the open ones.\n",
       "tags": [
         "productivity",
         "tasks",
+        "database",
+        "gtd"
+      ],
+      "author": {
+        "name": "Cortex team",
+        "url": "https://github.com/frontal-cortex"
+      },
+      "license": "CC0-1.0",
+      "credits": "Properties and views follow the task databases in Notion's gallery (Notion's Projects & Tasks, Thomas Frank's Ultimate Tasks, Easlo's Task Tracker) and the due, done and recurrence fields of the Obsidian Tasks plugin.",
+      "min_cortex": "0.1.0",
+      "collection": "tasks",
+      "files": [
+        "schemas/tasks.yaml",
+        "index.md",
+        "templates/tasks.md",
+        "seed/write-the-project-brief.md",
+        "seed/book-a-dentist-appointment.md",
+        "seed/do-the-weekly-review.md",
+        "seed/renew-the-passport.md",
+        "seed/set-up-this-task-list.md",
+        "seed/move-old-notes-into-the-vault.md"
+      ],
+      "tier": "official",
+      "preview": null,
+      "sha256": {
+        "README.md": "633cbf8a28830881e4a3e39cb62c5f94d93b54261728181d9ff4509e1af00a9a",
+        "index.md": "ea568f1d0e106bcd184b8c66028777a3b71902f35a5d17b2a2b04196435dafbc",
+        "manifest.yaml": "c1c5ea74600c5f21f05814c06fe4e47a876e3d16e71e7961e49753bf1f144405",
+        "schemas/tasks.yaml": "1e079d335ff078a97d860b057489e31c63fa0c1484ab8457aa76e2a15b88df4a",
+        "seed/book-a-dentist-appointment.md": "78e109fcd6df424bcc8992f490879dbd8b3e2ab065da074539c573b6b14177c4",
+        "seed/do-the-weekly-review.md": "7f18755dd3efe3bf06bd7dad2262d18b6082d092f43e59b8dd35fe52435f64d7",
+        "seed/move-old-notes-into-the-vault.md": "2da5831dcfbaef157c27d7022e363569b5848a0e55c9729192d5ebebf33caaa5",
+        "seed/renew-the-passport.md": "babc95dcef40a6a92217a8bdf1e8d4885e9a1c6916d6133f2914bdede3bf5261",
+        "seed/set-up-this-task-list.md": "95b05b132ee93ae2dc1471905feb2ee652c16e9cefe7f6241a8a39b5aa637a6e",
+        "seed/write-the-project-brief.md": "4251e7b30d4e3f3134c414d67a8c2175b170f9ee5ae89dbd9201ac564108faf3",
+        "templates/tasks.md": "b11344a65401067617e89a5d60dc0318581bf5522ba99d0204836f486714e6f4"
+      },
+      "commit": "82645bee9d4a429bd539be39cd3f71c9e9c4f8c1"
+    },
+    {
+      "format": 1,
+      "id": "weekly-review",
+      "name": "Weekly Review",
+      "version": "2.1.0",
+      "kind": "collection",
+      "summary": "One row per week: a plan, then the get-clear / get-current review; reviews due, rating and carry-over charted.",
+      "description": "A weekly review as a database. Each week is a row with a `status` (planned, reviewed, skipped), a `rating` out of ten, a one-line `focus`, the `areas` it touched, a `carried_over` count of what slipped, and a `reviewed_on` date that stamps itself when you mark the week reviewed. The page has two halves: a plan (focus and Top 3) and a review — the Getting Things Done checklist (get clear, get current), then wins, what slipped, lessons, what gave and drained energy, the carried-over list, and next week's three. To review lists every planned week whose Friday has come; a board shows the weeks by status, a calendar puts each on its Monday, and two charts plot the rating and the carry-over count week by week, so a slow decline or a growing backlog is visible. With Daily Note installed, each week also counts the days you wrote and averages their energy and sleep — computed, not copied.\n",
+      "tags": [
+        "productivity",
+        "review",
+        "journal",
         "database"
       ],
       "author": {
@@ -483,56 +906,28 @@
         "url": "https://github.com/frontal-cortex"
       },
       "license": "CC0-1.0",
-      "credits": "The task databases in Notion's gallery and the purpose of the Obsidian Tasks plugin.",
+      "credits": "The get-clear / get-current / get-creative checklist is David Allen's Weekly Review from Getting Things Done. Weeks as rated rows with monthly trends follows the weekly review databases in Notion's gallery (Thomas Cerulis, Sharky Progress, Simone Smerilli); the plan-then-review page with a carried-over list is the shape of the Vaultorial and Pensio weekly notes for Obsidian; the wins / slipped / energy prompts follow Michelle Mac's.",
       "min_cortex": "0.1.0",
-      "collection": "tasks",
+      "collection": "weeks",
       "files": [
-        "templates/tasks.md",
-        "schemas/tasks.yaml",
+        "schemas/weeks.yaml",
         "index.md",
-        "seed/example-task.md"
+        "templates/weeks.md",
+        "seed/example-week.md",
+        "seed/example-planned-week.md"
       ],
       "tier": "official",
       "preview": null,
       "sha256": {
-        "index.md": "bc444859763ccf667e4e2acddd71b1b9b23cd212e73ea005132535ed2a8a3a00",
-        "manifest.yaml": "530f0aabccfc6fd3300fc38e3397a5d7f772a2f6ce5861ea78a06490fe19b1bb",
-        "schemas/tasks.yaml": "cebfb7e91e6d636bceadc1f5df3934beec845de986f79554d028ce64c50d4326",
-        "seed/example-task.md": "8c53c55d51e22b006026655992cb872e95b0a554147f46ba365f12a6e94659e5",
-        "templates/tasks.md": "8baea023f8676a394f37dbcc8299bc3fcbb84d20ffca670a24432c73d7786a97"
+        "README.md": "7397209ef51cf7f29b3c09681c0c6c4a97dfd43401922a99dd7423972dff5526",
+        "index.md": "02b828398b95f6a3005d7caef2e85b221663586e463666d66707f2e05c504c57",
+        "manifest.yaml": "77fe90ef0c3eb9b03341c4907f44b3b29f35da2d266e801b399b096238eef092",
+        "schemas/weeks.yaml": "d79756c2cd3c054be361fbd09cd93b6603ae80901f8f275acaa50618ab69ff0e",
+        "seed/example-planned-week.md": "b4c1e13623d118842870743bfe5cf793e01f0b6af528072d4e011c01dd10eb55",
+        "seed/example-week.md": "a3db1e867f0cfc363ca51b72b342bfa9f9896b6613477d5e5ffe909ddf132697",
+        "templates/weeks.md": "8e1bc36e6261556c2a1e2f43c27c53a630af6083a9dea1c669035f3ae66586cf"
       },
-      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
-    },
-    {
-      "format": 1,
-      "id": "weekly-review",
-      "name": "Weekly Review",
-      "version": "1.0.0",
-      "kind": "note",
-      "summary": "A Sunday review: wins, what slipped, open loops, next week's focus.",
-      "description": "The habit that keeps any note system alive. Look back at the week, close what can be closed, pick three things for the next one. Pairs with Daily Note (reflections feed in) and the PARA index (move finished projects to Archive).\n",
-      "tags": [
-        "productivity",
-        "review",
-        "journal"
-      ],
-      "author": {
-        "name": "Cortex team",
-        "url": "https://github.com/frontal-cortex"
-      },
-      "license": "CC0-1.0",
-      "credits": "The weekly review from Getting Things Done, as practised in both communities.",
-      "min_cortex": "0.1.0",
-      "files": [
-        "templates/weekly-review.md"
-      ],
-      "tier": "official",
-      "preview": null,
-      "sha256": {
-        "manifest.yaml": "6f8884dc6cb506872150ea6dd941b0efdc568ef343ee39ae8543ffa8cf6b2212",
-        "templates/weekly-review.md": "aee23f34da321577eae047a4f691972d59e33adf0ea04889817f1712cee41c63"
-      },
-      "commit": "39b860ac5c71c872341bd3d27a8fe2eb52b872c3"
+      "commit": "82645bee9d4a429bd539be39cd3f71c9e9c4f8c1"
     }
   ]
 }

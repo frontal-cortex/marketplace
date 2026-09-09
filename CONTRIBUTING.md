@@ -41,8 +41,11 @@ and describing it honestly.
 - **Plain files only**: nothing executable, no raw HTML beyond `<br>`,
   `<sub>`, `<sup>` and comments, no remote images.
 - **Quoted placeholders**: `created: "{{date}}"`. Templates may use
-  `{{date}}`, `{{time}}`, `{{title}}`, `{{uuid}}`; seeds and `index.md` may
-  use `{{today}}`.
+  `{{date}}`, `{{time}}`, `{{title}}`, `{{uuid}}`; any file may use the date
+  words `{{today}}`, `{{monday}}`, `{{month}}`, `{{week}}`, … with offsets
+  like `{{today+7}}` (see the README's rules).
+- **Formulas parse**: CI's `tools/lint.py` only checks the obvious; the app's
+  `cortex packs lint` is authoritative for `expr:` — run it before you submit.
 - **One thing, well**: a pack does one job and its summary says what that
   is in one line. A bundle (`kind: bundle`, `includes: [...]`) groups packs
   that belong together.

@@ -1,0 +1,40 @@
+properties:
+  - name: status
+    type: status
+    options:
+      - name: planned
+        color: gray
+      - name: active
+        color: blue
+      - name: on hold
+        color: yellow
+      - name: done
+        color: green
+      - name: dropped
+        color: brown
+  - name: area
+    type: relation
+    collection: para-areas
+  - name: priority
+    type: select
+    options:
+      - name: low
+        color: gray
+      - name: medium
+        color: yellow
+      - name: high
+        color: red
+  - name: outcome
+    type: text
+  - name: start
+    type: date
+    auto: status == active
+  - name: deadline
+    type: date
+  - name: days_left
+    type: formula
+    expr: if(status == 'done' or status == 'dropped', empty, days_until(deadline))
+    format: integer
+  - name: completed
+    type: date
+    auto: status == done

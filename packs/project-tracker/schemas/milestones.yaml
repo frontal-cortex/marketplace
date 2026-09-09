@@ -1,0 +1,12 @@
+properties:
+  - name: project
+    type: relation
+    collection: projects
+  - name: due
+    type: date
+  - name: days_left
+    type: formula
+    expr: days_until(due)
+    format: integer
+  - name: done
+    type: checkbox

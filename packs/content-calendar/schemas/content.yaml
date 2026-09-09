@@ -19,13 +19,92 @@ properties:
         color: blue
       - name: newsletter
         color: green
-      - name: video
+      - name: youtube
         color: red
-      - name: social
-        color: pink
       - name: podcast
         color: purple
+      - name: linkedin
+        color: brown
+      - name: instagram
+        color: pink
+      - name: x
+        color: gray
+      - name: tiktok
+        color: orange
+  - name: format
+    type: select
+    options:
+      - name: article
+        color: blue
+      - name: email
+        color: green
+      - name: video
+        color: red
+      - name: short
+        color: orange
+      - name: episode
+        color: purple
+      - name: post
+        color: gray
+      - name: thread
+        color: yellow
+      - name: carousel
+        color: pink
+  - name: pillar
+    type: multi_select
+    options:
+      - name: teach
+        color: blue
+      - name: story
+        color: orange
+      - name: behind the scenes
+        color: yellow
+      - name: opinion
+        color: purple
+      - name: promote
+        color: green
+  - name: priority
+    type: select
+    options:
+      - name: low
+        color: gray
+      - name: medium
+        color: yellow
+      - name: high
+        color: red
+  - name: due
+    type: date
   - name: publish
     type: date
+  # Stamped with the day the row is set to published. `publish` is the plan;
+  # this is what happened.
+  - name: published_on
+    type: date
+    auto: status == 'published'
+  # Days from today to `publish`, negative once it is past. Computed on read,
+  # never written to the file.
+  - name: days_left
+    type: formula
+    expr: days_until(publish)
+    format: integer
+  # A piece that comes back. Mark it published and the next one appears as a
+  # new row with every date moved on by the interval.
+  - name: repeat
+    type: select
+    options:
+      - name: weekly
+        color: blue
+      - name: biweekly
+        color: purple
+      - name: monthly
+        color: green
+  - name: owner
+    type: person
+  - name: campaign
+    type: relation
+    collection: campaigns
   - name: link
     type: url
+  - name: repurposed_from
+    type: relation
+    collection: content

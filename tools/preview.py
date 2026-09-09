@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from packlib import PackError, destination, frontmatter, lint, load_pack, load_tiers  # noqa: E402
+from packlib import PackError, collections, destination, frontmatter, lint, lint_dates, load_pack, load_tiers  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 MARKER = "<!-- pack-preview -->"
@@ -77,8 +77,9 @@ def render(pid: str, tiers: dict[str, str]) -> str:
     if m.get("kind") == "bundle":
         out += ["**Includes:** " + ", ".join(f"`{x}`" for x in m.get("includes") or []), ""]
 
-    if m.get("kind") == "collection" and m.get("collection"):
-        coll = m["collection"]
+    colls = collections(m) if m.get("kind") == "collection" else []
+    for coll in colls:
+        label = f" of `{coll}`" if len(colls) > 1 else ""
         schema = pack.text(f"schemas/{coll}.yaml")
         if schema:
             import yaml
@@ -92,17 +93,20 @@ def render(pid: str, tiers: dict[str, str]) -> str:
                     opts = [o.get("name") if isinstance(o, dict) else o for o in (p.get("options") or [])]
                     cols.append(f"`{p.get('name')}` ({p.get('type')}{': ' + ' / '.join(map(str, opts)) if opts else ''})")
             if cols:
-                out += ["**Columns:** " + ", ".join(cols), ""]
-        index = pack.text("index.md")
-        fm = frontmatter(index.replace("{{today}}", "2000-01-01")) if index else None
+                out += [f"**Columns{label}:** " + ", ".join(cols), ""]
+        index = pack.text("index.md" if coll == colls[0] else f"index/{coll}.md")
+        fm = frontmatter(lint_dates(index)) if index else None
         views = (fm or {}).get("views") or []
         if views:
             names = []
             for v in views:
                 if isinstance(v, dict):
-                    extra = f" by {v['group']}" if v.get("group") else f" on {v['date']}" if v.get("date") else ""
+                    if v.get("type") == "tracker":
+                        extra = f" over {v.get('log', '?')}, {v.get('range', 'week')}"
+                    else:
+                        extra = f" by {v['group']}" if v.get("group") else f" on {v['date']}" if v.get("date") else ""
                     names.append(f"{v.get('name')} ({v.get('type')}{extra})")
-            out += ["**Views:** " + " · ".join(names), ""]
+            out += [f"**Views{label}:** " + " · ".join(names), ""]
     for p in m.get("files") or []:
         if p.startswith("templates/") and p.endswith(".md"):
             t = pack.text(p)

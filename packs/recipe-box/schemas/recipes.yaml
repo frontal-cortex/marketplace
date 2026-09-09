@@ -1,4 +1,23 @@
 properties:
+  - name: course
+    type: select
+    options:
+      - name: breakfast
+        color: yellow
+      - name: lunch
+        color: green
+      - name: dinner
+        color: blue
+      - name: snack
+        color: orange
+      - name: dessert
+        color: pink
+      - name: side
+        color: brown
+      - name: drink
+        color: purple
+      - name: sauce
+        color: gray
   - name: cuisine
     type: select
     options:
@@ -6,24 +25,129 @@ properties:
         color: red
       - name: mexican
         color: green
-      - name: asian
+      - name: indian
+        color: orange
+      - name: chinese
         color: yellow
-      - name: american
+      - name: japanese
+        color: pink
+      - name: thai
+        color: purple
+      - name: french
         color: blue
+      - name: middle eastern
+        color: brown
+      - name: american
+        color: gray
       - name: other
         color: gray
-  - name: prep_minutes
-    type: number
-  - name: rating
+  - name: main
     type: select
     options:
-      - name: "★"
+      - name: chicken
+        color: orange
+      - name: beef
+        color: red
+      - name: pork
+        color: pink
+      - name: fish
+        color: blue
+      - name: eggs
+        color: yellow
+      - name: beans
+        color: brown
+      - name: tofu
+        color: green
+      - name: pasta
+        color: yellow
+      - name: rice
         color: gray
-      - name: "★★"
+      - name: grains
+        color: brown
+      - name: vegetables
+        color: green
+  - name: diet
+    type: multi_select
+    options:
+      - name: vegetarian
+        color: green
+      - name: vegan
+        color: green
+      - name: gluten-free
+        color: yellow
+      - name: dairy-free
+        color: blue
+      - name: nut-free
+        color: orange
+  - name: difficulty
+    type: select
+    options:
+      - name: easy
+        color: green
+      - name: medium
+        color: yellow
+      - name: hard
+        color: red
+  - name: prep_minutes
+    type: number
+    format: integer
+  - name: cook_minutes
+    type: number
+    format: integer
+  # prep + cook. Empty when either is missing, so a recipe without its minutes
+  # never counts as quick. Computed on read, never written.
+  - name: total_minutes
+    type: formula
+    expr: prep_minutes + cook_minutes
+    format: integer
+  - name: servings
+    type: number
+    format: integer
+  # 1 to 5, drawn as stars.
+  - name: rating
+    type: number
+    format: stars
+    max: 5
+  - name: status
+    type: status
+    options:
+      - name: to try
         color: gray
-      - name: "★★★"
+      - name: tried
         color: yellow
-      - name: "★★★★"
-        color: yellow
-      - name: "★★★★★"
-        color: yellow
+      - name: keeper
+        color: green
+      - name: retired
+        color: red
+  - name: source
+    type: url
+  - name: freezes
+    type: checkbox
+  # From the meals that point at this recipe.
+  - name: times_cooked
+    type: rollup
+    from: meals
+    relation: recipe
+    function: count
+    where: cooked == true
+  - name: last_cooked
+    type: rollup
+    from: meals
+    relation: recipe
+    function: max
+    property: date
+    where: cooked == true
+  - name: next_planned
+    type: rollup
+    from: meals
+    relation: recipe
+    function: min
+    property: date
+    where: cooked == false and date >= @today
+  # Grocery items for this recipe still to buy.
+  - name: to_buy
+    type: rollup
+    from: groceries
+    relation: recipe
+    function: count
+    where: bought == false

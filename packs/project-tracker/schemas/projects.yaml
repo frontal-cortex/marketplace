@@ -2,24 +2,71 @@ properties:
   - name: status
     type: status
     options:
-      - name: not_started
+      - name: planned
         color: gray
-      - name: in_progress
+      - name: active
         color: blue
-      - name: blocked
-        color: red
+      - name: on_hold
+        color: yellow
       - name: done
         color: green
+      - name: dropped
+        color: red
   - name: priority
     type: select
     options:
-      - name: low
-        color: gray
-      - name: medium
-        color: yellow
-      - name: high
+      - name: p1
         color: red
+      - name: p2
+        color: yellow
+      - name: p3
+        color: gray
+  - name: area
+    type: select
+    options:
+      - name: work
+        color: blue
+      - name: personal
+        color: green
+      - name: home
+        color: brown
+      - name: health
+        color: pink
+      - name: learning
+        color: purple
+      - name: side_project
+        color: orange
+  - name: start
+    type: date
   - name: deadline
     type: date
+  - name: days_left
+    type: formula
+    expr: days_until(deadline)
+    format: integer
+  - name: completed
+    type: date
+    auto: status == done
+  - name: progress
+    type: rollup
+    from: milestones
+    relation: project
+    function: percent
+    where: done == true
+    format: progress
+  - name: next_milestone
+    type: rollup
+    from: milestones
+    relation: project
+    function: min
+    property: due
+    where: done != true
+  - name: open_tasks
+    type: rollup
+    from: tasks
+    relation: project
+    function: count
+    where: status != 'done' and status != 'someday'
+    format: integer
   - name: next_action
     type: text

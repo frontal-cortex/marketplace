@@ -1,0 +1,66 @@
+properties:
+  - name: week
+    type: date
+  - name: status
+    type: status
+    options:
+      - name: planned
+        color: gray
+      - name: reviewed
+        color: green
+      - name: skipped
+        color: red
+  - name: rating
+    type: number
+    format: integer
+  - name: focus
+    type: text
+  - name: areas
+    type: multi_select
+    options:
+      - name: work
+        color: blue
+      - name: health
+        color: green
+      - name: family
+        color: pink
+      - name: friends
+        color: orange
+      - name: learning
+        color: purple
+      - name: creative
+        color: yellow
+      - name: money
+        color: brown
+      - name: home
+        color: gray
+  - name: carried_over
+    type: number
+    format: integer
+  # Stamped with the day you set status to reviewed; nothing to type.
+  - name: reviewed_on
+    type: date
+    auto: status == reviewed
+  # Computed from Daily Note's days (collections/journal) whose `week` names
+  # this row. Empty when that pack is not installed.
+  - name: days_written
+    type: rollup
+    from: journal
+    relation: week
+    function: count
+    format: integer
+  - name: energy_avg
+    type: rollup
+    from: journal
+    relation: week
+    function: avg
+    property: energy
+    format: decimal
+  - name: sleep_avg
+    type: rollup
+    from: journal
+    relation: week
+    function: avg
+    property: sleep
+    format: decimal
+    unit: "h"

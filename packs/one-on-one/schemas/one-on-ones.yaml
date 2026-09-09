@@ -1,0 +1,55 @@
+properties:
+  - name: date
+    type: date
+  - name: person
+    type: relation
+    collection: people
+  - name: kind
+    type: select
+    options:
+      - name: regular
+        color: gray
+      - name: career
+        color: blue
+      - name: feedback
+        color: orange
+      - name: skip-level
+        color: purple
+      - name: first
+        color: pink
+  - name: status
+    type: status
+    options:
+      - name: planned
+        color: gray
+      - name: skipped
+        color: red
+      - name: held
+        color: green
+  - name: mood
+    type: select
+    options:
+      - name: great
+        color: green
+      - name: fine
+        color: yellow
+      - name: low
+        color: red
+  - name: summary
+    type: text
+  - name: repeat
+    type: select
+    options:
+      - name: weekly
+        color: blue
+      - name: biweekly
+        color: blue
+      - name: monthly
+        color: blue
+  - name: open_follow_ups
+    type: rollup
+    from: follow-ups
+    relation: one_on_one
+    function: count
+    where: status == 'open'
+    format: integer

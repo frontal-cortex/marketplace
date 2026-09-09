@@ -1,0 +1,26 @@
+properties:
+  - name: meeting
+    type: relation
+    collection: meetings
+  - name: owner
+    type: person
+  - name: due
+    type: date
+  - name: status
+    type: status
+    options:
+      - name: open
+        color: gray
+      - name: doing
+        color: blue
+      - name: done
+        color: green
+      - name: dropped
+        color: red
+  - name: completed
+    type: date
+    auto: status == done
+  - name: days_left
+    type: formula
+    expr: days_until(due)
+    format: integer
