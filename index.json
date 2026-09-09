@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-09-09T09:11:57Z",
+  "generated": "2026-09-09T12:59:43Z",
   "base": "https://frontal-cortex.github.io/marketplace/packs/",
   "packs": [
     {
@@ -79,13 +79,13 @@
         "templates/budget-limits.md": "63393abd63890472820d8ba7a58c81eeb7c808dc4b299dadd3388bc44fc176b9",
         "templates/budget.md": "8d7347f377c9ac6db0e97fe6424296c8acaa9c27e3237ac46e7b630bfc7f01e7"
       },
-      "commit": "3d38f50be685ccb843d7a0c6f80d1697ea590a14"
+      "commit": "e511144f2a56f00d156d66a3a0e882607152aadf"
     },
     {
       "format": 1,
       "id": "contacts",
       "name": "Contacts",
-      "version": "2.1.0",
+      "version": "2.1.1",
       "kind": "collection",
       "summary": "People with a keep-in-touch cadence and a log of every conversation: who is overdue, follow-ups, history.",
       "description": "A personal CRM in two databases. Contacts is one row per person: how you know them, how often you mean to be in touch (monthly, quarterly, twice a year…), plus company, role, birthday, and a page for how you met and what to remember. Interactions is one row per conversation — date, who, what kind, one line of summary — and every person's page embeds their own history from it. The person's `last_seen` is read from their newest interaction, `quiet_days` counts from it, and `due_in` measures that against the cadence, so the Reach out view is the people who are actually overdue, most overdue first, with nothing to update by hand. Follow-ups due lists the promises whose date has come, the Follow-ups calendar shows the ones ahead, and the month chart, one bar per kind, shows whether you are keeping in touch.\n",
@@ -123,9 +123,9 @@
       "preview": null,
       "sha256": {
         "README.md": "cbe4cce0e52739c5bd7636eccc02bfd539bb44aade8257ef7a50e55afe41e748",
-        "index.md": "4bcb634cf371afaccca50a9de160749e511f5b1116577a769e71e7273b505eab",
+        "index.md": "fc4a998f275b6c47233df09d2ac27cdd5dd363b1e7551429a13fdb928a2de89f",
         "index/interactions.md": "bcbeb9520d92c17ef08cc2e0e60ab31aac1ca10d3750a464ecc56c81e551bf40",
-        "manifest.yaml": "261159cf3ad4d5cf8f3ab5a46de5fdcb5820e2c05ffaefd00f0c379dce7c8881",
+        "manifest.yaml": "f4a7b8504ece3f96892c09b1b86dec1336637a3b2b43ac2a31cf0ae7232d5413",
         "schemas/contacts.yaml": "866e9713116791722d81094cc06257ed911ac35bde1f0e4a301a7d520232fbcf",
         "schemas/interactions.yaml": "a0f526eee339edfa091cb8ed2f3a7bed09446a485b5251b85b2239dbc9ff7b33",
         "seed/contacts/alex-example.md": "604c08ed16e6d9eb12252d0cd555e2ec5edb7d7e9e718a0680365891e1b93b0e",
@@ -136,7 +136,7 @@
         "templates/contacts.md": "9f92f6bbc651852c7fa9cf2899ed0a5e8465faad72be7071bd3e79782fb6a191",
         "templates/interactions.md": "715191a44219721a76ebb8f86fcddedffffa33b3723ccdc9c7003a99666ed3b7"
       },
-      "commit": "3d38f50be685ccb843d7a0c6f80d1697ea590a14"
+      "commit": "e511144f2a56f00d156d66a3a0e882607152aadf"
     },
     {
       "format": 1,
@@ -198,7 +198,7 @@
         "templates/campaigns.md": "c3d1bb2a0efa176fc116e09cd50bccab4955186920b2b7561a42bf668c7416b4",
         "templates/content.md": "36895d2d4decdc7b06a4730fd0787154c4778da5be884b04600ce2c3924758b4"
       },
-      "commit": "3d38f50be685ccb843d7a0c6f80d1697ea590a14"
+      "commit": "e511144f2a56f00d156d66a3a0e882607152aadf"
     },
     {
       "format": 1,
@@ -240,7 +240,7 @@
         "seed/example-rough-day.md": "b9a8d709b5897c696600d72f27a2d98aec7cdb988c02e66f6a516fdc25320572",
         "templates/journal.md": "0221dbbe9c62040c3dde1f615bca05bf6983e6e8c5a0084ccf8a7fef8cf60e78"
       },
-      "commit": "3d38f50be685ccb843d7a0c6f80d1697ea590a14"
+      "commit": "e511144f2a56f00d156d66a3a0e882607152aadf"
     },
     {
       "format": 1,
@@ -286,7 +286,7 @@
         "seed/use-postgres-for-the-catalogue.md": "4366653055fd547342f9f453f7fe5ca3777e9d6e28adaadda1b675a4a407f7b0",
         "templates/decisions.md": "af02fed807ea59d40488e1ae9e4772b90d1f9f2f0456a9e17a0070e9bd545f01"
       },
-      "commit": "3d38f50be685ccb843d7a0c6f80d1697ea590a14"
+      "commit": "e511144f2a56f00d156d66a3a0e882607152aadf"
     },
     {
       "format": 1,
@@ -365,7 +365,7 @@
         "templates/goal-milestones.md": "4fa449c855d4864688d6504bcd8739b7c08ccce14a02649db699b7f6acab44eb",
         "templates/goals.md": "e95352cca00b2878f1eea4a485b79152d9d710f3d7a87ec0b4036848360d60dd"
       },
-      "commit": "3d38f50be685ccb843d7a0c6f80d1697ea590a14"
+      "commit": "e511144f2a56f00d156d66a3a0e882607152aadf"
     },
     {
       "format": 1,
@@ -420,7 +420,7 @@
         "templates/habit-log.md": "401ec03f7d552e8d42ca1ee2d8289e065a8f05c87195688e6e0085a9b6f9c566",
         "templates/habits.md": "1143a143e8d02326b32ac460090ec368b7b4912275b79298c30f0c84a2f4f43a"
       },
-      "commit": "3d38f50be685ccb843d7a0c6f80d1697ea590a14"
+      "commit": "e511144f2a56f00d156d66a3a0e882607152aadf"
     },
     {
       "format": 1,
@@ -479,7 +479,7 @@
         "templates/action-items.md": "95b01a83449a26f183bcb08a81a57540ccc2eb70b209e7c732e6bbef3a003c28",
         "templates/meetings.md": "15ed02bd1e3ca685f4e5122c21c3081b0c2caa7ff6438c1da8160368e954c8eb"
       },
-      "commit": "3d38f50be685ccb843d7a0c6f80d1697ea590a14"
+      "commit": "e511144f2a56f00d156d66a3a0e882607152aadf"
     },
     {
       "format": 1,
@@ -554,7 +554,7 @@
         "templates/one-on-ones.md": "c25a6d2fc6e062adcef28273d491b833e78e54b544a65135be59f2c2f9ee445c",
         "templates/people.md": "e0515c8da527cb44ed09162dd2fa8a7febf56a9c876516c2f4b2fd6dea2394c6"
       },
-      "commit": "3d38f50be685ccb843d7a0c6f80d1697ea590a14"
+      "commit": "e511144f2a56f00d156d66a3a0e882607152aadf"
     },
     {
       "format": 1,
@@ -630,7 +630,7 @@
         "templates/para-projects.md": "fe29172998c548f1f59791a730c49044bc7eb1782204ad27849ab1fa031e6974",
         "templates/para-resources.md": "7971a3a62095470fd5d17db50c5d2687386a9a505a2a895d964993e52b05f564"
       },
-      "commit": "3d38f50be685ccb843d7a0c6f80d1697ea590a14"
+      "commit": "e511144f2a56f00d156d66a3a0e882607152aadf"
     },
     {
       "format": 1,
@@ -695,7 +695,7 @@
         "templates/milestones.md": "5a5cb4cea39149323ef5d332e30dd1c0b744b92af259683b4d2436669ab6eeb8",
         "templates/projects.md": "78723c2b19c4b670cf07a2781b57d18a16669374718b795e8c82559749052e43"
       },
-      "commit": "3d38f50be685ccb843d7a0c6f80d1697ea590a14"
+      "commit": "e511144f2a56f00d156d66a3a0e882607152aadf"
     },
     {
       "format": 1,
@@ -761,7 +761,7 @@
         "templates/reading-log.md": "1b785ab5cf723ed4c58b565dbcb3c44803c565799922c532e0a2b2029405e1b2",
         "templates/reading.md": "a3b12c98aa79fd0f72e7b7ac9874ddfcdb15e708781f7e33f184b014c4fd44f7"
       },
-      "commit": "3d38f50be685ccb843d7a0c6f80d1697ea590a14"
+      "commit": "e511144f2a56f00d156d66a3a0e882607152aadf"
     },
     {
       "format": 1,
@@ -835,7 +835,7 @@
         "templates/meals.md": "d325a401d4b0ecde54c00cce9a8e506b46ddfb9054129fbc1709e794e72f201f",
         "templates/recipes.md": "1cc42613451826804f91113d37ede17c9742c0893ce03391188cbde98fac58e2"
       },
-      "commit": "3d38f50be685ccb843d7a0c6f80d1697ea590a14"
+      "commit": "e511144f2a56f00d156d66a3a0e882607152aadf"
     },
     {
       "format": 1,
@@ -885,7 +885,7 @@
         "seed/write-the-project-brief.md": "4251e7b30d4e3f3134c414d67a8c2175b170f9ee5ae89dbd9201ac564108faf3",
         "templates/tasks.md": "b11344a65401067617e89a5d60dc0318581bf5522ba99d0204836f486714e6f4"
       },
-      "commit": "3d38f50be685ccb843d7a0c6f80d1697ea590a14"
+      "commit": "e511144f2a56f00d156d66a3a0e882607152aadf"
     },
     {
       "format": 1,
@@ -927,7 +927,7 @@
         "seed/example-week.md": "a3db1e867f0cfc363ca51b72b342bfa9f9896b6613477d5e5ffe909ddf132697",
         "templates/weeks.md": "8e1bc36e6261556c2a1e2f43c27c53a630af6083a9dea1c669035f3ae66586cf"
       },
-      "commit": "3d38f50be685ccb843d7a0c6f80d1697ea590a14"
+      "commit": "e511144f2a56f00d156d66a3a0e882607152aadf"
     }
   ]
 }
