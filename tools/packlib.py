@@ -32,13 +32,20 @@ PREVIEW_MAX_FILES = 8
 PREVIEW_MAX_BYTES = 600 * 1024
 TEMPLATE_VARS = ("date", "time", "title", "uuid")
 RAW_HTML_OK = ("<br", "<sub", "</sub", "<sup", "</sup", "<!--")
+BUTTON_ACTIONS = ("add-row", "open", "log", "set", "url")
+BUTTON_KEYS = ("label", "action", "collection", "values", "template", "open", "target", "view", "item", "url")
 PRODUCT_WORDS = ("notion", "obsidian", "evernote", "roam", "logseq", "craft")
 PROPERTY_TYPES = {"text", "number", "date", "checkbox", "select", "multi_select", "status", "person", "url", "relation", "rollup", "formula"}
 # Keys a property may carry besides name/type/options (`cortex_core::schema::PropertyDef`).
 PROPERTY_KEYS = {"collection", "relation", "property", "function", "from", "where", "expr", "format", "min", "max", "unit", "auto"}
 # A property may not shadow a note's own keys.
 RESERVED_PROPERTY_NAMES = ("type", "title", "tags", "created", "id", "path", "icon", "cover", "parent", "pack")
-FORMATS = ("percent", "progress", "currency", "stars", "integer", "decimal")
+FORMATS = ("percent", "progress", "ring", "currency", "stars", "integer", "decimal")
+# View vocab mirrored from cortex_core::data (CHART_TYPES, BUCKETS, SUMMARY_FUNCTIONS).
+CHART_TYPES = ("line", "bar", "area", "donut", "pie")
+BUCKETS = ("day", "week", "month", "quarter", "year")
+SUMMARY_FUNCTIONS = ("count", "sum", "avg", "min", "max", "percent_checked", "empty", "not_empty")
+DATE_TYPES = ("date", "date_range", "created_time", "edited_time")
 # Frontmatter keys every note may carry, whatever the schema says.
 FREE_KEYS = {"title", "type", "tags", "created", "icon", "cover"}
 KINDS = ("note", "collection", "bundle")
@@ -224,6 +231,10 @@ def resolve_date(name: str, base: date) -> str | None:
         return _shift_month(base, n).strftime("%Y-%m")
     elif word == "year":
         return str(base.year + n)
+    elif word == "quarter":
+        # The quarter's first day, so `date >= @quarter and date < @quarter+1` reads naturally.
+        q0 = date(base.year, (base.month - 1) // 3 * 3 + 1, 1)
+        return _shift_month(q0, 3 * n).strftime("%Y-%m-%d")
     elif word == "week":
         y, w, _ = (_monday(base) + timedelta(days=7 * n)).isocalendar()
         return f"{y}-W{w:02d}"
@@ -505,6 +516,63 @@ def _lint_markdown(path: str, text: str, out: list[Finding]) -> None:
             break
 
 
+def _lint_buttons(path: str, text: str, colls: list[str], out: list[Finding]) -> None:
+    """```cortex-button fences: the rules of `cortex_core::marketplace::lint_buttons`, same messages."""
+    err = lambda m: out.append(Finding("error", path, m))
+    warn = lambda m: out.append(Finding("warning", path, m))
+    lines = text.split("\n")
+    i = 0
+    while i < len(lines):
+        if lines[i].strip() != "```cortex-button":
+            i += 1
+            continue
+        i += 1
+        keys: list[tuple[str, str]] = []
+        while i < len(lines) and not lines[i].lstrip().startswith("```"):
+            l = lines[i]
+            i += 1
+            if l[:1] in (" ", "\t") or not l.strip():
+                continue
+            if ":" in l:
+                k, v = l.split(":", 1)
+                keys.append((k.strip(), v.strip().strip("\"'")))
+        i += 1
+
+        def get(k: str) -> str | None:
+            for kk, v in keys:
+                if kk == k:
+                    return v or None
+            return None
+
+        label = get("label") or "(no label)"
+        if get("label") is None:
+            err("a button needs `label:`")
+        action = get("action") or ""
+        if action not in BUTTON_ACTIONS:
+            err(f"button `{label}`: unknown action `{action}` (add-row, open, log, set, url)")
+            continue
+        coll = get("collection")
+        if coll is not None:
+            coll = coll.removeprefix("collections/").rstrip("/")
+        if action in ("add-row", "log") and coll is None:
+            err(f"button `{label}`: `{action}` needs `collection:`")
+        if action == "open" and coll is None and get("target") is None:
+            err(f"button `{label}`: `open` needs `collection:` or `target:`")
+        if coll is not None and coll not in colls:
+            warn(f"button `{label}` names collection `{coll}`, which this pack does not install — fine when the vault has it")
+        if action == "log" and get("item") is None:
+            err(f"button `{label}`: `log` needs `item:`")
+        if action == "set" and not any(k == "values" for k, _ in keys):
+            err(f"button `{label}`: `set` needs `values:`")
+        if action == "url":
+            u = get("url")
+            if u is None or not (u.startswith("http://") or u.startswith("https://") or u.startswith("mailto:")):
+                err(f"button `{label}`: `url` must be an http(s) or mailto link")
+        for k, _ in keys:
+            if k not in BUTTON_KEYS:
+                warn(f"button `{label}`: unknown key `{k}` is ignored")
+
+
 def _schema_props(text: str) -> list[dict] | str:
     """The property definitions of a schema file, or an error message.
 
@@ -626,10 +694,12 @@ def lint(pack: Pack) -> list[Finding]:
             err(path, "files live in templates/, schemas/, seed/, index/, assets/, preview/ or are index.md / README.md / preview.png")
         if ext in IMAGE_EXT and len(data) > 200 * 1024:
             err(path, "images must be 200 KB or smaller")
+        if ext == "md":
+            text = data.decode("utf-8", "replace")
+            _lint_markdown(path, text, out)
+            _lint_buttons(path, text, collections(m), out)
     if gallery > PREVIEW_MAX_FILES:
         err("preview/", f"at most {PREVIEW_MAX_FILES} preview images")
-        if ext == "md":
-            _lint_markdown(path, data.decode("utf-8", "replace"), out)
     if total > 2 * 1024 * 1024:
         err(None, "pack is larger than 2 MB")
 
@@ -695,6 +765,48 @@ def lint(pack: Pack) -> list[Finding]:
                             d = v.get("date")
                             if not (isinstance(d, str) and props.get(d) == "date"):
                                 err(index_path, "a calendar view needs `date:` naming a date property")
+                        # `bucket:` folds a date group (or a chart's date x) — nothing else.
+                        b = v.get("bucket")
+                        if b is not None:
+                            if str(b) not in BUCKETS and str(b) != "none":
+                                err(index_path, f"view `bucket: {b}` is not one of {', '.join(BUCKETS)}")
+                            if vkind != "chart":
+                                g = v.get("group")
+                                if not (isinstance(g, str) and props.get(g) in DATE_TYPES):
+                                    err(index_path, "`bucket:` only folds a date `group:` — set `group:` to a date property or drop `bucket:`")
+                        if vkind == "chart":
+                            ct = v.get("chartType")
+                            if ct is not None and str(ct) not in CHART_TYPES:
+                                err(index_path, f"chart `chartType: {ct}` is not one of {', '.join(CHART_TYPES)}")
+                        if "layout" in v and vkind != "gallery":
+                            err(index_path, f"`layout:` belongs to gallery views, not a {vkind}")
+                        if vkind == "gallery":
+                            if "layout" in v and str(v.get("layout")) != "compact":
+                                err(index_path, f"gallery `layout: {v.get('layout')}` — the only layout besides the default is `compact`")
+                            if "size" in v and str(v.get("size")) not in ("small", "medium", "large"):
+                                err(index_path, f"gallery `size: {v.get('size')}` is not small, medium or large")
+                        if vkind == "stats":
+                            entries = v.get("stats")
+                            if not isinstance(entries, list):
+                                err(index_path, "a stats view needs a `stats:` list — entries of {label, agg, field} or {label, expr}")
+                            else:
+                                for e in entries:
+                                    if not isinstance(e, dict):
+                                        continue
+                                    label = e.get("label", "?")
+                                    expr = e.get("expr")
+                                    agg = e.get("agg")
+                                    field = e.get("field")
+                                    if isinstance(expr, str) and expr.strip():
+                                        continue  # the formula grammar is the engine's; lint only asks for one
+                                    if agg is None:
+                                        err(index_path, f"stat `{label}` needs `agg:` and `field:` (or `expr:`)")
+                                    elif str(agg) not in SUMMARY_FUNCTIONS:
+                                        err(index_path, f"stat `{label}`: unknown agg `{agg}` ({', '.join(SUMMARY_FUNCTIONS)})")
+                                    elif str(agg) != "count" and field is None:
+                                        err(index_path, f"stat `{label}`: `agg: {agg}` needs a `field:`")
+                                    if "source" not in e and isinstance(field, str) and field != "title" and field not in props:
+                                        err(index_path, f"stat `{label}`: field `{field}` is not in the schema")
             if pack.text(f"templates/{c}.md") is None:
                 warn(None, f"no row template templates/{c}.md — New row in {c} will have no shape")
         # Seeds and row templates use only their own collection's properties.
