@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-09-10T11:31:39Z",
+  "generated": "2026-09-10T11:55:32Z",
   "base": "https://frontal-cortex.github.io/marketplace/packs/",
   "packs": [
     {
@@ -75,7 +75,7 @@
       ],
       "sha256": {
         "README.md": "886f94f6e299b0936fa4836db1a9e5c72dfd5b930c0cb7e76572ca6f27297247",
-        "index.md": "cb6559f4a2d68f96fe2a6631e63c32e7adce1cc10a1c17f361c1f0dc6be85f68",
+        "index.md": "93ac54be91006484db86b7e4c712473047f79b12e988a32df0d10a067eb1c951",
         "index/accounts.md": "1c13446e003a380cd54eb38db3e01a98729c4c4e21c4b3bd826809464abab99f",
         "index/budget-bills.md": "d56079c8b36f6659dda1ca86b75c4eeae87e7c8be429506b803fc5eacf28aa60",
         "index/budget-limits.md": "ffa268ab3d9d09bb12c74cb2190a96d6200414c8efecbde18c9ef58ca587f3b8",
@@ -109,7 +109,7 @@
         "templates/budget-limits.md": "63393abd63890472820d8ba7a58c81eeb7c808dc4b299dadd3388bc44fc176b9",
         "templates/budget.md": "701fec33ca593d94f1e87511e4b283cf3dc2c62d998d70c04d0d5de4b0ba09e7"
       },
-      "commit": "9b77fec674585a2e90c07e93c9ce8988cc7a3035"
+      "commit": "d89255073a762fb1093d4b4360d9492f49ea26bc"
     },
     {
       "format": 1,
@@ -174,7 +174,7 @@
         "templates/contacts.md": "9f92f6bbc651852c7fa9cf2899ed0a5e8465faad72be7071bd3e79782fb6a191",
         "templates/interactions.md": "715191a44219721a76ebb8f86fcddedffffa33b3723ccdc9c7003a99666ed3b7"
       },
-      "commit": "9b77fec674585a2e90c07e93c9ce8988cc7a3035"
+      "commit": "d89255073a762fb1093d4b4360d9492f49ea26bc"
     },
     {
       "format": 1,
@@ -244,7 +244,7 @@
         "templates/campaigns.md": "c3d1bb2a0efa176fc116e09cd50bccab4955186920b2b7561a42bf668c7416b4",
         "templates/content.md": "36895d2d4decdc7b06a4730fd0787154c4778da5be884b04600ce2c3924758b4"
       },
-      "commit": "9b77fec674585a2e90c07e93c9ce8988cc7a3035"
+      "commit": "d89255073a762fb1093d4b4360d9492f49ea26bc"
     },
     {
       "format": 1,
@@ -294,7 +294,7 @@
         "seed/example-rough-day.md": "b9a8d709b5897c696600d72f27a2d98aec7cdb988c02e66f6a516fdc25320572",
         "templates/journal.md": "0221dbbe9c62040c3dde1f615bca05bf6983e6e8c5a0084ccf8a7fef8cf60e78"
       },
-      "commit": "9b77fec674585a2e90c07e93c9ce8988cc7a3035"
+      "commit": "d89255073a762fb1093d4b4360d9492f49ea26bc"
     },
     {
       "format": 1,
@@ -348,7 +348,7 @@
         "seed/use-postgres-for-the-catalogue.md": "4366653055fd547342f9f453f7fe5ca3777e9d6e28adaadda1b675a4a407f7b0",
         "templates/decisions.md": "af02fed807ea59d40488e1ae9e4772b90d1f9f2f0456a9e17a0070e9bd545f01"
       },
-      "commit": "9b77fec674585a2e90c07e93c9ce8988cc7a3035"
+      "commit": "d89255073a762fb1093d4b4360d9492f49ea26bc"
     },
     {
       "format": 1,
@@ -435,7 +435,7 @@
         "templates/goal-milestones.md": "4fa449c855d4864688d6504bcd8739b7c08ccce14a02649db699b7f6acab44eb",
         "templates/goals.md": "e95352cca00b2878f1eea4a485b79152d9d710f3d7a87ec0b4036848360d60dd"
       },
-      "commit": "9b77fec674585a2e90c07e93c9ce8988cc7a3035"
+      "commit": "d89255073a762fb1093d4b4360d9492f49ea26bc"
     },
     {
       "format": 1,
@@ -485,7 +485,7 @@
       ],
       "sha256": {
         "README.md": "f24d0009041af4431c5384b1602df79ef77e55341a837314d76f6f2631ce397b",
-        "index.md": "6fba6ce85d027cdc3e362357dcde491aa071d7e3c258e1bb98c9828ea71c1fb4",
+        "index.md": "bcf7b73f1f7a4deb2c6ec0936a703cdb92275049c75f57bfb66cb152a8f2c570",
         "index/habit-log.md": "a030bbcfd62e7c9d2504992557b5a784741666ab748fafe7c240a7848e974865",
         "manifest.yaml": "473f9984c4291f6d7ece835acbbbd5bd514c236cad02e252c87f551924b5225c",
         "preview.png": "21484ec901ef6871824cb2376c27003116cb170c442659c502062048f9592faf",
@@ -498,7 +498,7 @@
         "templates/habit-log.md": "401ec03f7d552e8d42ca1ee2d8289e065a8f05c87195688e6e0085a9b6f9c566",
         "templates/habits.md": "1143a143e8d02326b32ac460090ec368b7b4912275b79298c30f0c84a2f4f43a"
       },
-      "commit": "9b77fec674585a2e90c07e93c9ce8988cc7a3035"
+      "commit": "d89255073a762fb1093d4b4360d9492f49ea26bc"
     },
     {
       "format": 1,
@@ -565,7 +565,7 @@
         "templates/action-items.md": "95b01a83449a26f183bcb08a81a57540ccc2eb70b209e7c732e6bbef3a003c28",
         "templates/meetings.md": "15ed02bd1e3ca685f4e5122c21c3081b0c2caa7ff6438c1da8160368e954c8eb"
       },
-      "commit": "9b77fec674585a2e90c07e93c9ce8988cc7a3035"
+      "commit": "d89255073a762fb1093d4b4360d9492f49ea26bc"
     },
     {
       "format": 1,
@@ -648,7 +648,7 @@
         "templates/one-on-ones.md": "c25a6d2fc6e062adcef28273d491b833e78e54b544a65135be59f2c2f9ee445c",
         "templates/people.md": "e0515c8da527cb44ed09162dd2fa8a7febf56a9c876516c2f4b2fd6dea2394c6"
       },
-      "commit": "9b77fec674585a2e90c07e93c9ce8988cc7a3035"
+      "commit": "d89255073a762fb1093d4b4360d9492f49ea26bc"
     },
     {
       "format": 1,
@@ -732,7 +732,7 @@
         "templates/para-projects.md": "fe29172998c548f1f59791a730c49044bc7eb1782204ad27849ab1fa031e6974",
         "templates/para-resources.md": "7971a3a62095470fd5d17db50c5d2687386a9a505a2a895d964993e52b05f564"
       },
-      "commit": "9b77fec674585a2e90c07e93c9ce8988cc7a3035"
+      "commit": "d89255073a762fb1093d4b4360d9492f49ea26bc"
     },
     {
       "format": 1,
@@ -787,7 +787,7 @@
       ],
       "sha256": {
         "README.md": "6398276695105ac4d958dc28da384a9af0fa62990a672c045b07bb21aeffab73",
-        "index.md": "8e2b374cd71de89853de351456a276b58c17b5a77ba32efddb622db4f2bc02c6",
+        "index.md": "b3a750d546e3e99337f101ca7d3ee08bb4d038e560b2c4080cc2bea518d1453f",
         "index/milestones.md": "a344b207fd81afdfd071ce48b6dbcdc435c38442f9773d276ddab39cdc13ab8f",
         "manifest.yaml": "ccabfe32488142016732ce2790351a3ed4de27c747e269e4e270c21c2dabda71",
         "preview.png": "3f13d6de9a097d35a6edb2e721b7b09396d5052306750bd689f06436e0f708de",
@@ -805,7 +805,7 @@
         "templates/milestones.md": "5a5cb4cea39149323ef5d332e30dd1c0b744b92af259683b4d2436669ab6eeb8",
         "templates/projects.md": "78723c2b19c4b670cf07a2781b57d18a16669374718b795e8c82559749052e43"
       },
-      "commit": "9b77fec674585a2e90c07e93c9ce8988cc7a3035"
+      "commit": "d89255073a762fb1093d4b4360d9492f49ea26bc"
     },
     {
       "format": 1,
@@ -879,7 +879,7 @@
         "templates/reading-log.md": "1b785ab5cf723ed4c58b565dbcb3c44803c565799922c532e0a2b2029405e1b2",
         "templates/reading.md": "a3b12c98aa79fd0f72e7b7ac9874ddfcdb15e708781f7e33f184b014c4fd44f7"
       },
-      "commit": "9b77fec674585a2e90c07e93c9ce8988cc7a3035"
+      "commit": "d89255073a762fb1093d4b4360d9492f49ea26bc"
     },
     {
       "format": 1,
@@ -961,7 +961,7 @@
         "templates/meals.md": "d325a401d4b0ecde54c00cce9a8e506b46ddfb9054129fbc1709e794e72f201f",
         "templates/recipes.md": "1cc42613451826804f91113d37ede17c9742c0893ce03391188cbde98fac58e2"
       },
-      "commit": "9b77fec674585a2e90c07e93c9ce8988cc7a3035"
+      "commit": "d89255073a762fb1093d4b4360d9492f49ea26bc"
     },
     {
       "format": 1,
@@ -1019,7 +1019,7 @@
         "seed/write-the-project-brief.md": "4251e7b30d4e3f3134c414d67a8c2175b170f9ee5ae89dbd9201ac564108faf3",
         "templates/tasks.md": "b11344a65401067617e89a5d60dc0318581bf5522ba99d0204836f486714e6f4"
       },
-      "commit": "9b77fec674585a2e90c07e93c9ce8988cc7a3035"
+      "commit": "d89255073a762fb1093d4b4360d9492f49ea26bc"
     },
     {
       "format": 1,
@@ -1060,7 +1060,7 @@
       ],
       "sha256": {
         "README.md": "39a8e8c2802dd475d72f7e3a27af67f02073dcb8c6972ae4604f16094abecd69",
-        "index.md": "2a2d6ed87844d4d8fd62c69e71e4ff08a41fa001f1a51b6102d8686ff956ddd6",
+        "index.md": "922827451fa5c8fd692acfaf22c6567b95367c09634fe28a6f335877bec246a9",
         "manifest.yaml": "e2c86d3ec4b73120774da86b8b9dede98814b70d93a1f1f51b46e1593a86cc91",
         "preview.png": "32f3add089d1f52d49f525b2f4c26fe13dd0d6be0045be7391afca01ad6fe681",
         "schemas/weeks.yaml": "d79756c2cd3c054be361fbd09cd93b6603ae80901f8f275acaa50618ab69ff0e",
@@ -1068,7 +1068,7 @@
         "seed/example-week.md": "a3db1e867f0cfc363ca51b72b342bfa9f9896b6613477d5e5ffe909ddf132697",
         "templates/weeks.md": "8e1bc36e6261556c2a1e2f43c27c53a630af6083a9dea1c669035f3ae66586cf"
       },
-      "commit": "9b77fec674585a2e90c07e93c9ce8988cc7a3035"
+      "commit": "d89255073a762fb1093d4b4360d9492f49ea26bc"
     }
   ]
 }
