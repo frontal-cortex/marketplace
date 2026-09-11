@@ -1,20 +1,21 @@
 {
   "format": 1,
-  "generated": "2026-09-09T17:26:56Z",
+  "generated": "2026-09-11T12:13:33Z",
   "base": "https://frontal-cortex.github.io/marketplace/packs/",
   "packs": [
     {
       "format": 1,
       "id": "budget-tracker",
       "name": "Budget Tracker",
-      "version": "2.1.1",
+      "version": "3.1.0",
       "kind": "collection",
-      "summary": "A ledger of transactions, limits per category with spent and remaining computed, bills that advance when you tick paid.",
-      "description": "Three small databases that stay filled in. `budget` is the ledger: one row per transaction with a date, an amount, a kind (expense, income, transfer), a category and an account; This month and This month by category roll over on the 1st by themselves. `budget-limits` holds one row per category with the monthly amount you mean to spend; the table shows what this month's ledger rows add up to, what is left, the share used as a bar, and last month's figure, and each limit's page charts the category month by month. `budget-bills` is every recurring charge with its cycle and next due date: tick paid and the date moves forward one cycle in the same row; Upcoming, Overdue and a per-month cost list answer what is about to land, what you missed, and what everything costs. Link a transaction to its bill and the bill knows when it was last paid and what it has cost in total. Everything is computed from the rows when you open the page, nothing to update by hand.\n",
+      "summary": "A finance dashboard: one-click capture, live balances, budgets with rings, this month at a glance — from one ledger.",
+      "description": "Five small databases that stay filled in, and a dashboard that reads them. `budget` is the ledger: one row per transaction with a date, an amount, a kind (expense, income, transfer), a category and the account it hit — a transfer names both accounts. Its page is the dashboard: New expense / New income / New transfer buttons, this month's spent, earned and net as tiles, the budgets as cards with a ring each, spending grouped by month with totals, a donut of where the money went, and every account's balance. `accounts` holds one row per account with its opening balance; income, spending, transfers in and out and the balance are computed from the ledger. `budget-limits` holds one row per category with the monthly amount you mean to spend and shows spent, remaining and the share used as a ring. `budget-bills` is every recurring charge with its cycle and next due date: tick paid and the date moves forward one cycle in the same row. `budget-wishlist` is what you are saving up for: tag a transfer with `wish` and the item shows how much is put by and how much is left, tag the purchase and it moves to Bought at what it really cost. Everything is computed from the rows when you open the page; nothing is copied between databases and nothing needs resetting on the 1st.\n",
       "tags": [
         "finance",
         "budget",
         "money",
+        "dashboard",
         "database"
       ],
       "author": {
@@ -22,35 +23,54 @@
         "url": "https://github.com/frontal-cortex"
       },
       "license": "CC0-1.0",
-      "credits": "The transactions / limits / bills split and the budget-versus-actual page follow the budget trackers in Notion's gallery (Easlo, Thomas Frank, Matthias Frank) and the envelope spreadsheets they copy; the computed-on-read design is our own.",
+      "credits": "The dashboard shape — quick-action buttons, budget rings, month-grouped lists, a donut and account balances — follows Sentele's Finance Tracker and Notion's Personal Finance Tracker; the single ledger with transfers as rows and everything computed on read is our own.",
       "min_cortex": "0.1.0",
       "collection": "budget",
       "collections": [
+        "accounts",
         "budget-limits",
-        "budget-bills"
+        "budget-bills",
+        "budget-wishlist"
       ],
       "files": [
         "schemas/budget.yaml",
+        "schemas/accounts.yaml",
         "schemas/budget-limits.yaml",
         "schemas/budget-bills.yaml",
+        "schemas/budget-wishlist.yaml",
         "index.md",
+        "index/accounts.md",
         "index/budget-limits.md",
         "index/budget-bills.md",
+        "index/budget-wishlist.md",
         "templates/budget.md",
+        "templates/accounts.md",
         "templates/budget-limits.md",
         "templates/budget-bills.md",
+        "templates/budget-wishlist.md",
         "seed/budget/weekly-shop.md",
         "seed/budget/weekly-shop-last-week.md",
         "seed/budget/coffee.md",
+        "seed/budget/bus-pass.md",
+        "seed/budget/music-streaming.md",
         "seed/budget/salary.md",
         "seed/budget/salary-last-month.md",
         "seed/budget/rent.md",
         "seed/budget/rent-last-month.md",
+        "seed/budget/move-to-savings.md",
+        "seed/budget/cash-withdrawal.md",
+        "seed/budget/headphones.md",
+        "seed/accounts/checking.md",
+        "seed/accounts/savings.md",
+        "seed/accounts/cash.md",
         "seed/budget-limits/groceries.md",
         "seed/budget-limits/dining.md",
         "seed/budget-limits/subscriptions.md",
         "seed/budget-bills/rent.md",
-        "seed/budget-bills/music-streaming.md"
+        "seed/budget-bills/music-streaming.md",
+        "seed/budget-wishlist/trip-to-lisbon.md",
+        "seed/budget-wishlist/headphones.md",
+        "seed/budget-wishlist/standing-desk.md"
       ],
       "tier": "official",
       "preview": "budget-tracker/preview.png",
@@ -62,32 +82,49 @@
         "budget-tracker/preview/05-budget-calendar.png"
       ],
       "sha256": {
-        "README.md": "13a7de1d7e992ce906f327cebba9c5de959a983bef3883dca43316a893cd5fb5",
-        "index.md": "7230645684986ff3bc196c56c490fe73f08c376e3a57032bfd25e0f4b7fe9966",
+        "README.md": "ac9b54048328caa27fae7b9dec013ce556c0d8e17227df6bc22b6770b3c3c4a0",
+        "index.md": "82c2c4ad45076438d92120e1c80794be53ea963da242a55029ef60e8d36b93a9",
+        "index/accounts.md": "1c13446e003a380cd54eb38db3e01a98729c4c4e21c4b3bd826809464abab99f",
         "index/budget-bills.md": "d56079c8b36f6659dda1ca86b75c4eeae87e7c8be429506b803fc5eacf28aa60",
         "index/budget-limits.md": "ffa268ab3d9d09bb12c74cb2190a96d6200414c8efecbde18c9ef58ca587f3b8",
-        "manifest.yaml": "bc9a6aacf4e571c7aa2cd97faf20d2bb642109401f6988a713e26d1d0ca207ed",
+        "index/budget-wishlist.md": "6fb94007004e28a741bbfadbcde19cf282b99dedbbb5735b6de6735102cfcea8",
+        "manifest.yaml": "2a067c5b8353de8119045b21508ea0fbd419f4386a6b989c3eb535de3f0a9dcb",
         "preview.png": "db775712b75d41348367097423841eb5176453cc99c863fbb88adaaa8f6337f6",
-        "schemas/budget-bills.yaml": "bc9335d20571a619751b4c4818f84819984c456a7b1dac51394f290d30a7a19a",
-        "schemas/budget-limits.yaml": "8bcdf2fd0aa99abdbc26885561cb4dee5566cc48c6a3fc7bcb4ba1baebbd3dc6",
-        "schemas/budget.yaml": "79d65b3bf8d6dc46efc11df17b7a2ff56c5a41f9acab3a77075f9033ba71fe92",
-        "seed/budget-bills/music-streaming.md": "1a404a6037fb1ca1b958fc20895e681314c032a9af11f8b7f834b68d41f21c55",
-        "seed/budget-bills/rent.md": "19f2ca06109f5d97754c53b036aac3a1d6e4a1670995ac7a363f11b929fd380d",
+        "schemas/accounts.yaml": "188e82648a42556772411dd5e996de2393f83fc4a95386e46d9f97e262c295f5",
+        "schemas/budget-bills.yaml": "e98e018ab2cbf1ad7f733a2d408e14aa6966710e36b9e1f6213472588d4cdd83",
+        "schemas/budget-limits.yaml": "73f44075acce6fb1afa54c06ea1f81d76d2b7c8a5539cbb22227f8d2c22c100e",
+        "schemas/budget-wishlist.yaml": "f83e0d76c7fbbc435904b0f1fcbd6fd237bbd4e06b6d26f8518bdd5507f75ae5",
+        "schemas/budget.yaml": "3bef250f63ce618ead7714a9945431e531016a2fc0361da929124f4e7256e661",
+        "seed/accounts/cash.md": "415cc2e3e2998d8a33cfed7f6285c4e93689442215fe67fd7200a3a179213c8d",
+        "seed/accounts/checking.md": "da7cc047915fd2deb781ba1c9255a75fafe7c066b2027df924ea81f50a65a1bf",
+        "seed/accounts/savings.md": "ca471db0c05223dedfae69ef2fb6c7826a12e561d622ad769c8b65af867eba86",
+        "seed/budget-bills/music-streaming.md": "70b91074490b5bd2c85a17a6c94dd37ede0e818254811e8d74aae70d07ba2c8d",
+        "seed/budget-bills/rent.md": "f74743d17b885b6f3fc66fe11877c8c56cde2fc010c21c31ee6d74a341dd287f",
         "seed/budget-limits/dining.md": "63a536d6683abd5b9fd1657a20586f1ec586441fccfd65d09e0d6b88f5fdf790",
         "seed/budget-limits/groceries.md": "e457395442a64f7383445e05f9bfc39d1cf0b480609b547827f0bd3d9c5cee15",
         "seed/budget-limits/subscriptions.md": "15f9996eb52fa565c6431b33c2b489d714bfd3a5780569792cbf4459cd620e8b",
-        "seed/budget/coffee.md": "7a7d45c9b95ce4aaf78e20f0303483e805dd67034813c180909fff0dde513e84",
-        "seed/budget/rent-last-month.md": "7d8f3f92eecfda60f24730c994dc4ee4c9de32adea4016ae7d3a75e1685ae559",
-        "seed/budget/rent.md": "14e0e42677582aa55b4753cb3048f0267026d558cf4a5a10fb3ef53578b202e4",
-        "seed/budget/salary-last-month.md": "ee525f79f077b1bf9ffa2cd440e13c565f427d704925fb3c252791fca116ac0c",
-        "seed/budget/salary.md": "b3611a902334c211c6937d0f4db794bbec8615e7cbe7bc4c1e713fe269417d78",
-        "seed/budget/weekly-shop-last-week.md": "f6901e1e36742a90f8b345966c904a1e280d688546a7bdec3c3aafe6b2cb0796",
-        "seed/budget/weekly-shop.md": "6b8980faf9fcc131d7ee5e968a3e8a884aa1869051d37da3f8a127bf022fbb92",
-        "templates/budget-bills.md": "46e12d382849a1913cd7218467b93139277d210ab04f6c976b9b2fcf549b838e",
+        "seed/budget-wishlist/headphones.md": "d831b23eb5c361bc53dd4ce0b026977b1756b566bbd9a6f21a7134d7e8add02c",
+        "seed/budget-wishlist/standing-desk.md": "14de3e22e74721a5bd0bdd9d56281a808d5928c63c59809476a0212637d0d2cd",
+        "seed/budget-wishlist/trip-to-lisbon.md": "efa910baef8ad1f9437a56fd9f5567c6aec47bd9f0f900e5ee2cf786d0f7c669",
+        "seed/budget/bus-pass.md": "406e7f3c5fe700202502563ead63b370e3f98f1ba326dffb68d69a3d00349bff",
+        "seed/budget/cash-withdrawal.md": "63f90d6a40d9f7c79618972cb14b7308bc222e12b5b3cddc770ab63c6e06242d",
+        "seed/budget/coffee.md": "a4c079864bcd2db40fda09289870c47088d44b778a5a3bf6b884b2abaa25f7b0",
+        "seed/budget/headphones.md": "5824f86a6cbcbad2925d84beaf67177c252502b405359d2da806b9e707926d7f",
+        "seed/budget/move-to-savings.md": "6d30dac8c9e04b6e8a6213dd95b6f8b72a02667d3d2cf4643d437e0bb2d00412",
+        "seed/budget/music-streaming.md": "cc6174026e5418042d75527b4a04a7762d11eddfed863a801cc8340c2db4555e",
+        "seed/budget/rent-last-month.md": "a0f35ade2432e8f3ee53973b14b21951f4c852bc7ac7ab989466f1edaa71c965",
+        "seed/budget/rent.md": "b6a2a14fbd6d5381aa40d003d73a59c6f4bd8daefe1b3f58348e8bfc40065dcb",
+        "seed/budget/salary-last-month.md": "f47121b0ad8972b05a90212f93c3d528b86e266d72723a99bdb2ce13a2a74fc5",
+        "seed/budget/salary.md": "d1a5e32de90964d2f637d83a071271b746a8efc9dec14b75c7072ba8f8a8745c",
+        "seed/budget/weekly-shop-last-week.md": "8d797179c98e04b19e0efff335b7fba6679cc2270d03d75d276505025232fb1d",
+        "seed/budget/weekly-shop.md": "b56c9e42432019e3f6825c4e29a33f99bc97a598555374dad4c8623d0e08368d",
+        "templates/accounts.md": "e62b8240871f0d1ac3a0e7cd1f3d8e53369cc6c80f61764f7bba00c5e4df61bc",
+        "templates/budget-bills.md": "74526d503babeb9ee3e4dce002be6dea1e9ab1590d6661b3ca4e91516a69c876",
         "templates/budget-limits.md": "63393abd63890472820d8ba7a58c81eeb7c808dc4b299dadd3388bc44fc176b9",
-        "templates/budget.md": "8d7347f377c9ac6db0e97fe6424296c8acaa9c27e3237ac46e7b630bfc7f01e7"
+        "templates/budget-wishlist.md": "3ee7c87c06db10202285258eff2dae192bb19b32a7c0add1a18db73519cdf59e",
+        "templates/budget.md": "df279fb5d17ef1cddfdc9ebb8e7d304526733f382e8e33b0e41847ab00bb7b81"
       },
-      "commit": "09e5adacc3940660a76bbc4bde3e754aade8069f"
+      "commit": "4d3765302f3679e8da4792174e8428da387ee3af"
     },
     {
       "format": 1,
@@ -152,7 +189,7 @@
         "templates/contacts.md": "9f92f6bbc651852c7fa9cf2899ed0a5e8465faad72be7071bd3e79782fb6a191",
         "templates/interactions.md": "715191a44219721a76ebb8f86fcddedffffa33b3723ccdc9c7003a99666ed3b7"
       },
-      "commit": "09e5adacc3940660a76bbc4bde3e754aade8069f"
+      "commit": "4d3765302f3679e8da4792174e8428da387ee3af"
     },
     {
       "format": 1,
@@ -222,7 +259,7 @@
         "templates/campaigns.md": "c3d1bb2a0efa176fc116e09cd50bccab4955186920b2b7561a42bf668c7416b4",
         "templates/content.md": "36895d2d4decdc7b06a4730fd0787154c4778da5be884b04600ce2c3924758b4"
       },
-      "commit": "09e5adacc3940660a76bbc4bde3e754aade8069f"
+      "commit": "4d3765302f3679e8da4792174e8428da387ee3af"
     },
     {
       "format": 1,
@@ -272,7 +309,7 @@
         "seed/example-rough-day.md": "b9a8d709b5897c696600d72f27a2d98aec7cdb988c02e66f6a516fdc25320572",
         "templates/journal.md": "0221dbbe9c62040c3dde1f615bca05bf6983e6e8c5a0084ccf8a7fef8cf60e78"
       },
-      "commit": "09e5adacc3940660a76bbc4bde3e754aade8069f"
+      "commit": "4d3765302f3679e8da4792174e8428da387ee3af"
     },
     {
       "format": 1,
@@ -326,7 +363,7 @@
         "seed/use-postgres-for-the-catalogue.md": "4366653055fd547342f9f453f7fe5ca3777e9d6e28adaadda1b675a4a407f7b0",
         "templates/decisions.md": "af02fed807ea59d40488e1ae9e4772b90d1f9f2f0456a9e17a0070e9bd545f01"
       },
-      "commit": "09e5adacc3940660a76bbc4bde3e754aade8069f"
+      "commit": "4d3765302f3679e8da4792174e8428da387ee3af"
     },
     {
       "format": 1,
@@ -413,13 +450,13 @@
         "templates/goal-milestones.md": "4fa449c855d4864688d6504bcd8739b7c08ccce14a02649db699b7f6acab44eb",
         "templates/goals.md": "e95352cca00b2878f1eea4a485b79152d9d710f3d7a87ec0b4036848360d60dd"
       },
-      "commit": "09e5adacc3940660a76bbc4bde3e754aade8069f"
+      "commit": "4d3765302f3679e8da4792174e8428da387ee3af"
     },
     {
       "format": 1,
       "id": "habit-tracker",
       "name": "Habit Tracker",
-      "version": "2.0.1",
+      "version": "2.1.0",
       "kind": "collection",
       "summary": "Habits as rows, one file per day; streaks, day scores and a year heatmap computed on read, never stored.",
       "description": "Each habit is a row with its own page; each day is one small file whose `done:` list names what you did. Tick today in the Today view (Space on a habit, or `mod+shift+h` for \"Log today…\" from anywhere), and the week grid, month, and year heatmap fill in on their own — current and longest streaks, perfect days, completion — all computed from the files, so nothing is ever reset and nothing goes stale. A day with no file is a day with nothing done; the first tick creates it. Pair it with `templates/daily-with-habits.md` as your daily note so today's habits sit at the top of your journal.\n",
@@ -462,10 +499,10 @@
         "habit-tracker/preview/05-habits-habits.png"
       ],
       "sha256": {
-        "README.md": "7de682ec03ba02c51d206a9b230af252bce937fd3d60c11c5b6644d3ebfad73e",
-        "index.md": "ecb45336439aea28b2598d3bdc7ba8565c06464b54919ff50259ce10c87c265e",
+        "README.md": "f24d0009041af4431c5384b1602df79ef77e55341a837314d76f6f2631ce397b",
+        "index.md": "bcf7b73f1f7a4deb2c6ec0936a703cdb92275049c75f57bfb66cb152a8f2c570",
         "index/habit-log.md": "a030bbcfd62e7c9d2504992557b5a784741666ab748fafe7c240a7848e974865",
-        "manifest.yaml": "47970213bbb7a5c79f87fd98d473e8e1045f1f2bde379cdbc02c2d70008ad01e",
+        "manifest.yaml": "473f9984c4291f6d7ece835acbbbd5bd514c236cad02e252c87f551924b5225c",
         "preview.png": "21484ec901ef6871824cb2376c27003116cb170c442659c502062048f9592faf",
         "schemas/habit-log.yaml": "b7f19d0ffa1b92c8bd586d169f208809b44b70cb0ec951f7b3fb4876dceca385",
         "schemas/habits.yaml": "f7c4a8c3d9885bcfc561490933cdb00532756a477b96b33203bcef7183ab534b",
@@ -476,7 +513,7 @@
         "templates/habit-log.md": "401ec03f7d552e8d42ca1ee2d8289e065a8f05c87195688e6e0085a9b6f9c566",
         "templates/habits.md": "1143a143e8d02326b32ac460090ec368b7b4912275b79298c30f0c84a2f4f43a"
       },
-      "commit": "09e5adacc3940660a76bbc4bde3e754aade8069f"
+      "commit": "4d3765302f3679e8da4792174e8428da387ee3af"
     },
     {
       "format": 1,
@@ -543,7 +580,7 @@
         "templates/action-items.md": "95b01a83449a26f183bcb08a81a57540ccc2eb70b209e7c732e6bbef3a003c28",
         "templates/meetings.md": "15ed02bd1e3ca685f4e5122c21c3081b0c2caa7ff6438c1da8160368e954c8eb"
       },
-      "commit": "09e5adacc3940660a76bbc4bde3e754aade8069f"
+      "commit": "4d3765302f3679e8da4792174e8428da387ee3af"
     },
     {
       "format": 1,
@@ -626,7 +663,7 @@
         "templates/one-on-ones.md": "c25a6d2fc6e062adcef28273d491b833e78e54b544a65135be59f2c2f9ee445c",
         "templates/people.md": "e0515c8da527cb44ed09162dd2fa8a7febf56a9c876516c2f4b2fd6dea2394c6"
       },
-      "commit": "09e5adacc3940660a76bbc4bde3e754aade8069f"
+      "commit": "4d3765302f3679e8da4792174e8428da387ee3af"
     },
     {
       "format": 1,
@@ -710,13 +747,13 @@
         "templates/para-projects.md": "fe29172998c548f1f59791a730c49044bc7eb1782204ad27849ab1fa031e6974",
         "templates/para-resources.md": "7971a3a62095470fd5d17db50c5d2687386a9a505a2a895d964993e52b05f564"
       },
-      "commit": "09e5adacc3940660a76bbc4bde3e754aade8069f"
+      "commit": "4d3765302f3679e8da4792174e8428da387ee3af"
     },
     {
       "format": 1,
       "id": "project-tracker",
       "name": "Project Tracker",
-      "version": "2.1.1",
+      "version": "2.2.0",
       "kind": "collection",
       "summary": "Projects with status, priority, deadline, computed progress and one next action; milestones; a timeline; a page each.",
       "description": "One row per project, and a second small collection of milestones — the dated steps a project is made of. A project has a status (planned / active / on_hold / done / dropped), a priority, an `area`, `start` and `deadline` dates and one `next_action` so a stalled project is obvious. The rest is computed: `progress` is the share of its milestones ticked done, `next_milestone` the soonest still open, `days_left` a countdown to the deadline, `open_tasks` a count from the Tasks pack when it is installed, and `completed` is stamped the day status becomes done. Views: Open (what is live, p1 first), Board by status, a Timeline from start to deadline, Due in 30 days, Stalled (active projects with no next action) and Finished per month. Each project's page states the outcome, embeds its own milestones, and — if the Tasks pack is installed — a board of the tasks that name it. Milestones have their own calendar, so every key date across every project is on one page.\n",
@@ -764,10 +801,10 @@
         "project-tracker/preview/05-milestones-upcoming.png"
       ],
       "sha256": {
-        "README.md": "049378dbf063bb944146b5fdf07ed46c5ccf3548f2043b05642cc7337d710ad4",
-        "index.md": "2cd27b0a2905d4ee45b31a1e18602cb007da0e90df9b1ba0309b557dee6d4a06",
+        "README.md": "6398276695105ac4d958dc28da384a9af0fa62990a672c045b07bb21aeffab73",
+        "index.md": "b3a750d546e3e99337f101ca7d3ee08bb4d038e560b2c4080cc2bea518d1453f",
         "index/milestones.md": "a344b207fd81afdfd071ce48b6dbcdc435c38442f9773d276ddab39cdc13ab8f",
-        "manifest.yaml": "9ba5280595f7a3e5809f0b003e3d70313e96a1e4bda95f34129f22042da92d9f",
+        "manifest.yaml": "ccabfe32488142016732ce2790351a3ed4de27c747e269e4e270c21c2dabda71",
         "preview.png": "3f13d6de9a097d35a6edb2e721b7b09396d5052306750bd689f06436e0f708de",
         "schemas/milestones.yaml": "1ceffb83855ea264b232a46cd954ea37dec5ee3198764718837be29b9ecdc5e8",
         "schemas/projects.yaml": "2dcb1f2ec8d0cdc715c3175b9116208db6d3317a04a08f7d6b6fe89e3d8ee279",
@@ -783,7 +820,7 @@
         "templates/milestones.md": "5a5cb4cea39149323ef5d332e30dd1c0b744b92af259683b4d2436669ab6eeb8",
         "templates/projects.md": "78723c2b19c4b670cf07a2781b57d18a16669374718b795e8c82559749052e43"
       },
-      "commit": "09e5adacc3940660a76bbc4bde3e754aade8069f"
+      "commit": "4d3765302f3679e8da4792174e8428da387ee3af"
     },
     {
       "format": 1,
@@ -857,7 +894,7 @@
         "templates/reading-log.md": "1b785ab5cf723ed4c58b565dbcb3c44803c565799922c532e0a2b2029405e1b2",
         "templates/reading.md": "a3b12c98aa79fd0f72e7b7ac9874ddfcdb15e708781f7e33f184b014c4fd44f7"
       },
-      "commit": "09e5adacc3940660a76bbc4bde3e754aade8069f"
+      "commit": "4d3765302f3679e8da4792174e8428da387ee3af"
     },
     {
       "format": 1,
@@ -939,7 +976,7 @@
         "templates/meals.md": "d325a401d4b0ecde54c00cce9a8e506b46ddfb9054129fbc1709e794e72f201f",
         "templates/recipes.md": "1cc42613451826804f91113d37ede17c9742c0893ce03391188cbde98fac58e2"
       },
-      "commit": "09e5adacc3940660a76bbc4bde3e754aade8069f"
+      "commit": "4d3765302f3679e8da4792174e8428da387ee3af"
     },
     {
       "format": 1,
@@ -997,13 +1034,13 @@
         "seed/write-the-project-brief.md": "4251e7b30d4e3f3134c414d67a8c2175b170f9ee5ae89dbd9201ac564108faf3",
         "templates/tasks.md": "b11344a65401067617e89a5d60dc0318581bf5522ba99d0204836f486714e6f4"
       },
-      "commit": "09e5adacc3940660a76bbc4bde3e754aade8069f"
+      "commit": "4d3765302f3679e8da4792174e8428da387ee3af"
     },
     {
       "format": 1,
       "id": "weekly-review",
       "name": "Weekly Review",
-      "version": "2.1.1",
+      "version": "2.2.0",
       "kind": "collection",
       "summary": "One row per week: a plan, then the get-clear / get-current review; reviews due, rating and carry-over charted.",
       "description": "A weekly review as a database. Each week is a row with a `status` (planned, reviewed, skipped), a `rating` out of ten, a one-line `focus`, the `areas` it touched, a `carried_over` count of what slipped, and a `reviewed_on` date that stamps itself when you mark the week reviewed. The page has two halves: a plan (focus and Top 3) and a review — the Getting Things Done checklist (get clear, get current), then wins, what slipped, lessons, what gave and drained energy, the carried-over list, and next week's three. To review lists every planned week whose Friday has come; a board shows the weeks by status, a calendar puts each on its Monday, and two charts plot the rating and the carry-over count week by week, so a slow decline or a growing backlog is visible. With Daily Note installed, each week also counts the days you wrote and averages their energy and sleep — computed, not copied.\n",
@@ -1037,16 +1074,16 @@
         "weekly-review/preview/04-weeks-rating.png"
       ],
       "sha256": {
-        "README.md": "7397209ef51cf7f29b3c09681c0c6c4a97dfd43401922a99dd7423972dff5526",
-        "index.md": "02b828398b95f6a3005d7caef2e85b221663586e463666d66707f2e05c504c57",
-        "manifest.yaml": "9ec6b22a6fb8e29594c1ae463fe6f33c32436b1c892aecd2407d0b7a80341e2f",
+        "README.md": "39a8e8c2802dd475d72f7e3a27af67f02073dcb8c6972ae4604f16094abecd69",
+        "index.md": "922827451fa5c8fd692acfaf22c6567b95367c09634fe28a6f335877bec246a9",
+        "manifest.yaml": "e2c86d3ec4b73120774da86b8b9dede98814b70d93a1f1f51b46e1593a86cc91",
         "preview.png": "32f3add089d1f52d49f525b2f4c26fe13dd0d6be0045be7391afca01ad6fe681",
         "schemas/weeks.yaml": "d79756c2cd3c054be361fbd09cd93b6603ae80901f8f275acaa50618ab69ff0e",
         "seed/example-planned-week.md": "b4c1e13623d118842870743bfe5cf793e01f0b6af528072d4e011c01dd10eb55",
         "seed/example-week.md": "a3db1e867f0cfc363ca51b72b342bfa9f9896b6613477d5e5ffe909ddf132697",
         "templates/weeks.md": "8e1bc36e6261556c2a1e2f43c27c53a630af6083a9dea1c669035f3ae66586cf"
       },
-      "commit": "09e5adacc3940660a76bbc4bde3e754aade8069f"
+      "commit": "4d3765302f3679e8da4792174e8428da387ee3af"
     }
   ]
 }
