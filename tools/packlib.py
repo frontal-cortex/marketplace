@@ -430,6 +430,16 @@ def _strip_template_vars(text: str) -> str:
     return text
 
 
+def _is_dashboard(text: str) -> bool:
+    """A page whose body lays out views (```cortex-view or ```cortex-views blocks)."""
+    body = text
+    if text.startswith("---"):
+        end = text[3:].find("\n---")
+        if end >= 0:
+            body = text[3 + end + 4:]
+    return "```cortex-view" in body
+
+
 def frontmatter(text: str) -> dict | None:
     """The YAML block between the opening `---` and the next `---`, as a mapping."""
     if not text.startswith("---"):
@@ -735,7 +745,11 @@ def lint(pack: Pack) -> list[Finding]:
                     err(index_path, "no frontmatter")
                 else:
                     views = fm.get("views") if isinstance(fm.get("views"), list) else []
-                    if not views:
+                    # A pack's main page may be a dashboard that lays out other
+                    # collections' views in its body and holds no rows, as a
+                    # Notion template's root is a page. Any other collection is
+                    # there to hold rows, and one nobody can see a view of is a mistake.
+                    if not views and not (c == primary and _is_dashboard(index)):
                         err(index_path, "no views")
                     for v in views:
                         if not isinstance(v, dict):
@@ -807,7 +821,10 @@ def lint(pack: Pack) -> list[Finding]:
                                         err(index_path, f"stat `{label}`: `agg: {agg}` needs a `field:`")
                                     if "source" not in e and isinstance(field, str) and field != "title" and field not in props:
                                         err(index_path, f"stat `{label}`: field `{field}` is not in the schema")
-            if pack.text(f"templates/{c}.md") is None:
+            # A dashboard page holds no rows, so it needs no row template.
+            own_views = (frontmatter(lint_dates(index)) or {}).get("views") if index is not None else None
+            dashboard_page = c == primary and index is not None and not own_views and _is_dashboard(index)
+            if not dashboard_page and pack.text(f"templates/{c}.md") is None:
                 warn(None, f"no row template templates/{c}.md — New row in {c} will have no shape")
         # Seeds and row templates use only their own collection's properties.
         for path in pack.files:
